@@ -1,0 +1,31 @@
+--- a/faclib/orbital.c
++++ b/faclib/orbital.c
+@@ -4415,20 +4415,19 @@
+       double xd = x/pot->dps;
+       double xdd = xd/pot->dps;
+       if (_debye_mode == 0) {
+-	pot->ZPS[i] = pot->zps*(x-1.0);
+-	pot->dZPS[i] = -pot->zps*xd;
+-	pot->dZPS2[i] = pot->zps*xdd;
++	pot->ZPS[i] = pot->zps*(1.0-x);
++	pot->dZPS[i] = pot->zps*xd;
++	pot->dZPS2[i] = -pot->zps*xdd;
+       } else if (_debye_mode == 1) {
+-	pot->ZPS[i] = pot->Z[i]*(x-1.0);
+-	double xd = x/pot->dps;
+-	pot->dZPS[i] = -pot->Z[i]*xd + pot->dZ[i]*(x-1.0);
+-	pot->dZPS2[i] = pot->Z[i]*xdd - 2*pot->dZ[i]*xd + pot->dZ2[i]*(x-1.0);
++	pot->ZPS[i] = pot->Z[i]*(1.0-x);
++	pot->dZPS[i] = pot->Z[i]*xd + pot->dZ[i]*(1.0-x);
++	pot->dZPS2[i] = -pot->Z[i]*xdd + 2*pot->dZ[i]*xd + pot->dZ2[i]*(1.0-x);
+       } else if (_debye_mode == 2) {
+ 	double y = x*cos(r0);
+-	pot->ZPS[i] = pot->zps*(y-1.0);	
++	pot->ZPS[i] = pot->zps*(1.0-y);	
+       } else if (_debye_mode == 3) {
+ 	double y = x*cos(r0);
+-	pot->ZPS[i] = pot->Z[i]*(y-1.0);
++	pot->ZPS[i] = pot->Z[i]*(1.0-y);
+       }
+     }
+     if (_debye_mode >= 2) {

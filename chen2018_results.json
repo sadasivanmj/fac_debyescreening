@@ -1,0 +1,773 @@
+{
+ "results": {},
+ "failures": [
+  {
+   "tag": "C_ee0_L1e06",
+   "elem": "C",
+   "ee": 0,
+   "lam": 1000000.0,
+   "stage": "n<=3",
+   "error": "sfac returned -11"
+  },
+  {
+   "tag": "C_ee0_L1e06",
+   "elem": "C",
+   "ee": 0,
+   "lam": 1000000.0,
+   "stage": "n<=2",
+   "error": "sfac returned -11"
+  },
+  {
+   "tag": "C_ee0_L20",
+   "elem": "C",
+   "ee": 0,
+   "lam": 20.0,
+   "stage": "n<=3",
+   "error": "sfac returned -11"
+  },
+  {
+   "tag": "C_ee0_L20",
+   "elem": "C",
+   "ee": 0,
+   "lam": 20.0,
+   "stage": "n<=2",
+   "error": "sfac returned -11"
+  },
+  {
+   "tag": "C_ee0_L15",
+   "elem": "C",
+   "ee": 0,
+   "lam": 15.0,
+   "stage": "n<=3",
+   "error": "sfac returned -11"
+  },
+  {
+   "tag": "C_ee0_L15",
+   "elem": "C",
+   "ee": 0,
+   "lam": 15.0,
+   "stage": "n<=2",
+   "error": "sfac returned -11"
+  },
+  {
+   "tag": "C_ee0_L10",
+   "elem": "C",
+   "ee": 0,
+   "lam": 10.0,
+   "stage": "n<=3",
+   "error": "sfac returned -11"
+  },
+  {
+   "tag": "C_ee0_L10",
+   "elem": "C",
+   "ee": 0,
+   "lam": 10.0,
+   "stage": "n<=2",
+   "error": "sfac returned -11"
+  },
+  {
+   "tag": "C_ee0_L7p5",
+   "elem": "C",
+   "ee": 0,
+   "lam": 7.5,
+   "stage": "n<=3",
+   "error": "sfac returned -11"
+  },
+  {
+   "tag": "C_ee0_L7p5",
+   "elem": "C",
+   "ee": 0,
+   "lam": 7.5,
+   "stage": "n<=2",
+   "error": "sfac returned -11"
+  },
+  {
+   "tag": "C_ee0_L5",
+   "elem": "C",
+   "ee": 0,
+   "lam": 5.0,
+   "stage": "n<=3",
+   "error": "sfac returned -11"
+  },
+  {
+   "tag": "C_ee0_L5",
+   "elem": "C",
+   "ee": 0,
+   "lam": 5.0,
+   "stage": "n<=2",
+   "error": "sfac returned -11"
+  },
+  {
+   "tag": "C_ee1_L1e06",
+   "elem": "C",
+   "ee": 1,
+   "lam": 1000000.0,
+   "stage": "n<=3",
+   "error": "sfac returned -11"
+  },
+  {
+   "tag": "C_ee1_L1e06",
+   "elem": "C",
+   "ee": 1,
+   "lam": 1000000.0,
+   "stage": "n<=2",
+   "error": "sfac returned -11"
+  },
+  {
+   "tag": "C_ee1_L20",
+   "elem": "C",
+   "ee": 1,
+   "lam": 20.0,
+   "stage": "n<=3",
+   "error": "sfac returned -11"
+  },
+  {
+   "tag": "C_ee1_L20",
+   "elem": "C",
+   "ee": 1,
+   "lam": 20.0,
+   "stage": "n<=2",
+   "error": "sfac returned -11"
+  },
+  {
+   "tag": "C_ee1_L15",
+   "elem": "C",
+   "ee": 1,
+   "lam": 15.0,
+   "stage": "n<=3",
+   "error": "sfac returned -11"
+  },
+  {
+   "tag": "C_ee1_L15",
+   "elem": "C",
+   "ee": 1,
+   "lam": 15.0,
+   "stage": "n<=2",
+   "error": "sfac returned -11"
+  },
+  {
+   "tag": "C_ee1_L10",
+   "elem": "C",
+   "ee": 1,
+   "lam": 10.0,
+   "stage": "n<=3",
+   "error": "sfac returned -11"
+  },
+  {
+   "tag": "C_ee1_L10",
+   "elem": "C",
+   "ee": 1,
+   "lam": 10.0,
+   "stage": "n<=2",
+   "error": "sfac returned -11"
+  },
+  {
+   "tag": "C_ee1_L7p5",
+   "elem": "C",
+   "ee": 1,
+   "lam": 7.5,
+   "stage": "n<=3",
+   "error": "sfac returned -11"
+  },
+  {
+   "tag": "C_ee1_L7p5",
+   "elem": "C",
+   "ee": 1,
+   "lam": 7.5,
+   "stage": "n<=2",
+   "error": "sfac returned -11"
+  },
+  {
+   "tag": "C_ee1_L5",
+   "elem": "C",
+   "ee": 1,
+   "lam": 5.0,
+   "stage": "n<=3",
+   "error": "sfac returned -11"
+  },
+  {
+   "tag": "C_ee1_L5",
+   "elem": "C",
+   "ee": 1,
+   "lam": 5.0,
+   "stage": "n<=2",
+   "error": "sfac returned -11"
+  },
+  {
+   "tag": "Ne_ee0_L1e06",
+   "elem": "Ne",
+   "ee": 0,
+   "lam": 1000000.0,
+   "stage": "n<=3",
+   "error": "sfac returned -11"
+  },
+  {
+   "tag": "Ne_ee0_L1e06",
+   "elem": "Ne",
+   "ee": 0,
+   "lam": 1000000.0,
+   "stage": "n<=2",
+   "error": "sfac returned -11"
+  },
+  {
+   "tag": "Ne_ee0_L20",
+   "elem": "Ne",
+   "ee": 0,
+   "lam": 20.0,
+   "stage": "n<=3",
+   "error": "sfac returned -11"
+  },
+  {
+   "tag": "Ne_ee0_L20",
+   "elem": "Ne",
+   "ee": 0,
+   "lam": 20.0,
+   "stage": "n<=2",
+   "error": "sfac returned -11"
+  },
+  {
+   "tag": "Ne_ee0_L15",
+   "elem": "Ne",
+   "ee": 0,
+   "lam": 15.0,
+   "stage": "n<=3",
+   "error": "sfac returned -11"
+  },
+  {
+   "tag": "Ne_ee0_L15",
+   "elem": "Ne",
+   "ee": 0,
+   "lam": 15.0,
+   "stage": "n<=2",
+   "error": "sfac returned -11"
+  },
+  {
+   "tag": "Ne_ee0_L10",
+   "elem": "Ne",
+   "ee": 0,
+   "lam": 10.0,
+   "stage": "n<=3",
+   "error": "sfac returned -11"
+  },
+  {
+   "tag": "Ne_ee0_L10",
+   "elem": "Ne",
+   "ee": 0,
+   "lam": 10.0,
+   "stage": "n<=2",
+   "error": "sfac returned -11"
+  },
+  {
+   "tag": "Ne_ee0_L7p5",
+   "elem": "Ne",
+   "ee": 0,
+   "lam": 7.5,
+   "stage": "n<=3",
+   "error": "sfac returned -11"
+  },
+  {
+   "tag": "Ne_ee0_L7p5",
+   "elem": "Ne",
+   "ee": 0,
+   "lam": 7.5,
+   "stage": "n<=2",
+   "error": "sfac returned -11"
+  },
+  {
+   "tag": "Ne_ee0_L5",
+   "elem": "Ne",
+   "ee": 0,
+   "lam": 5.0,
+   "stage": "n<=3",
+   "error": "sfac returned -11"
+  },
+  {
+   "tag": "Ne_ee0_L5",
+   "elem": "Ne",
+   "ee": 0,
+   "lam": 5.0,
+   "stage": "n<=2",
+   "error": "sfac returned -11"
+  },
+  {
+   "tag": "Ne_ee1_L1e06",
+   "elem": "Ne",
+   "ee": 1,
+   "lam": 1000000.0,
+   "stage": "n<=3",
+   "error": "sfac returned -11"
+  },
+  {
+   "tag": "Ne_ee1_L1e06",
+   "elem": "Ne",
+   "ee": 1,
+   "lam": 1000000.0,
+   "stage": "n<=2",
+   "error": "sfac returned -11"
+  },
+  {
+   "tag": "Ne_ee1_L20",
+   "elem": "Ne",
+   "ee": 1,
+   "lam": 20.0,
+   "stage": "n<=3",
+   "error": "sfac returned -11"
+  },
+  {
+   "tag": "Ne_ee1_L20",
+   "elem": "Ne",
+   "ee": 1,
+   "lam": 20.0,
+   "stage": "n<=2",
+   "error": "sfac returned -11"
+  },
+  {
+   "tag": "Ne_ee1_L15",
+   "elem": "Ne",
+   "ee": 1,
+   "lam": 15.0,
+   "stage": "n<=3",
+   "error": "sfac returned -11"
+  },
+  {
+   "tag": "Ne_ee1_L15",
+   "elem": "Ne",
+   "ee": 1,
+   "lam": 15.0,
+   "stage": "n<=2",
+   "error": "sfac returned -11"
+  },
+  {
+   "tag": "Ne_ee1_L10",
+   "elem": "Ne",
+   "ee": 1,
+   "lam": 10.0,
+   "stage": "n<=3",
+   "error": "sfac returned -11"
+  },
+  {
+   "tag": "Ne_ee1_L10",
+   "elem": "Ne",
+   "ee": 1,
+   "lam": 10.0,
+   "stage": "n<=2",
+   "error": "sfac returned -11"
+  },
+  {
+   "tag": "Ne_ee1_L7p5",
+   "elem": "Ne",
+   "ee": 1,
+   "lam": 7.5,
+   "stage": "n<=3",
+   "error": "sfac returned -11"
+  },
+  {
+   "tag": "Ne_ee1_L7p5",
+   "elem": "Ne",
+   "ee": 1,
+   "lam": 7.5,
+   "stage": "n<=2",
+   "error": "sfac returned -11"
+  },
+  {
+   "tag": "Ne_ee1_L5",
+   "elem": "Ne",
+   "ee": 1,
+   "lam": 5.0,
+   "stage": "n<=3",
+   "error": "sfac returned -11"
+  },
+  {
+   "tag": "Ne_ee1_L5",
+   "elem": "Ne",
+   "ee": 1,
+   "lam": 5.0,
+   "stage": "n<=2",
+   "error": "sfac returned -11"
+  },
+  {
+   "tag": "Ar_ee0_L1e06",
+   "elem": "Ar",
+   "ee": 0,
+   "lam": 1000000.0,
+   "stage": "n<=3",
+   "error": "sfac returned -11"
+  },
+  {
+   "tag": "Ar_ee0_L1e06",
+   "elem": "Ar",
+   "ee": 0,
+   "lam": 1000000.0,
+   "stage": "n<=2",
+   "error": "sfac returned -11"
+  },
+  {
+   "tag": "Ar_ee0_L20",
+   "elem": "Ar",
+   "ee": 0,
+   "lam": 20.0,
+   "stage": "n<=3",
+   "error": "sfac returned -11"
+  },
+  {
+   "tag": "Ar_ee0_L20",
+   "elem": "Ar",
+   "ee": 0,
+   "lam": 20.0,
+   "stage": "n<=2",
+   "error": "sfac returned -11"
+  },
+  {
+   "tag": "Ar_ee0_L15",
+   "elem": "Ar",
+   "ee": 0,
+   "lam": 15.0,
+   "stage": "n<=3",
+   "error": "sfac returned -11"
+  },
+  {
+   "tag": "Ar_ee0_L15",
+   "elem": "Ar",
+   "ee": 0,
+   "lam": 15.0,
+   "stage": "n<=2",
+   "error": "sfac returned -11"
+  },
+  {
+   "tag": "Ar_ee0_L10",
+   "elem": "Ar",
+   "ee": 0,
+   "lam": 10.0,
+   "stage": "n<=3",
+   "error": "sfac returned -11"
+  },
+  {
+   "tag": "Ar_ee0_L10",
+   "elem": "Ar",
+   "ee": 0,
+   "lam": 10.0,
+   "stage": "n<=2",
+   "error": "sfac returned -11"
+  },
+  {
+   "tag": "Ar_ee0_L7p5",
+   "elem": "Ar",
+   "ee": 0,
+   "lam": 7.5,
+   "stage": "n<=3",
+   "error": "sfac returned -11"
+  },
+  {
+   "tag": "Ar_ee0_L7p5",
+   "elem": "Ar",
+   "ee": 0,
+   "lam": 7.5,
+   "stage": "n<=2",
+   "error": "sfac returned -11"
+  },
+  {
+   "tag": "Ar_ee0_L5",
+   "elem": "Ar",
+   "ee": 0,
+   "lam": 5.0,
+   "stage": "n<=3",
+   "error": "sfac returned -11"
+  },
+  {
+   "tag": "Ar_ee0_L5",
+   "elem": "Ar",
+   "ee": 0,
+   "lam": 5.0,
+   "stage": "n<=2",
+   "error": "sfac returned -11"
+  },
+  {
+   "tag": "Ar_ee1_L1e06",
+   "elem": "Ar",
+   "ee": 1,
+   "lam": 1000000.0,
+   "stage": "n<=3",
+   "error": "sfac returned -11"
+  },
+  {
+   "tag": "Ar_ee1_L1e06",
+   "elem": "Ar",
+   "ee": 1,
+   "lam": 1000000.0,
+   "stage": "n<=2",
+   "error": "sfac returned -11"
+  },
+  {
+   "tag": "Ar_ee1_L20",
+   "elem": "Ar",
+   "ee": 1,
+   "lam": 20.0,
+   "stage": "n<=3",
+   "error": "sfac returned -11"
+  },
+  {
+   "tag": "Ar_ee1_L20",
+   "elem": "Ar",
+   "ee": 1,
+   "lam": 20.0,
+   "stage": "n<=2",
+   "error": "sfac returned -11"
+  },
+  {
+   "tag": "Ar_ee1_L15",
+   "elem": "Ar",
+   "ee": 1,
+   "lam": 15.0,
+   "stage": "n<=3",
+   "error": "sfac returned -11"
+  },
+  {
+   "tag": "Ar_ee1_L15",
+   "elem": "Ar",
+   "ee": 1,
+   "lam": 15.0,
+   "stage": "n<=2",
+   "error": "sfac returned -11"
+  },
+  {
+   "tag": "Ar_ee1_L10",
+   "elem": "Ar",
+   "ee": 1,
+   "lam": 10.0,
+   "stage": "n<=3",
+   "error": "sfac returned -11"
+  },
+  {
+   "tag": "Ar_ee1_L10",
+   "elem": "Ar",
+   "ee": 1,
+   "lam": 10.0,
+   "stage": "n<=2",
+   "error": "sfac returned -11"
+  },
+  {
+   "tag": "Ar_ee1_L7p5",
+   "elem": "Ar",
+   "ee": 1,
+   "lam": 7.5,
+   "stage": "n<=3",
+   "error": "sfac returned -11"
+  },
+  {
+   "tag": "Ar_ee1_L7p5",
+   "elem": "Ar",
+   "ee": 1,
+   "lam": 7.5,
+   "stage": "n<=2",
+   "error": "sfac returned -11"
+  },
+  {
+   "tag": "Ar_ee1_L5",
+   "elem": "Ar",
+   "ee": 1,
+   "lam": 5.0,
+   "stage": "n<=3",
+   "error": "sfac returned -11"
+  },
+  {
+   "tag": "Ar_ee1_L5",
+   "elem": "Ar",
+   "ee": 1,
+   "lam": 5.0,
+   "stage": "n<=2",
+   "error": "sfac returned -11"
+  },
+  {
+   "tag": "Kr_ee0_L1e06",
+   "elem": "Kr",
+   "ee": 0,
+   "lam": 1000000.0,
+   "stage": "n<=3",
+   "error": "sfac returned -11"
+  },
+  {
+   "tag": "Kr_ee0_L1e06",
+   "elem": "Kr",
+   "ee": 0,
+   "lam": 1000000.0,
+   "stage": "n<=2",
+   "error": "sfac returned -11"
+  },
+  {
+   "tag": "Kr_ee0_L20",
+   "elem": "Kr",
+   "ee": 0,
+   "lam": 20.0,
+   "stage": "n<=3",
+   "error": "sfac returned -11"
+  },
+  {
+   "tag": "Kr_ee0_L20",
+   "elem": "Kr",
+   "ee": 0,
+   "lam": 20.0,
+   "stage": "n<=2",
+   "error": "sfac returned -11"
+  },
+  {
+   "tag": "Kr_ee0_L15",
+   "elem": "Kr",
+   "ee": 0,
+   "lam": 15.0,
+   "stage": "n<=3",
+   "error": "sfac returned -11"
+  },
+  {
+   "tag": "Kr_ee0_L15",
+   "elem": "Kr",
+   "ee": 0,
+   "lam": 15.0,
+   "stage": "n<=2",
+   "error": "sfac returned -11"
+  },
+  {
+   "tag": "Kr_ee0_L10",
+   "elem": "Kr",
+   "ee": 0,
+   "lam": 10.0,
+   "stage": "n<=3",
+   "error": "sfac returned -11"
+  },
+  {
+   "tag": "Kr_ee0_L10",
+   "elem": "Kr",
+   "ee": 0,
+   "lam": 10.0,
+   "stage": "n<=2",
+   "error": "sfac returned -11"
+  },
+  {
+   "tag": "Kr_ee0_L7p5",
+   "elem": "Kr",
+   "ee": 0,
+   "lam": 7.5,
+   "stage": "n<=3",
+   "error": "sfac returned -11"
+  },
+  {
+   "tag": "Kr_ee0_L7p5",
+   "elem": "Kr",
+   "ee": 0,
+   "lam": 7.5,
+   "stage": "n<=2",
+   "error": "sfac returned -11"
+  },
+  {
+   "tag": "Kr_ee0_L5",
+   "elem": "Kr",
+   "ee": 0,
+   "lam": 5.0,
+   "stage": "n<=3",
+   "error": "sfac returned -11"
+  },
+  {
+   "tag": "Kr_ee0_L5",
+   "elem": "Kr",
+   "ee": 0,
+   "lam": 5.0,
+   "stage": "n<=2",
+   "error": "sfac returned -11"
+  },
+  {
+   "tag": "Kr_ee1_L1e06",
+   "elem": "Kr",
+   "ee": 1,
+   "lam": 1000000.0,
+   "stage": "n<=3",
+   "error": "sfac returned -11"
+  },
+  {
+   "tag": "Kr_ee1_L1e06",
+   "elem": "Kr",
+   "ee": 1,
+   "lam": 1000000.0,
+   "stage": "n<=2",
+   "error": "sfac returned -11"
+  },
+  {
+   "tag": "Kr_ee1_L20",
+   "elem": "Kr",
+   "ee": 1,
+   "lam": 20.0,
+   "stage": "n<=3",
+   "error": "sfac returned -11"
+  },
+  {
+   "tag": "Kr_ee1_L20",
+   "elem": "Kr",
+   "ee": 1,
+   "lam": 20.0,
+   "stage": "n<=2",
+   "error": "sfac returned -11"
+  },
+  {
+   "tag": "Kr_ee1_L15",
+   "elem": "Kr",
+   "ee": 1,
+   "lam": 15.0,
+   "stage": "n<=3",
+   "error": "sfac returned -11"
+  },
+  {
+   "tag": "Kr_ee1_L15",
+   "elem": "Kr",
+   "ee": 1,
+   "lam": 15.0,
+   "stage": "n<=2",
+   "error": "sfac returned -11"
+  },
+  {
+   "tag": "Kr_ee1_L10",
+   "elem": "Kr",
+   "ee": 1,
+   "lam": 10.0,
+   "stage": "n<=3",
+   "error": "sfac returned -11"
+  },
+  {
+   "tag": "Kr_ee1_L10",
+   "elem": "Kr",
+   "ee": 1,
+   "lam": 10.0,
+   "stage": "n<=2",
+   "error": "sfac returned -11"
+  },
+  {
+   "tag": "Kr_ee1_L7p5",
+   "elem": "Kr",
+   "ee": 1,
+   "lam": 7.5,
+   "stage": "n<=3",
+   "error": "sfac returned -11"
+  },
+  {
+   "tag": "Kr_ee1_L7p5",
+   "elem": "Kr",
+   "ee": 1,
+   "lam": 7.5,
+   "stage": "n<=2",
+   "error": "sfac returned -11"
+  },
+  {
+   "tag": "Kr_ee1_L5",
+   "elem": "Kr",
+   "ee": 1,
+   "lam": 5.0,
+   "stage": "n<=3",
+   "error": "sfac returned -11"
+  },
+  {
+   "tag": "Kr_ee1_L5",
+   "elem": "Kr",
+   "ee": 1,
+   "lam": 5.0,
+   "stage": "n<=2",
+   "error": "sfac returned -11"
+  }
+ ]
+}

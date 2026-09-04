@@ -10638,6 +10638,93 @@ void PrepSlater(int ib0, int iu0, int ib1, int iu1,
   }
 }
       
+
+/* ---------------- Debye screening of the electron-electron interaction ----------
+** Yukawa multipole expansion:
+**   exp(-mu*r12)/r12 = mu * sum_k (2k+1) i_k(mu r_<) k_k(mu r_>) P_k(cos w)
+** so the Coulomb Green's function r_<^k / r_>^(k+1) is replaced throughout by
+**   mu (2k+1) i_k(mu r_<) k_k(mu r_>),   which reduces to it as mu -> 0.
+** _si_l / _sk_l are the exponentially scaled modified spherical Bessel functions
+**   _si_l(l,x) = exp(-x) i_l(x)        _sk_l(l,x) = exp(x) k_l(x)
+** ------------------------------------------------------------------------------ */
+static int _ee_screen = 0;          /* 0 = unscreened e-e (default), 1 = Debye */
+#define _EE_XMAX 400.0
+
+double EEScreenMu(void) {
+  if (!_ee_screen) return 0.0;
+  if (potential->mps != 1) return 0.0;
+  if (potential->dps <= 0) return 0.0;
+  return 1.0/potential->dps;
+}
+
+static double _sk_l(int l, double x) {
+  double s = 0.0, t = 1.0;
+  int j;
+  for (j = 0; j <= l; j++) {
+    if (j > 0) t *= (double)(l+j)*(l-j+1)/((double)j*2.0*x);
+    s += t;
+  }
+  return s/x;
+}
+
+static double _si_l(int l, double x) {
+  int j;
+  if (x <= (double)l + 1.0) {
+    double dfac = 1.0, term = 1.0, sum = 1.0, h = 0.5*x*x;
+    for (j = 1; j <= 2*l+1; j += 2) dfac *= (double)j;
+    for (j = 1; j < 200; j++) {
+      term *= h/((double)j*(2.0*l+2.0*j+1.0));
+      sum += term;
+      if (term < 1e-18*sum) break;
+    }
+    return exp(-x)*pow(x,l)/dfac*sum;
+  } else {
+    double e2 = exp(-2.0*x);
+    double sm = (1.0+e2)/(2.0*x);
+    double s0 = (1.0-e2)/(2.0*x);
+    double sp;
+    if (l == 0) return s0;
+    for (j = 0; j < l; j++) { sp = sm - (2.0*j+1.0)/x*s0; sm = s0; s0 = sp; }
+    return s0;
+  }
+}
+
+/* i_k(mu r) and k_k(mu r), with the argument clamped so that the explicit
+** exponentials cannot overflow.  Bound orbital densities vanish long before
+** mu*r reaches _EE_XMAX, so the clamp is numerically inert. */
+static double _bi_l(int l, double x) {
+  if (x > _EE_XMAX) x = _EE_XMAX;
+  return _si_l(l,x)*exp(x);
+}
+static double _bk_l(int l, double x) {
+  if (x > _EE_XMAX) x = _EE_XMAX;
+  return _sk_l(l,x)*exp(-x);
+}
+
+/* Yukawa analogue of GetYk1:
+**   Y_k(r) = r mu (2k+1) [ k_k(mu r) int_0^r i_k(mu r') rho dr'
+**                        + i_k(mu r) int_r^inf k_k(mu r') rho dr' ]     */
+int GetYkDebye(int k, double *yk, ORBITAL *orb1, ORBITAL *orb2,
+	       int type, double mu) {
+  int i;
+  double c = mu*(2.0*k+1.0);
+  for (i = 0; i < potential->maxrp; i++) {
+    _dwork1[i] = _bi_l(k, mu*potential->rad[i]);
+  }
+  Integrate(_dwork1, orb1, orb2, type, _zk, 0);
+  for (i = 0; i < potential->maxrp; i++) {
+    yk[i] = c*potential->rad[i]*_bk_l(k, mu*potential->rad[i])*_zk[i];
+  }
+  for (i = 0; i < potential->maxrp; i++) {
+    _dwork1[i] = _bk_l(k, mu*potential->rad[i]);
+  }
+  Integrate(_dwork1, orb1, orb2, type, _xk, -1);
+  for (i = 0; i < potential->maxrp; i++) {
+    yk[i] += c*potential->rad[i]*_bi_l(k, mu*potential->rad[i])*_xk[i];
+  }
+  return 0;
+}
+
 int GetYk0(int k, double *yk, ORBITAL *orb1, ORBITAL *orb2, int type) {
   int i, ilast, i0;
   double a, max;
@@ -10717,6 +10804,12 @@ int GetYk(int k, double *yk, ORBITAL *orb1, ORBITAL *orb2,
   int index[3];
   FLTARY *syk;
 
+  double _mu = EEScreenMu();
+  if (_mu > 0) {
+    /* the cached tail model yk ~ (r0/r)^k is invalid for a screened kernel */
+    GetYkDebye(k, yk, orb1, orb2, type, _mu);
+    return 0;
+  }
   syk = NULL;
   LOCK *lock = NULL;
   int locked = 0;
@@ -14013,6 +14106,10 @@ void SetOptionRadial(char *s, char *sp, int ip, double dp) {
   }
   if (0 == strcmp(s, "radial:chx")) {
     potential->chx = dp;
+    return;
+  }
+  if (0 == strcmp(s, "radial:ee_screen")) {
+    _ee_screen = ip;
     return;
   }
   if (0 == strcmp(s, "radial:hxs")) {

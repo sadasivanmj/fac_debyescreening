@@ -4406,8 +4406,8 @@ int SetPotentialPS(POTENTIAL *pot, int iter) {
 void SetPotentialIPS(POTENTIAL *pot, int iter) {
   int i, ii, maxit;
   double n0, r0, x;
-  if (pot->mps == 1) {  
-    if (iter > 0 && _debye_mode != 1) return;
+  if (pot->mps == 1) {//debye screening
+    if (iter > 0) return;
     for (i = 0; i < pot->maxrp; i++) {
       pot->EPS[i] = 0;
       r0 = pot->rad[i]/pot->dps;
