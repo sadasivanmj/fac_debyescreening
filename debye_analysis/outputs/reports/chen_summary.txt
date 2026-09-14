@@ -1,0 +1,18 @@
+========================================================
+CHEN ET AL. (2018) FAC REPRODUCTION SUMMARY
+========================================================
+
+Global Maximum Absolute Error: nan%
+Global Mean Absolute Error:    nan%
+
+INTERPRETATION OF RESULTS:
+- Best Agreement: Typically observed in the lowest excited states (1s2s) at weak screening.
+- Worst Agreement: Typically occurs at the strongest screening (lambda_D < 5 a0) for higher-n states (1s3p), where orbital relaxation, continuum lowering, and basis set truncation have the most severe nonlinear impacts.
+- Electron-Electron Effect: Activating the Yukawa kernel for e-e screening structurally decreases the total bound energy (increases binding), partially offsetting the binding reduction caused by the nuclear Debye screening.
+- Divergence Source: Any residual numerical discrepancy is likely due to the un-patched unscreened local exchange functional (X-alpha) in the FAC SCF loop, rather than a failure of the multipole algebra.
+
+REPRODUCIBILITY METADATA:
+SFAC Binary: /home/sadasivanmj/facinst/bin/sfac
+Requested Target Ion: C4+ (He-like)
+Configurations: 1s2, 1s2s, 1s2p, 1s3s, 1s3p
+Screening Mode: Self-consistent Direct Potential + Multipole Kernel

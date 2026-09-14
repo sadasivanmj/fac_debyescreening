@@ -23,6 +23,17 @@
 #include "fftsg.h"
 #include "global.h"
 
+/*Debye Screening Helper*/
+extern double EEScreenMu(void);
+
+static double _shx(double x){
+	if (x<1e-6){
+		return 1.0 + x*x/6.0;
+	}
+	if (x>400.0) x = 400.0;
+	return sinh(x)/x;
+}
+
 static char *rcsid="$Id$";
 #if __GNUC__ == 2
 #define USE(var) static void * use_##var = (&use_##var, (void *) &var) 
@@ -4754,6 +4765,7 @@ int DensityToSZ(POTENTIAL *pot, double *d, double *z,
 		double *zx, double *jps, int md) {
   int i, im, maxrp, k;
   double nx, rx, a, vxs;
+  double _mu = EEScreenMu();
 
   if (pot->ips > 0 && pot->ups+1 == 1) {
     maxrp = pot->ips+1;
@@ -4776,16 +4788,23 @@ int DensityToSZ(POTENTIAL *pot, double *d, double *z,
   im = maxrp-1;
   for (i = 0; i <= im; i++) {
     _dwork[i] = d[i]*pot->dr_drho[i];
+    if (_mu > 0) _dwork[i] *= _shx(_mu*pot->rad[i]);
   }
   _dwork1[0] = d[0]*pot->rad[0]/3.0;
   NewtonCotesIP(_dwork1, _dwork, 0, im, -1, 0);
   for (i = 0; i <= im; i++) {
     _dwork[i] = (d[i]/pot->rad[i])*pot->dr_drho[i];
+    if (_mu >0) _dwork[i] *= exp(-_mu*pot->rad[i]);
   }
   _dwork2[im] = 0.0;
   NewtonCotesIP(_dwork2, _dwork, 0, im, -1, -1);
   for (i = 0; i <= im; i++) {
+    if (_mu>0){
+	    z[i] = exp(-_mu*pot->rad[i])*_dwork1[i]
+		    + pot->rad[i]*_shx(_mu*pot->rad[i])*_dwork2[i];
+    } else{
     z[i] = _dwork1[i] + pot->rad[i]*_dwork2[i];
+    }
   }  
   if (pot->ahx) {
     for (i = 0; i <= im; i++) {
