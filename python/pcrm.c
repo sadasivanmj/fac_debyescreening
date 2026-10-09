@@ -1797,6 +1797,30 @@ static PyObject *PRateCoefficients(PyObject *self, PyObject *args) {
   return Py_None;
 }
 
+static PyObject *PGauntFF(PyObject *self, PyObject *args) {
+  double z, t, de, msg, ne, r, z2, g2, u;
+  int m;
+
+  z = -1.0;
+  m = 0;
+  msg = 0.0;
+  ne = 0.0;
+  if (!PyArg_ParseTuple(args, "dd|iddd", &t, &de, &m, &z, &msg, &ne)) return NULL;
+  if (m < 10) {
+    if (z >= 0) {
+      z2 = z*z;
+      g2 = z2*RYDBERG_EV/t;
+      u = de/t;
+    } else {
+      g2 = t;
+      u = de;
+    }
+    r = GauntTFF(g2, u, m);
+  } else {
+    r = GauntIFF(z*z*RYDBERG_EV, t, de, msg, ne, m-10);
+  }
+  return Py_BuildValue("d", r);
+}
 
 static struct PyMethodDef crm_methods[] = {
   {"Print", PPrint, METH_VARARGS}, 
@@ -1825,6 +1849,7 @@ static struct PyMethodDef crm_methods[] = {
   {"SetRateAccuracy", PSetRateAccuracy, METH_VARARGS},
   {"SetBlocks", PSetBlocks, METH_VARARGS},
   {"RateTable", PRateTable, METH_VARARGS},
+  {"GauntFF", PGauntFF, METH_VARARGS},
   {"AddIon", PAddIon, METH_VARARGS},
   {"SetCERates", PSetCERates, METH_VARARGS},
   {"SetCXRates", PSetCXRates, METH_VARARGS},

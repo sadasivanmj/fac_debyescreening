@@ -70,7 +70,7 @@ static int _sp_trm = 1;
 static int _rates_block = RATES_BLOCK;
 static int _lblock_block = LBLOCK_BLOCK;
 
-static double _ce_data[2+(1+MAXNUSR)*2];
+static double _ce_data[4+(2+MAXNUSR)*4];
 static double _rr_data[1+MAXNUSR*4];
 static int _ce_bethe = 0;
 
@@ -86,7 +86,8 @@ static double _starkzb = 1.0;
 static double _starkaix = 1.0;
 static double _starksmx = 3.0;
 static double _starkmfs = 1.5;
-static double _starkrij = 0.75;
+static double _starkrij = 1.0;
+static double _starkrij2 = 0.5;
 static double _starkefs = 1.0;
 static double _starkix1 = 1.0;
 static double _starkix2 = 4.0;
@@ -1860,20 +1861,28 @@ int InitBlocks(void) {
 	  b = FINE_STRUCTURE_CONST * de;
 	  b *= 2.0*b*FINE_STRUCTURE_CONST;
 	  a /= b;
+	  double zt = z-ion->nele+1.0;
 	  double fij = a/(ion->j[r->f]+1.0);
-	  double eta = de/(3*tea);
-	  double rij = sqrt(fij*1.5*_starkrij/de);
-	  b = _starkrij*StarkFW(eta*rij);
-	  double rdne = 6.25e2*electron_density*a*(b/de)/sqrt(2*tea);
-	  double rupe = rdne*exp(-de/tea)*(ion->j[r->i]+1.0)/(ion->j[r->f]+1.0);
+	  double za = zt*FINE_STRUCTURE_CONST;
 	  int type = TransitionType(blk1->ncomplex, blk2->ncomplex);
 	  int nlo = type%100;
 	  int nup = (type/100)%100;
-	  double zt = z-ion->nele+1.0;
-	  double za = zt*FINE_STRUCTURE_CONST;
 	  double efs = (_starkefs*0.25*zt*zt/(nup*nup*nup))*(za*za);
-	  de = Max(de, efs);
-	  de *= RATE_AU;
+	  double rde = Max(efs, de);
+	  double rij = sqrt(fij*1.5*_starkrij*(ion->j[r->i]+1.0)/rde);
+	  if (nup == 2 && nlo == 2 && ion->nele == 1) rij *= _starkrij2;
+	  b = zt-1.0;
+	  b = Max(0.01, b);
+	  b = 0.5*b*b/tea;
+	  double wp = 1.364e-7*sqrt(electron_density);
+	  wp = Max(wp, de);
+	  b = GauntTFF(b, wp/tea, 6);
+	  if (ion->nele < z) {
+	    b *= 3/(1+2/(zt*zt*zt));
+	  }	  
+	  double rdne = 3e2*electron_density*a*(b/de)/sqrt(tea);
+	  double rupe = rdne*exp(-de/tea)*(ion->j[r->i]+1.0)/(ion->j[r->f]+1.0);
+	  de = rde*RATE_AU;
 	  double rdn = LimitImpactWidth(rdne, de, 1);
 	  double rup = LimitImpactWidth(rupe, de, 1);
 	  j = ion->ilev[r->i];
@@ -1895,8 +1904,8 @@ int InitBlocks(void) {
 #pragma omp atomic
 	    blk2->rc1[kf] += rup;
 	  }
-	  //if (r->i == 6) {
-	  //  printf("ri: %d %d %g %g %g %g %g %g %g %g %g %g %g\n", r->f, nup, zt, fij, eta, rij, de, rdne, rdn, ri0, ri1, blk1->rc1[j], blk1->rc2[j]);	    
+	  //if (r->i == 1 && r->f == 0) {
+	  //  printf("ri: %d %d %g %g %g %g %g %g %g %g %g %g %g\n", r->f, nup, zt, a, b, rij, de, rdne, rdn, ri0, ri1, blk1->rc1[j], blk1->rc2[j]);	    
 	  //}
 	}
       }
@@ -2064,7 +2073,7 @@ int InitBlocks(void) {
       m = blk1->iion;
     }
   }
-      
+  
   return 0;
 }
 
@@ -3107,7 +3116,7 @@ int RateTable(char *fn, int nc, char *sc[], int md) {
   return 0;
 }
 
-void FixNorm(int m) {
+void FixNorm(int miter) {
   LBLOCK *blk1;
   ION *ion;
   int k0, k1, iion, k, p, i, n;
@@ -3116,26 +3125,9 @@ void FixNorm(int m) {
   n = blocks->dim;
   x = bmatrix + n*n;
   for (i = 0; i < n; i++) x[i] = 0.0;
-
-  if (norm_mode == 3) {
-    x[0] = 1.0;
-    p = 0;
-    for (k = 0; k < n; k++) {
-      bmatrix[p] = 1.0;
-      p += n;
-    }
-    for (k = 0; k < ions->dim; k++) {
-      ion = (ION *) ArrayGet(ions, k);
-      den = ion->n0;
-      if (den+1 != 1) {
-	blk1 = ion->iblock[0];
-	if (blk1 != NULL) {
-	  p = blk1->ib;
-	  x[p] = den;
-	}
-      }
-    }
-  } else if (norm_mode == 2) {
+  
+  if (norm_mode == 2) {
+    //normalize to sum of all ions 
     den = 0.0;
     if (ion0.n0 > 0) den += ion0.n0;
     for (i = 0; i < ions->dim; i++) {
@@ -3167,7 +3159,7 @@ void FixNorm(int m) {
 	    x[k0] = den;
 	    p = k0;
 	    for (k = 0; k < n; k++) {
-	      if (norm_mode == 1) {
+	      if (norm_mode > 0) {
 		if (k < k1 && k >= k0) bmatrix[p] = 1.0;
 		else bmatrix[p] = 0.0;
 	      } else {
@@ -3191,7 +3183,7 @@ void FixNorm(int m) {
       x[k0] = den;
       p = k0;
       for (k = 0; k < n; k++) {
-	if (norm_mode == 1) {
+	if (norm_mode > 0) {
 	  if (k < k1 && k >= k0) bmatrix[p] = 1.0;
 	  else bmatrix[p] = 0.0;
 	} else {       
@@ -3200,7 +3192,20 @@ void FixNorm(int m) {
 	}
 	p += n;
       }
-    } 
+    }
+    if (norm_mode > 1) {
+      // norm_mode=3, same as 1, but first eq. normalize sum of all ions
+      den = 0.0;
+      for (i = 0; i < n; i++) {
+	den += x[i];
+      }
+      x[0] = den;
+      p = 0;
+      for (k = 0; k < n; k++) {
+	bmatrix[p] = 1.0;
+	p += n;
+      }
+    }
   }
 }
 
@@ -3700,6 +3705,7 @@ int BlockPopulation(int miter) {
 
     if (info != 0) {
       printf("Error in solving BlockMatrix: %d\n", info);
+      DumpRates("error.bm", 0, 0, -1, 1);
       exit(1);
     }
 
@@ -4413,6 +4419,7 @@ int SpecTable(char *fn, int rrc, double strength_threshold) {
       r.rrate = ion->j[m]+1.0;
       r.trate = blk->total_rate[p];
       r.wstk = 0.0;
+      r.wimp = 0.0;
       rx.sdev = 0.0;
       r.strength = blk->n[p];
       WriteSPRecord(f, &r, &rx, iuta);
@@ -4511,6 +4518,7 @@ int SpecTable(char *fn, int rrc, double strength_threshold) {
 		int n0 = type%100;
 		int n1 = (type/100)%100;
 		int dn = abs(n0-n1)%2;
+		int n2 = type/10000;
 		wi0 = malloc(sizeof(double)*_starknp);
 		we0 = r.trate;
 		for (ip = 0; ip < _starknp; ip++) {
@@ -4518,10 +4526,18 @@ int SpecTable(char *fn, int rrc, double strength_threshold) {
 		  wi0[ip] += fblk->rc2[(ion->ilev[rt->f]*_starknp+ip)];
 		  wi0[ip] *= WCOEF;
 		}
+		if (n2 > n1) {
+		  double fns = (n2-n1+1.0);
+		  fns *= sqrt(fns);
+		  we0 /= fns;
+		  for (ip = 0; ip < _starknp; ip++) {
+		    wi0[ip] /= fns;
+		  }
+		}
 		r.wstk = CalcStarkQC(&we0, wi0, _stark_wd, ion->nele);
 		r.wimp = we0;
-		//if (r.upper == 6 && r.lower == 0) {
-		//  printf("ws: %g %g %g %g %g\n", r.trate, wi0[0], _stark_wd, r.wimp, r.wstk);
+		//if (r.upper == 1 && r.lower == 0) {
+		//  printf("ws: %g %g %g %g %g %g %g\n", r.trate, wi0[0], _stark_wd, r.wimp, r.wstk, iblk->rc1[ion->ilev[rt->i]],fblk->rc1[ion->ilev[rt->f]]);
 		//}
 		free(wi0);
 	      } else {
@@ -5681,7 +5697,7 @@ int SetCXRates(int m0, char *tgt) {
 
 int SetCERates(int inv) {
   int nb, i, j, ib, jb, nrb;
-  int n, m, m1, k;
+  int n, m, m1, m2, k;
   int j1, j2;
   int p, q;
   ION *ion;
@@ -5729,35 +5745,18 @@ int SetCERates(int inv) {
       }
       m = h.n_usr;
       m1 = m + 1;
-#pragma omp parallel default(shared) private(x, y, data, j)
-      {
-	data = _ce_data;
-	y = data + 2;
-	x = y + m1;
-	if (h.tegrid[0] < 0) {
-	  data[0] = -1.0;
-	  for (j = 0; j < m; j++) {
-	    x[j] = log(1 + eusr[j]);
-	  }
-	  x[m] = eusr[m-1]/(1+eusr[m-1]);
-	} else {
-	  data[0] = (h.te0*HARTREE_EV + bte)/bms;
-	  for (j = 0; j < m; j++) {
-	    x[j] = log((data[0] + eusr[j]*HARTREE_EV)/data[0]);
-	  }	  
-	  x[m] = eusr[m-1]/(data[0]/HARTREE_EV+eusr[m-1]);
-	}
-      }
+      m2 = m + 2;
       nrb = Min(NRTB, h.ntransitions);
       jb = 0;
       for (i = 0; i < h.ntransitions; i++) {
 	n = ReadCERecord(f, &r[jb++], swp, &h);
 	if (jb == nrb) {
 	  ResetWidMPI();
-#pragma omp parallel default(shared) private(ib, j1, j2, e, cs, j, data, y)
+#pragma omp parallel default(shared) private(ib, j1, j2, e, cs, j, data, x, y)
 	  {
 	  data = _ce_data;
-	  y = data + 2;
+	  y = data + 4;
+	  x = y + m2;
 	  double b, c;
 	  int w = 0;
 	  for (ib = 0; ib < nrb; ib++) {
@@ -5774,12 +5773,29 @@ int SetCERates(int inv) {
 	    j1 = ion->j[r[ib].lower];
 	    j2 = ion->j[r[ib].upper];
 	    e = ion->energy[r[ib].upper] - ion->energy[r[ib].lower];
+	    data[0] = (e+bte)/bms;
 	    data[1] = r[ib].bethe;
+	    data[2] = e;
+	    data[3] = fh.atom-h.nele;
 	    cs = r[ib].strength;
 	    y[m] = r[ib].born[0];
-	    for (j = 0; j < m; j++) {
-	      y[j] = cs[j];
+	    y[m1] = y[m];
+	    if (h.tegrid[0] < 0) {
+	      for (j = 0; j < m; j++) {
+		y[j] = cs[j];
+		x[j] = eusr[j]*e;
+	      }
+	    } else {
+	      for (j = 0; j < m; j++) {
+		y[j] = cs[j];
+		x[j] = eusr[j];
+	      }
 	    }
+	    x[m1] = r[ib].born[1];
+	    if (x[m1] > x[m-1]) {
+	      x[m] = pow(x[m-1],0.25)*pow(x[m1],0.75);
+	    }
+	    PrepCECrossData(m, data);
 	    CERate(&(rt[ib].dir), &(rt[ib].inv), inv, j1, j2, e, m,
 		   data, rt[ib].i, rt[ib].f);
 	    if (ion->ace > 0) {
@@ -5821,35 +5837,18 @@ int SetCERates(int inv) {
 	}
 	m = h.n_usr;
 	m1 = m + 1;
-#pragma omp parallel default(shared) private(x, y, data, j)
-	{
-	  data = _ce_data;
-	  y = data + 2;
-	  x = y + m1;
-	  if (h.tegrid[0] < 0) {
-	    data[0] = -1.0;
-	    for (j = 0; j < m; j++) {
-	      x[j] = log(1 + eusr[j]);
-	    }
-	    x[m] = eusr[m-1]/(1+eusr[m-1]);
-	  } else {
-	    data[0] = (h.te0*HARTREE_EV + bte)/bms;
-	    for (j = 0; j < m; j++) {
-	      x[j] = log((data[0] + eusr[j]*HARTREE_EV)/data[0]);
-	    }	  
-	    x[m] = eusr[m-1]/(data[0]/HARTREE_EV+eusr[m-1]);
-	  }
-	}
+	m2 = m + 2;
 	nrb = Min(NRTB, h.ntransitions);
 	jb = 0;
 	for (i = 0; i < h.ntransitions; i++) {
 	  n = ReadCERecord(f, &r[jb++], swp, &h);
 	  if (jb == nrb) {
 	    ResetWidMPI();
-#pragma omp parallel default(shared) private(ib, j1, j2, e, cs, j, p, q, data, y)
+#pragma omp parallel default(shared) private(ib, j1, j2, e, cs, j, p, q, data, x, y)
 	    {	    
 	    data = _ce_data;
-	    y = data + 2;
+	    y = data + 4;
+	    x = y + m2;
 	    double b, c;
 	    int w = 0;
 	    for (ib = 0; ib < nrb; ib++) {
@@ -5882,12 +5881,29 @@ int SetCERates(int inv) {
 	      j1 = ion->j[rt[ib].i];
 	      j2 = ion->j[rt[ib].f];
 	      e = ion0.energy[q] - ion0.energy[p];
-	      data[1] = r[ib].bethe;	
+	      data[0] = (e+bte)/bms;
+	      data[1] = r[ib].bethe;
+	      data[2] = e;
+	      data[3] = fh.atom - h.nele;
 	      cs = r[ib].strength;
 	      y[m] = r[ib].born[0];
-	      for (j = 0; j < m; j++) {
-		y[j] = cs[j];
+	      y[m1] = y[m];
+	      if (h.tegrid[0] < 0) {
+		for (j = 0; j < m; j++) {
+		  y[j] = cs[j];
+		  x[j] = eusr[j]*e;
+		}
+	      } else {
+		for (j = 0; j < m; j++) {
+		  y[j] = cs[j];
+		  x[j] = eusr[j];
+		}
 	      }
+	      x[m1] = r[ib].born[1];
+	      if (x[m1] > x[m-1]) {
+		x[m] = pow(x[m-1],0.25)*pow(x[m1],0.75);
+	      }
+	      PrepCECrossData(m, data);
 	      CERate(&(rt[ib].dir), &(rt[ib].inv), inv, j1, j2, e, m,
 		     data, rt[ib].i, rt[ib].f);
 	      if (ion0.ace > 0) {
@@ -6011,8 +6027,10 @@ int SetTRRates(int inv) {
 		if (_ce_bethe > 0 &&
 		    (h.multipole == -1 || h.multipole == 0)) {
 		  data = _ce_data;
-		  data[0] = (e*HARTREE_EV + bte)/bms;
+		  data[0] = (e + bte)/bms;
 		  data[1] = 2*gf/e;
+		  data[2] = e;
+		  data[3] = fh.atom - h.nele;
 		  rtx[jb].dir = 0.0;
 		  rtx[jb].inv = 0.0;
 		  rtx[jb].i = r[jb].lower;
@@ -7941,6 +7959,10 @@ void SetOptionCRM(char *s, char *sp, int ip, double dp) {
     _starkrij = dp;
     return;
   }
+  if (0 == strcmp(s, "crm:starkrij2")) {
+    _starkrij2 = dp;
+    return;
+  }
   if (0 == strcmp(s, "crm:starkefs")) {
     _starkefs = dp;
     return;
@@ -9648,4 +9670,3 @@ void RateCoefficients(char *ofn, int k0, int k1, int nexc, int ncap0,
   CloseFile(f, &fh);
   free(rc.rc);
 }
-

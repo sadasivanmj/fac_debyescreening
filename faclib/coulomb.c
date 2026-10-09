@@ -41,6 +41,135 @@ static int kl_hydrogenic_max;
 static int dipole_nmax = 0;
 static double **dipole_array = NULL;
 
+static double _gff_HummerD[88] = {
+	8.98694018e+00, -4.00951586e+00,  8.80887127e-01,  2.64024511e-02,
+       -4.58064591e-02, -3.56805570e-03,  2.82779807e-03,  3.36586020e-04,
+       -8.00693699e-01,  9.46602170e-01,  9.04340253e-02, -9.60845145e-02,
+       -1.88562986e-02,  1.05031389e-02,  2.80088996e-03, -1.07820920e-03,
+       -3.78130510e-01,  1.10272633e-01, -1.54361918e-02,  8.31056111e-03,
+        2.17962052e-02,  4.25972629e-03, -4.18158879e-03, -1.77020833e-03,
+        1.87721313e-02, -1.00488570e-01, -5.48336638e-02, -4.52015441e-03,
+        8.36653043e-03,  3.70027393e-03,  6.88932042e-04,  9.46031320e-05,
+        7.30015839e-02,  3.57678550e-03, -4.54530702e-03, -1.01796560e-02,
+       -9.53021192e-03, -3.45018616e-03,  1.04048291e-03,  1.40707354e-03,
+       -1.74467155e-03,  2.86401386e-02,  1.90339484e-02,  7.09107449e-03,
+       -9.66837139e-04, -2.99910746e-03, -1.82064223e-03, -3.87408208e-04,
+       -1.70726837e-02, -4.69425478e-03,  1.31169152e-03,  5.31670314e-03,
+        5.17819310e-03,  2.45122893e-03, -2.27732161e-05, -8.18235906e-04,
+        2.56733166e-04, -9.15533997e-03, -6.99747919e-03, -3.57151864e-03,
+       -2.09610104e-04,  1.55382249e-03,  1.50958469e-03,  6.21262784e-04,
+        4.09832253e-03,  1.63521846e-03, -5.91888350e-04, -2.33309105e-03,
+       -2.48413831e-03, -1.35999606e-03, -5.37142615e-05,  5.55354956e-04,
+        3.83756240e-05,  2.93832523e-03,  2.39374706e-03,  1.32883981e-03,
+        9.13501331e-05, -7.13725230e-04, -7.65684816e-04, -3.50468380e-04,
+       -8.49199182e-04, -3.61532773e-04,  3.14801526e-04,  8.90920765e-04,
+        9.86973752e-04,  6.13467118e-04,  1.06888339e-04, -2.04608010e-04};
+
+static double _I0A[] =
+{
+-4.41534164647933937950E-18,
+ 3.33079451882223809783E-17,
+-2.43127984654795469359E-16,
+ 1.71539128555513303061E-15,
+-1.16853328779934516808E-14,
+ 7.67618549860493561688E-14,
+-4.85644678311192946090E-13,
+ 2.95505266312963983461E-12,
+-1.72682629144155570723E-11,
+ 9.67580903537323691224E-11,
+-5.18979560163526290666E-10,
+ 2.65982372468238665035E-9,
+-1.30002500998624804212E-8,
+ 6.04699502254191894932E-8,
+-2.67079385394061173391E-7,
+ 1.11738753912010371815E-6,
+-4.41673835845875056359E-6,
+ 1.64484480707288970893E-5,
+-5.75419501008210370398E-5,
+ 1.88502885095841655729E-4,
+-5.76375574538582365885E-4,
+ 1.63947561694133579842E-3,
+-4.32430999505057594430E-3,
+ 1.05464603945949983183E-2,
+-2.37374148058994688156E-2,
+ 4.93052842396707084878E-2,
+-9.49010970480476444210E-2,
+ 1.71620901522208775349E-1,
+-3.04682672343198398683E-1,
+ 6.76795274409476084995E-1
+};
+
+static double _I0B[] =
+{
+-7.23318048787475395456E-18,
+-4.83050448594418207126E-18,
+ 4.46562142029675999901E-17,
+ 3.46122286769746109310E-17,
+-2.82762398051658348494E-16,
+-3.42548561967721913462E-16,
+ 1.77256013305652638360E-15,
+ 3.81168066935262242075E-15,
+-9.55484669882830764870E-15,
+-4.15056934728722208663E-14,
+ 1.54008621752140982691E-14,
+ 3.85277838274214270114E-13,
+ 7.18012445138366623367E-13,
+-1.79417853150680611778E-12,
+-1.32158118404477131188E-11,
+-3.14991652796324136454E-11,
+ 1.18891471078464383424E-11,
+ 4.94060238822496958910E-10,
+ 3.39623202570838634515E-9,
+ 2.26666899049817806459E-8,
+ 2.04891858946906374183E-7,
+ 2.89137052083475648297E-6,
+ 6.88975834691682398426E-5,
+ 3.36911647825569408990E-3,
+ 8.04490411014108831608E-1
+};
+
+static double _K0A[] =
+{
+ 1.37446543561352307156E-16,
+ 4.25981614279661018399E-14,
+ 1.03496952576338420167E-11,
+ 1.90451637722020886025E-9,
+ 2.53479107902614945675E-7,
+ 2.28621210311945178607E-5,
+ 1.26461541144692592338E-3,
+ 3.59799365153615016266E-2,
+ 3.44289899924628486886E-1,
+-5.35327393233902768720E-1
+};
+
+static double _K0B[] = {
+ 5.30043377268626276149E-18,
+-1.64758043015242134646E-17,
+ 5.21039150503902756861E-17,
+-1.67823109680541210385E-16,
+ 5.51205597852431940784E-16,
+-1.84859337734377901440E-15,
+ 6.34007647740507060557E-15,
+-2.22751332699166985548E-14,
+ 8.03289077536357521100E-14,
+-2.98009692317273043925E-13,
+ 1.14034058820847496303E-12,
+-4.51459788337394416547E-12,
+ 1.85594911495471785253E-11,
+-7.95748924447710747776E-11,
+ 3.57739728140030116597E-10,
+-1.69753450938905987466E-9,
+ 8.57403401741422608519E-9,
+-4.66048989768794782956E-8,
+ 2.76681363944501510342E-7,
+-1.83175552271911948767E-6,
+ 1.39498137188764993662E-5,
+-1.28495495816278026384E-4,
+ 1.56988388573005337491E-3,
+-3.14481013119645005427E-2,
+ 2.44030308206595545468E0
+};
+
 static int _cbindex[CBMULT][CBMULT+1];
 static double *****_cb = NULL;
 
@@ -1006,6 +1135,393 @@ int CoulombMultip(char *fn, double z, double te, double e1,
   free(r);
   
   return 0;
+}
+
+double GauntEFF(double xni2, double x) {
+  double r, r0, xni, pxn, xxn, xe;
+  double c0 = 0.551328895;
+  double c1 = pow(PI,-2./3.);
+  double c2 = 1.781;
+
+  if (x < EPS7) {
+    r = 4.0/x;
+  } else {
+    xe = sqrt(1-x);
+    r = (1+xe)/(1-xe);
+  }
+  if (xni2 < 1e-20) {
+    return c0*log(r);
+  }
+  xni = sqrt(xni2);
+  pxn = PI*xni;
+  xxn = x*xni;
+  xe = c2*xni;
+  r = log(1 + r/xe);
+  xe = log(xe);
+  r0 = pxn/sinh(pxn);
+  r += r0*r0*xe;
+  xe = 10*(x-6./7.);
+  if (xe < 0) {
+    r0 = 5/(1+exp(xe))-2.0;
+  } else {
+    xe = exp(-xe);
+    r0 = 5*xe/(1+xe)-2.0;
+  }
+  r0 *= (10/3.0)*xni2*exp(-1.5*pxn);
+  r -= r0;
+  r *= c0;
+  r0 = xxn/(xxn+c1);
+  r += r0;
+  return r;
+}
+
+double ChebyshevEval(double x, double *coeffs, int n) {  
+  double b0, b1, b2, *p;
+  int i;
+  p = coeffs;
+  b0 = *p++;
+  b1 = 0.0;
+  i = n-1;
+  do {
+    b2 = b1;
+    b1 = b0;
+    b0 = x*b1 - b2 + *p++;
+  } while (--i);
+  return (0.5*(b0-b2));
+}
+
+//exp(-x)*I0(x)
+double XBesselI0(double x) {
+  if (x < 0) x = -x;
+  double r;
+  if (x <= 8) {
+    r = ChebyshevEval(0.5*x-2, _I0A, 30);
+  } else {
+    r = ChebyshevEval(32./x-2, _I0B, 25)/sqrt(x);
+  }
+  return r;
+}
+
+//exp(x)*K0(x)
+double XBesselK0(double x) {
+  if (x <= 0.0) return -1.0;
+  double r;
+  if (x <= 2.0) {
+    r = exp(x);
+    r *= ChebyshevEval(x*x-2, _K0A, 10)-r*log(0.5*x)*XBesselI0(x);
+  } else {
+    r = ChebyshevEval(8/x-2, _K0B, 25)/sqrt(x);
+  }
+  
+  return r;
+}
+
+double GauntHummer(double g2, double u) {
+  double c[8];
+  double xg, xu, tm1, tm2, t, gff;
+  int i, j;
+
+  if (g2 < 1e-20) {
+    //born approx.
+    gff = 0.5513288954*XBesselK0(0.5*u);
+    return gff;
+  }
+  
+  g2 = Min(1e3, g2);
+  g2 = Max(1e-3, g2);
+  u = Min(31.6227766, u);
+  u = Max(1e-4, u);
+  
+  g2 = log10(g2);
+  u = log10(u);
+  
+  xg = g2/3.0;
+  tm1 = xg;
+  tm2 = 1.0;
+  for (j = 0; j < 8; j++) {
+    c[j] = _gff_HummerD[j]*0.5 + _gff_HummerD[8+j]*xg; 
+  }
+  for (i = 2; i < 11; i++) {
+    t = 2*xg*tm1 - tm2;
+    for (j = 0; j < 8; j++) {
+      c[j] += _gff_HummerD[8*i+j]*t;
+    }
+    tm2 = tm1;
+    tm1 = t;
+  }
+
+  xu = (2.0*u + 2.5)/5.5;
+  tm2 = 1.0;
+  tm1 = xu;
+  gff = c[0]*0.5 + c[1]*tm1;
+  for (j = 2; j < 8; j++) {
+    t = 2.0*xu*tm1 - tm2;
+    gff += c[j]*t;
+    tm2 = tm1;
+    tm1 = t;
+  }
+  return gff;
+}
+
+double GauntIFF(double z2, double t, double de, double msg, double ne, int m) {
+  double *xg, *wg, e1, e0, um, r, r0, tf, emu, d0, d1, dn;
+  double p0 = 0.858, p1 = 0.25054, p2 = 0.072;
+  int n = GaussXW(&xg, &wg);
+  int i;
+
+  if (ne > 0) {
+    //degeneracy correction
+    tf = 0.5*pow(3*PI*PI*ne*VOLUME_AU, 2./3.)*HARTREE_EV;
+    r0 = t/tf;
+    e0 = pow(r0, -(1+p0));
+    e1 = e0*r0;
+    d1 = (p1*e0 + p2*sqrt(e0))/(1+p1*e1);
+    d0 = 1.5*log(r0) + 0.28468287;
+    emu = d0-d1;
+    dn = exp(d1);
+  } else {
+    dn = 1.0;
+    emu = 1.0;
+  }
+  
+  r = 0.0;
+  if (m == 0) {
+    for (i = 0; i < n; i++) {
+      e1 = t*xg[i];
+      e0 = e1 + de;
+      r0 = GauntEFF(z2/e0, de/e0);
+      if (ne > 0) {
+	tf = xg[i] + emu;
+	if (tf > 0) {
+	  r0 *= dn/(1+exp(-tf));
+	} else {
+	  tf = exp(tf);
+	  r0 *= dn*tf/(1+tf);
+	}
+      }
+      r += r0*wg[i];
+    }
+    return r;
+  }
+  if (m < 4) {
+    um = msg;
+    if (um < EPS10) um = 2;
+    double s = 2./um;
+    double g5 = exp(DLOGAM(5/um));
+    double g3 = exp(DLOGAM(3/um));
+    double g32 = sqrt(PI)/2;
+    double a = (2*g5)/(3*g3);
+    if (m == 1) {
+      for (i = 0; i < n; i++) {
+	double s1 = pow(xg[i], s);
+	e1 = t*s1/a;
+	e0 = e1 + de;
+	r0 = GauntEFF(z2/e0, de/e0);
+	r0 *= s1/xg[i];
+	if (ne > 0) {
+	  tf = s1/a + emu;
+	  if (tf > 0) {
+	    r0 *= dn/(1+exp(-tf));
+	  } else {
+	    tf = exp(tf);
+	    r0 *= dn*tf/(1+tf);
+	  }
+	}
+	r += r0 * wg[i];
+      }
+      r *= (g32/g3)*sqrt(a);
+    } else if (m == 2) {
+      for (i = 0; i < n; i++) {
+	double s1 = pow(xg[i], s);
+	e1 = t*s1/a;
+	e0 = e1 + de;
+	r0 = GauntEFF(z2/e0, de/e0);
+	if (ne > 0) {
+	  tf = s1/a + emu;
+	  if (tf > 0) {
+	    r0 *= dn/(1+exp(-tf));
+	  } else {
+	    tf = exp(tf);
+	    r0 *= dn*tf/(1+tf);
+	  }
+	}
+	r += r0 * wg[i];
+      }
+      r *= (g32/g3)*sqrt(a)*a/s;
+    } else {
+      double si = 1/s;
+      for (i = 0; i < n; i++) {
+	double s1 = pow(xg[i], s);
+	e1 = t*s1/a;
+	e0 = e1 + de;
+	r0 = GauntEFF(z2/e0, de/e0);
+	r0 *= s1/xg[i];
+	double x = pow(a*e0/t, si)*(1-pow(e1/e0,si));
+	r0 *= (1-exp(-x))/(a*de/t);
+	if (ne > 0) {
+	  tf = s1/a + emu;
+	  if (tf > 0) {
+	    r0 *= dn/(1+exp(-tf));
+	  } else {
+	    tf = exp(tf);
+	    r0 *= dn*tf/(1+tf);
+	  }
+	}
+	r += r0 * wg[i];
+      }
+      r *= (g32/g3)*sqrt(a)*a;
+    }
+    return r;
+  }
+
+  return 0.0;
+}
+
+// m <  0, Pradler fit for e-dep factor.
+// m == 0, Hummer fit for thermally averaged
+// m == 1, 2, Scheuer/Elwert approx.
+// m == 3, Menzel & Pekeris
+// m == 4, interpolation of Scheuer/Elwert & Menzel/Pekeris
+// m == 5, combination of Hummer & m=4
+// m == 6, combination of Hummer & GauntIFF
+// m >  6, GauntIFF
+double GauntTFF(double g2, double u, int m) {
+  double r, r0, um;
+
+  if (m < 0) {
+    //e-dep fit, kt=e0    
+    r = GauntEFF(g2, u);
+    return r;
+  }
+  if (m == 0) {
+    r = GauntHummer(g2, u);
+    return r;
+  }
+  if (m == 1) {
+    r = -0.55133*(0.5*log(g2) + log(u) + 0.056745);
+    return r;
+  }
+  if (m == 2) {
+    r = 0.5*log(g2) + 0.056745;
+    if (r < -0.80888) r = -0.80888;
+    r += log(u);
+    r *= -0.55133;
+    return r;
+  }
+  if (m == 3) {
+    r = pow(u/g2, 1./3);
+    r = 1+0.1728*r*(1+2/u)-0.0496*r*r*(1+2./(3*u)+4./(3*u*u));
+    return r;
+  }
+  if (m == 4) {
+    double xg = log10(g2);
+    double xu1 = 0.5-0.667*xg;
+    double u1 = pow(10, xu1);
+    double xu0 = xu1-3.0;
+    double u0 = pow(10, xu0);
+    if (u >= u1*1.00001) {
+      r = pow(u/g2, 1./3);
+      r = 1+0.1728*r*(1+2/u)-0.0496*r*r*(1+2./(3*u)+4./(3*u*u));
+    } else if (u <= u0*0.99999) {
+      r = GauntTFF(g2, u, 2);
+    } else {
+      double r1 = pow(u1/g2, 1./3);
+      double r2 = r1*r1;
+      double u2 = u1*u1;
+      double u3 = u2*u1;
+      double k1 = 0.1728*((1+2/u1)/(g2*r2*3)-r1*2/u2);
+      k1 -= 0.0496*(2*(1+2/(3*u1)+4/(3*u2))/(3*g2*r1)-(2/(3*u2)+8/(3*u3))*r2);
+      k1 *= u1;
+      r1 = 1+0.1728*r1*(1+2/u1)-0.0496*r2*(1+2./(3*u1)+4./(3*u2));
+      double k0 = -0.55133;
+      r0 = GauntTFF(g2, u0, 2);
+      xu0 = log(u0);
+      xu1 = log(u1);
+      double u02 = xu0*xu0;
+      double u12 = xu1*xu1;
+      double u03 = u02*xu0;
+      double u13 = u12*xu1;
+      double u0u1 = xu0*xu1;
+      double u01 = xu0+xu1;
+      double uxd = xu1-xu0;
+      double a = 0.5*(k1-k0)/uxd;
+      double c = (u13-u03)/3.0-u01*(u12-u02)/2.0+u0u1*uxd;
+      double b = (r1-r0-k0*uxd-a*uxd*uxd)/c;
+      double xu = log(u);
+      uxd = xu-xu0;
+      u12 = xu*xu;
+      u13 = u12*xu;
+      c = (u13-u03)/3.0-u01*(u12-u02)/2.0+u0u1*uxd;
+      r = r0 + k0*uxd + a*uxd*uxd + b*c;
+    }
+    return r;
+  }
+  if (m == 5) {
+    if (g2 > 1e3) {
+      r = GauntTFF(g2, u, 4);
+      r0 = GauntTFF(1e3, u, 4);
+      r = (r/r0)*GauntTFF(1e3, u, 5);
+    } else if (u < 1e-4) {
+      r = GauntTFF(g2, u, 4);
+      r0 = GauntTFF(g2, 1e-4, 4);
+      r = (r/r0)*GauntTFF(g2, 1e-4, 5);      
+    } else {
+      um = 31.6227766;
+      if (u <= um) {
+	r = GauntHummer(g2, u);
+      } else {
+	r = GauntTFF(g2,u,9)*GauntHummer(g2,um)/GauntTFF(g2,um,9);
+      }
+    }
+    return r;
+  }
+  if (m == 6) {
+    um = 31.6227766;
+    if (g2 > 1e3) {
+      r = GauntTFF(g2, u, 9);
+      if (u < 1e-4) {
+	r0 = GauntTFF(1e3, 1e-4, 9);
+	r = (r/r0)*GauntHummer(1e3, 1e-4);
+      } else if (u > um) {
+	r0 = GauntTFF(1e3, um, 9);
+	r = (r/r0)*GauntHummer(1e3, um);
+      } else {
+	r0 = GauntTFF(1e3, u, 9);
+	r = (r/r0)*GauntHummer(1e3, u);
+      }
+    } else if (g2 < 1e-3) {
+      r = GauntTFF(g2, u, 9);
+      if (u < 1e-4) {
+	r0 = GauntTFF(1e-3, 1e-4, 9);
+	r = (r/r0)*GauntHummer(1e-3,1e-4);
+      } else if (u > um) {
+	r0 = GauntTFF(1e-3, um, 9);
+	r = (r/r0)*GauntHummer(1e-3, um);
+      } else {
+	r0 = GauntTFF(1e-3, u, 9);
+	r = (r/r0)*GauntHummer(1e-3, u);
+      }
+    } else {
+      if (u >= 1e-4 && u <= um) {
+	r = GauntHummer(g2, u);
+      } else if (u < 1e-4) {
+	r = GauntTFF(g2, u, 9);
+	r0 = GauntTFF(g2, 1e-4, 9);
+	r = (r/r0)*GauntHummer(g2, 1e-4);
+      } else {
+	r = GauntTFF(g2, u, 9);
+	r0 = GauntTFF(g2, um, 9);
+	r = (r/r0)*GauntHummer(g2, um);
+      }
+    }
+    return r;
+  }
+
+  double de = 1.0;
+  double t = de/u;
+  double z2 = g2*t;
+  r = GauntIFF(z2, t, de, 0.0, 0.0, 0);
+  return r;
 }
 
 int InitCoulomb(void) {
