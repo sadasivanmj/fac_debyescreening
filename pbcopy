@@ -1,0 +1,4912 @@
+diff --git a/faclib/Makefile.in b/faclib/Makefile.in
+index 3c1c7870..ec8488af 100644
+--- a/faclib/Makefile.in
++++ b/faclib/Makefile.in
+@@ -26,7 +26,7 @@ endif
+ 
+ faclib: ${OBJS}
+ ifdef F2C
+-	$(FC) -c -o f2c.o f2c.f90
++	$(FC) $(FFLAGS) -c -o f2c.o f2c.f90
+ endif
+ 	ar r ${TOPDIR}/libfac.a ${OBJS} ${FOBJ}
+ 
+diff --git a/faclib/coulomb.c b/faclib/coulomb.c
+index a5aac2d4..9969c3b8 100644
+--- a/faclib/coulomb.c
++++ b/faclib/coulomb.c
+@@ -41,6 +41,135 @@ static int kl_hydrogenic_max;
+ static int dipole_nmax = 0;
+ static double **dipole_array = NULL;
+ 
++static double _gff_HummerD[88] = {
++	8.98694018e+00, -4.00951586e+00,  8.80887127e-01,  2.64024511e-02,
++       -4.58064591e-02, -3.56805570e-03,  2.82779807e-03,  3.36586020e-04,
++       -8.00693699e-01,  9.46602170e-01,  9.04340253e-02, -9.60845145e-02,
++       -1.88562986e-02,  1.05031389e-02,  2.80088996e-03, -1.07820920e-03,
++       -3.78130510e-01,  1.10272633e-01, -1.54361918e-02,  8.31056111e-03,
++        2.17962052e-02,  4.25972629e-03, -4.18158879e-03, -1.77020833e-03,
++        1.87721313e-02, -1.00488570e-01, -5.48336638e-02, -4.52015441e-03,
++        8.36653043e-03,  3.70027393e-03,  6.88932042e-04,  9.46031320e-05,
++        7.30015839e-02,  3.57678550e-03, -4.54530702e-03, -1.01796560e-02,
++       -9.53021192e-03, -3.45018616e-03,  1.04048291e-03,  1.40707354e-03,
++       -1.74467155e-03,  2.86401386e-02,  1.90339484e-02,  7.09107449e-03,
++       -9.66837139e-04, -2.99910746e-03, -1.82064223e-03, -3.87408208e-04,
++       -1.70726837e-02, -4.69425478e-03,  1.31169152e-03,  5.31670314e-03,
++        5.17819310e-03,  2.45122893e-03, -2.27732161e-05, -8.18235906e-04,
++        2.56733166e-04, -9.15533997e-03, -6.99747919e-03, -3.57151864e-03,
++       -2.09610104e-04,  1.55382249e-03,  1.50958469e-03,  6.21262784e-04,
++        4.09832253e-03,  1.63521846e-03, -5.91888350e-04, -2.33309105e-03,
++       -2.48413831e-03, -1.35999606e-03, -5.37142615e-05,  5.55354956e-04,
++        3.83756240e-05,  2.93832523e-03,  2.39374706e-03,  1.32883981e-03,
++        9.13501331e-05, -7.13725230e-04, -7.65684816e-04, -3.50468380e-04,
++       -8.49199182e-04, -3.61532773e-04,  3.14801526e-04,  8.90920765e-04,
++        9.86973752e-04,  6.13467118e-04,  1.06888339e-04, -2.04608010e-04};
++
++static double _I0A[] =
++{
++-4.41534164647933937950E-18,
++ 3.33079451882223809783E-17,
++-2.43127984654795469359E-16,
++ 1.71539128555513303061E-15,
++-1.16853328779934516808E-14,
++ 7.67618549860493561688E-14,
++-4.85644678311192946090E-13,
++ 2.95505266312963983461E-12,
++-1.72682629144155570723E-11,
++ 9.67580903537323691224E-11,
++-5.18979560163526290666E-10,
++ 2.65982372468238665035E-9,
++-1.30002500998624804212E-8,
++ 6.04699502254191894932E-8,
++-2.67079385394061173391E-7,
++ 1.11738753912010371815E-6,
++-4.41673835845875056359E-6,
++ 1.64484480707288970893E-5,
++-5.75419501008210370398E-5,
++ 1.88502885095841655729E-4,
++-5.76375574538582365885E-4,
++ 1.63947561694133579842E-3,
++-4.32430999505057594430E-3,
++ 1.05464603945949983183E-2,
++-2.37374148058994688156E-2,
++ 4.93052842396707084878E-2,
++-9.49010970480476444210E-2,
++ 1.71620901522208775349E-1,
++-3.04682672343198398683E-1,
++ 6.76795274409476084995E-1
++};
++
++static double _I0B[] =
++{
++-7.23318048787475395456E-18,
++-4.83050448594418207126E-18,
++ 4.46562142029675999901E-17,
++ 3.46122286769746109310E-17,
++-2.82762398051658348494E-16,
++-3.42548561967721913462E-16,
++ 1.77256013305652638360E-15,
++ 3.81168066935262242075E-15,
++-9.55484669882830764870E-15,
++-4.15056934728722208663E-14,
++ 1.54008621752140982691E-14,
++ 3.85277838274214270114E-13,
++ 7.18012445138366623367E-13,
++-1.79417853150680611778E-12,
++-1.32158118404477131188E-11,
++-3.14991652796324136454E-11,
++ 1.18891471078464383424E-11,
++ 4.94060238822496958910E-10,
++ 3.39623202570838634515E-9,
++ 2.26666899049817806459E-8,
++ 2.04891858946906374183E-7,
++ 2.89137052083475648297E-6,
++ 6.88975834691682398426E-5,
++ 3.36911647825569408990E-3,
++ 8.04490411014108831608E-1
++};
++
++static double _K0A[] =
++{
++ 1.37446543561352307156E-16,
++ 4.25981614279661018399E-14,
++ 1.03496952576338420167E-11,
++ 1.90451637722020886025E-9,
++ 2.53479107902614945675E-7,
++ 2.28621210311945178607E-5,
++ 1.26461541144692592338E-3,
++ 3.59799365153615016266E-2,
++ 3.44289899924628486886E-1,
++-5.35327393233902768720E-1
++};
++
++static double _K0B[] = {
++ 5.30043377268626276149E-18,
++-1.64758043015242134646E-17,
++ 5.21039150503902756861E-17,
++-1.67823109680541210385E-16,
++ 5.51205597852431940784E-16,
++-1.84859337734377901440E-15,
++ 6.34007647740507060557E-15,
++-2.22751332699166985548E-14,
++ 8.03289077536357521100E-14,
++-2.98009692317273043925E-13,
++ 1.14034058820847496303E-12,
++-4.51459788337394416547E-12,
++ 1.85594911495471785253E-11,
++-7.95748924447710747776E-11,
++ 3.57739728140030116597E-10,
++-1.69753450938905987466E-9,
++ 8.57403401741422608519E-9,
++-4.66048989768794782956E-8,
++ 2.76681363944501510342E-7,
++-1.83175552271911948767E-6,
++ 1.39498137188764993662E-5,
++-1.28495495816278026384E-4,
++ 1.56988388573005337491E-3,
++-3.14481013119645005427E-2,
++ 2.44030308206595545468E0
++};
++
+ static int _cbindex[CBMULT][CBMULT+1];
+ static double *****_cb = NULL;
+ 
+@@ -1008,6 +1137,393 @@ int CoulombMultip(char *fn, double z, double te, double e1,
+   return 0;
+ }
+ 
++double GauntEFF(double xni2, double x) {
++  double r, r0, xni, pxn, xxn, xe;
++  double c0 = 0.551328895;
++  double c1 = pow(PI,-2./3.);
++  double c2 = 1.781;
++
++  if (x < EPS7) {
++    r = 4.0/x;
++  } else {
++    xe = sqrt(1-x);
++    r = (1+xe)/(1-xe);
++  }
++  if (xni2 < 1e-20) {
++    return c0*log(r);
++  }
++  xni = sqrt(xni2);
++  pxn = PI*xni;
++  xxn = x*xni;
++  xe = c2*xni;
++  r = log(1 + r/xe);
++  xe = log(xe);
++  r0 = pxn/sinh(pxn);
++  r += r0*r0*xe;
++  xe = 10*(x-6./7.);
++  if (xe < 0) {
++    r0 = 5/(1+exp(xe))-2.0;
++  } else {
++    xe = exp(-xe);
++    r0 = 5*xe/(1+xe)-2.0;
++  }
++  r0 *= (10/3.0)*xni2*exp(-1.5*pxn);
++  r -= r0;
++  r *= c0;
++  r0 = xxn/(xxn+c1);
++  r += r0;
++  return r;
++}
++
++double ChebyshevEval(double x, double *coeffs, int n) {  
++  double b0, b1, b2, *p;
++  int i;
++  p = coeffs;
++  b0 = *p++;
++  b1 = 0.0;
++  i = n-1;
++  do {
++    b2 = b1;
++    b1 = b0;
++    b0 = x*b1 - b2 + *p++;
++  } while (--i);
++  return (0.5*(b0-b2));
++}
++
++//exp(-x)*I0(x)
++double XBesselI0(double x) {
++  if (x < 0) x = -x;
++  double r;
++  if (x <= 8) {
++    r = ChebyshevEval(0.5*x-2, _I0A, 30);
++  } else {
++    r = ChebyshevEval(32./x-2, _I0B, 25)/sqrt(x);
++  }
++  return r;
++}
++
++//exp(x)*K0(x)
++double XBesselK0(double x) {
++  if (x <= 0.0) return -1.0;
++  double r;
++  if (x <= 2.0) {
++    r = exp(x);
++    r *= ChebyshevEval(x*x-2, _K0A, 10)-r*log(0.5*x)*XBesselI0(x);
++  } else {
++    r = ChebyshevEval(8/x-2, _K0B, 25)/sqrt(x);
++  }
++  
++  return r;
++}
++
++double GauntHummer(double g2, double u) {
++  double c[8];
++  double xg, xu, tm1, tm2, t, gff;
++  int i, j;
++
++  if (g2 < 1e-20) {
++    //born approx.
++    gff = 0.5513288954*XBesselK0(0.5*u);
++    return gff;
++  }
++  
++  g2 = Min(1e3, g2);
++  g2 = Max(1e-3, g2);
++  u = Min(31.6227766, u);
++  u = Max(1e-4, u);
++  
++  g2 = log10(g2);
++  u = log10(u);
++  
++  xg = g2/3.0;
++  tm1 = xg;
++  tm2 = 1.0;
++  for (j = 0; j < 8; j++) {
++    c[j] = _gff_HummerD[j]*0.5 + _gff_HummerD[8+j]*xg; 
++  }
++  for (i = 2; i < 11; i++) {
++    t = 2*xg*tm1 - tm2;
++    for (j = 0; j < 8; j++) {
++      c[j] += _gff_HummerD[8*i+j]*t;
++    }
++    tm2 = tm1;
++    tm1 = t;
++  }
++
++  xu = (2.0*u + 2.5)/5.5;
++  tm2 = 1.0;
++  tm1 = xu;
++  gff = c[0]*0.5 + c[1]*tm1;
++  for (j = 2; j < 8; j++) {
++    t = 2.0*xu*tm1 - tm2;
++    gff += c[j]*t;
++    tm2 = tm1;
++    tm1 = t;
++  }
++  return gff;
++}
++
++double GauntIFF(double z2, double t, double de, double msg, double ne, int m) {
++  double *xg, *wg, e1, e0, um, r, r0, tf, emu, d0, d1, dn;
++  double p0 = 0.858, p1 = 0.25054, p2 = 0.072;
++  int n = GaussXW(&xg, &wg);
++  int i;
++
++  if (ne > 0) {
++    //degeneracy correction
++    tf = 0.5*pow(3*PI*PI*ne*VOLUME_AU, 2./3.)*HARTREE_EV;
++    r0 = t/tf;
++    e0 = pow(r0, -(1+p0));
++    e1 = e0*r0;
++    d1 = (p1*e0 + p2*sqrt(e0))/(1+p1*e1);
++    d0 = 1.5*log(r0) + 0.28468287;
++    emu = d0-d1;
++    dn = exp(d1);
++  } else {
++    dn = 1.0;
++    emu = 1.0;
++  }
++  
++  r = 0.0;
++  if (m == 0) {
++    for (i = 0; i < n; i++) {
++      e1 = t*xg[i];
++      e0 = e1 + de;
++      r0 = GauntEFF(z2/e0, de/e0);
++      if (ne > 0) {
++	tf = xg[i] + emu;
++	if (tf > 0) {
++	  r0 *= dn/(1+exp(-tf));
++	} else {
++	  tf = exp(tf);
++	  r0 *= dn*tf/(1+tf);
++	}
++      }
++      r += r0*wg[i];
++    }
++    return r;
++  }
++  if (m < 4) {
++    um = msg;
++    if (um < EPS10) um = 2;
++    double s = 2./um;
++    double g5 = exp(DLOGAM(5/um));
++    double g3 = exp(DLOGAM(3/um));
++    double g32 = sqrt(PI)/2;
++    double a = (2*g5)/(3*g3);
++    if (m == 1) {
++      for (i = 0; i < n; i++) {
++	double s1 = pow(xg[i], s);
++	e1 = t*s1/a;
++	e0 = e1 + de;
++	r0 = GauntEFF(z2/e0, de/e0);
++	r0 *= s1/xg[i];
++	if (ne > 0) {
++	  tf = s1/a + emu;
++	  if (tf > 0) {
++	    r0 *= dn/(1+exp(-tf));
++	  } else {
++	    tf = exp(tf);
++	    r0 *= dn*tf/(1+tf);
++	  }
++	}
++	r += r0 * wg[i];
++      }
++      r *= (g32/g3)*sqrt(a);
++    } else if (m == 2) {
++      for (i = 0; i < n; i++) {
++	double s1 = pow(xg[i], s);
++	e1 = t*s1/a;
++	e0 = e1 + de;
++	r0 = GauntEFF(z2/e0, de/e0);
++	if (ne > 0) {
++	  tf = s1/a + emu;
++	  if (tf > 0) {
++	    r0 *= dn/(1+exp(-tf));
++	  } else {
++	    tf = exp(tf);
++	    r0 *= dn*tf/(1+tf);
++	  }
++	}
++	r += r0 * wg[i];
++      }
++      r *= (g32/g3)*sqrt(a)*a/s;
++    } else {
++      double si = 1/s;
++      for (i = 0; i < n; i++) {
++	double s1 = pow(xg[i], s);
++	e1 = t*s1/a;
++	e0 = e1 + de;
++	r0 = GauntEFF(z2/e0, de/e0);
++	r0 *= s1/xg[i];
++	double x = pow(a*e0/t, si)*(1-pow(e1/e0,si));
++	r0 *= (1-exp(-x))/(a*de/t);
++	if (ne > 0) {
++	  tf = s1/a + emu;
++	  if (tf > 0) {
++	    r0 *= dn/(1+exp(-tf));
++	  } else {
++	    tf = exp(tf);
++	    r0 *= dn*tf/(1+tf);
++	  }
++	}
++	r += r0 * wg[i];
++      }
++      r *= (g32/g3)*sqrt(a)*a;
++    }
++    return r;
++  }
++
++  return 0.0;
++}
++
++// m <  0, Pradler fit for e-dep factor.
++// m == 0, Hummer fit for thermally averaged
++// m == 1, 2, Scheuer/Elwert approx.
++// m == 3, Menzel & Pekeris
++// m == 4, interpolation of Scheuer/Elwert & Menzel/Pekeris
++// m == 5, combination of Hummer & m=4
++// m == 6, combination of Hummer & GauntIFF
++// m >  6, GauntIFF
++double GauntTFF(double g2, double u, int m) {
++  double r, r0, um;
++
++  if (m < 0) {
++    //e-dep fit, kt=e0    
++    r = GauntEFF(g2, u);
++    return r;
++  }
++  if (m == 0) {
++    r = GauntHummer(g2, u);
++    return r;
++  }
++  if (m == 1) {
++    r = -0.55133*(0.5*log(g2) + log(u) + 0.056745);
++    return r;
++  }
++  if (m == 2) {
++    r = 0.5*log(g2) + 0.056745;
++    if (r < -0.80888) r = -0.80888;
++    r += log(u);
++    r *= -0.55133;
++    return r;
++  }
++  if (m == 3) {
++    r = pow(u/g2, 1./3);
++    r = 1+0.1728*r*(1+2/u)-0.0496*r*r*(1+2./(3*u)+4./(3*u*u));
++    return r;
++  }
++  if (m == 4) {
++    double xg = log10(g2);
++    double xu1 = 0.5-0.667*xg;
++    double u1 = pow(10, xu1);
++    double xu0 = xu1-3.0;
++    double u0 = pow(10, xu0);
++    if (u >= u1*1.00001) {
++      r = pow(u/g2, 1./3);
++      r = 1+0.1728*r*(1+2/u)-0.0496*r*r*(1+2./(3*u)+4./(3*u*u));
++    } else if (u <= u0*0.99999) {
++      r = GauntTFF(g2, u, 2);
++    } else {
++      double r1 = pow(u1/g2, 1./3);
++      double r2 = r1*r1;
++      double u2 = u1*u1;
++      double u3 = u2*u1;
++      double k1 = 0.1728*((1+2/u1)/(g2*r2*3)-r1*2/u2);
++      k1 -= 0.0496*(2*(1+2/(3*u1)+4/(3*u2))/(3*g2*r1)-(2/(3*u2)+8/(3*u3))*r2);
++      k1 *= u1;
++      r1 = 1+0.1728*r1*(1+2/u1)-0.0496*r2*(1+2./(3*u1)+4./(3*u2));
++      double k0 = -0.55133;
++      r0 = GauntTFF(g2, u0, 2);
++      xu0 = log(u0);
++      xu1 = log(u1);
++      double u02 = xu0*xu0;
++      double u12 = xu1*xu1;
++      double u03 = u02*xu0;
++      double u13 = u12*xu1;
++      double u0u1 = xu0*xu1;
++      double u01 = xu0+xu1;
++      double uxd = xu1-xu0;
++      double a = 0.5*(k1-k0)/uxd;
++      double c = (u13-u03)/3.0-u01*(u12-u02)/2.0+u0u1*uxd;
++      double b = (r1-r0-k0*uxd-a*uxd*uxd)/c;
++      double xu = log(u);
++      uxd = xu-xu0;
++      u12 = xu*xu;
++      u13 = u12*xu;
++      c = (u13-u03)/3.0-u01*(u12-u02)/2.0+u0u1*uxd;
++      r = r0 + k0*uxd + a*uxd*uxd + b*c;
++    }
++    return r;
++  }
++  if (m == 5) {
++    if (g2 > 1e3) {
++      r = GauntTFF(g2, u, 4);
++      r0 = GauntTFF(1e3, u, 4);
++      r = (r/r0)*GauntTFF(1e3, u, 5);
++    } else if (u < 1e-4) {
++      r = GauntTFF(g2, u, 4);
++      r0 = GauntTFF(g2, 1e-4, 4);
++      r = (r/r0)*GauntTFF(g2, 1e-4, 5);      
++    } else {
++      um = 31.6227766;
++      if (u <= um) {
++	r = GauntHummer(g2, u);
++      } else {
++	r = GauntTFF(g2,u,9)*GauntHummer(g2,um)/GauntTFF(g2,um,9);
++      }
++    }
++    return r;
++  }
++  if (m == 6) {
++    um = 31.6227766;
++    if (g2 > 1e3) {
++      r = GauntTFF(g2, u, 9);
++      if (u < 1e-4) {
++	r0 = GauntTFF(1e3, 1e-4, 9);
++	r = (r/r0)*GauntHummer(1e3, 1e-4);
++      } else if (u > um) {
++	r0 = GauntTFF(1e3, um, 9);
++	r = (r/r0)*GauntHummer(1e3, um);
++      } else {
++	r0 = GauntTFF(1e3, u, 9);
++	r = (r/r0)*GauntHummer(1e3, u);
++      }
++    } else if (g2 < 1e-3) {
++      r = GauntTFF(g2, u, 9);
++      if (u < 1e-4) {
++	r0 = GauntTFF(1e-3, 1e-4, 9);
++	r = (r/r0)*GauntHummer(1e-3,1e-4);
++      } else if (u > um) {
++	r0 = GauntTFF(1e-3, um, 9);
++	r = (r/r0)*GauntHummer(1e-3, um);
++      } else {
++	r0 = GauntTFF(1e-3, u, 9);
++	r = (r/r0)*GauntHummer(1e-3, u);
++      }
++    } else {
++      if (u >= 1e-4 && u <= um) {
++	r = GauntHummer(g2, u);
++      } else if (u < 1e-4) {
++	r = GauntTFF(g2, u, 9);
++	r0 = GauntTFF(g2, 1e-4, 9);
++	r = (r/r0)*GauntHummer(g2, 1e-4);
++      } else {
++	r = GauntTFF(g2, u, 9);
++	r0 = GauntTFF(g2, um, 9);
++	r = (r/r0)*GauntHummer(g2, um);
++      }
++    }
++    return r;
++  }
++
++  double de = 1.0;
++  double t = de/u;
++  double z2 = g2*t;
++  r = GauntIFF(z2, t, de, 0.0, 0.0, 0);
++  return r;
++}
++
+ int InitCoulomb(void) {
+   int i, ie1, ie2, ite;
+ 
+diff --git a/faclib/coulomb.h b/faclib/coulomb.h
+index 4025c5fd..9e0d8fb2 100644
+--- a/faclib/coulomb.h
++++ b/faclib/coulomb.h
+@@ -96,5 +96,9 @@ int     PrepCoulombBethe(int ne2, int nte, int ne1, double z,
+ int     CoulombBethe(char *s, double z, double te, double e1);
+ int     InitCoulomb(void);
+ void InitHydrogenicDipole(int n);
++double GauntHummer(double g2, double u);
++double GauntIFF(double z2, double t, double de, double msg, double ne, int m);
++double GauntTFF(double g2, double u, int m);
++double GauntEFF(double g2, double u);
+ 
+ #endif
+diff --git a/faclib/crm.c b/faclib/crm.c
+index e8ffd8f9..e0a0883a 100644
+--- a/faclib/crm.c
++++ b/faclib/crm.c
+@@ -70,7 +70,7 @@ static int _sp_trm = 1;
+ static int _rates_block = RATES_BLOCK;
+ static int _lblock_block = LBLOCK_BLOCK;
+ 
+-static double _ce_data[2+(1+MAXNUSR)*2];
++static double _ce_data[4+(2+MAXNUSR)*4];
+ static double _rr_data[1+MAXNUSR*4];
+ static int _ce_bethe = 0;
+ 
+@@ -86,7 +86,8 @@ static double _starkzb = 1.0;
+ static double _starkaix = 1.0;
+ static double _starksmx = 3.0;
+ static double _starkmfs = 1.5;
+-static double _starkrij = 0.75;
++static double _starkrij = 1.0;
++static double _starkrij2 = 0.5;
+ static double _starkefs = 1.0;
+ static double _starkix1 = 1.0;
+ static double _starkix2 = 4.0;
+@@ -1860,20 +1861,28 @@ int InitBlocks(void) {
+ 	  b = FINE_STRUCTURE_CONST * de;
+ 	  b *= 2.0*b*FINE_STRUCTURE_CONST;
+ 	  a /= b;
++	  double zt = z-ion->nele+1.0;
+ 	  double fij = a/(ion->j[r->f]+1.0);
+-	  double eta = de/(3*tea);
+-	  double rij = sqrt(fij*1.5*_starkrij/de);
+-	  b = _starkrij*StarkFW(eta*rij);
+-	  double rdne = 6.25e2*electron_density*a*(b/de)/sqrt(2*tea);
+-	  double rupe = rdne*exp(-de/tea)*(ion->j[r->i]+1.0)/(ion->j[r->f]+1.0);
++	  double za = zt*FINE_STRUCTURE_CONST;
+ 	  int type = TransitionType(blk1->ncomplex, blk2->ncomplex);
+ 	  int nlo = type%100;
+ 	  int nup = (type/100)%100;
+-	  double zt = z-ion->nele+1.0;
+-	  double za = zt*FINE_STRUCTURE_CONST;
+ 	  double efs = (_starkefs*0.25*zt*zt/(nup*nup*nup))*(za*za);
+-	  de = Max(de, efs);
+-	  de *= RATE_AU;
++	  double rde = Max(efs, de);
++	  double rij = sqrt(fij*1.5*_starkrij*(ion->j[r->i]+1.0)/rde);
++	  if (nup == 2 && nlo == 2 && ion->nele == 1) rij *= _starkrij2;
++	  b = zt-1.0;
++	  b = Max(0.01, b);
++	  b = 0.5*b*b/tea;
++	  double wp = 1.364e-7*sqrt(electron_density);
++	  wp = Max(wp, de);
++	  b = GauntTFF(b, wp/tea, 6);
++	  if (ion->nele < z) {
++	    b *= 3/(1+2/(zt*zt*zt));
++	  }	  
++	  double rdne = 3e2*electron_density*a*(b/de)/sqrt(tea);
++	  double rupe = rdne*exp(-de/tea)*(ion->j[r->i]+1.0)/(ion->j[r->f]+1.0);
++	  de = rde*RATE_AU;
+ 	  double rdn = LimitImpactWidth(rdne, de, 1);
+ 	  double rup = LimitImpactWidth(rupe, de, 1);
+ 	  j = ion->ilev[r->i];
+@@ -1895,8 +1904,8 @@ int InitBlocks(void) {
+ #pragma omp atomic
+ 	    blk2->rc1[kf] += rup;
+ 	  }
+-	  //if (r->i == 6) {
+-	  //  printf("ri: %d %d %g %g %g %g %g %g %g %g %g %g %g\n", r->f, nup, zt, fij, eta, rij, de, rdne, rdn, ri0, ri1, blk1->rc1[j], blk1->rc2[j]);	    
++	  //if (r->i == 1 && r->f == 0) {
++	  //  printf("ri: %d %d %g %g %g %g %g %g %g %g %g %g %g\n", r->f, nup, zt, a, b, rij, de, rdne, rdn, ri0, ri1, blk1->rc1[j], blk1->rc2[j]);	    
+ 	  //}
+ 	}
+       }
+@@ -2064,7 +2073,7 @@ int InitBlocks(void) {
+       m = blk1->iion;
+     }
+   }
+-      
++  
+   return 0;
+ }
+ 
+@@ -3107,7 +3116,7 @@ int RateTable(char *fn, int nc, char *sc[], int md) {
+   return 0;
+ }
+ 
+-void FixNorm(int m) {
++void FixNorm(int miter) {
+   LBLOCK *blk1;
+   ION *ion;
+   int k0, k1, iion, k, p, i, n;
+@@ -3116,26 +3125,9 @@ void FixNorm(int m) {
+   n = blocks->dim;
+   x = bmatrix + n*n;
+   for (i = 0; i < n; i++) x[i] = 0.0;
+-
+-  if (norm_mode == 3) {
+-    x[0] = 1.0;
+-    p = 0;
+-    for (k = 0; k < n; k++) {
+-      bmatrix[p] = 1.0;
+-      p += n;
+-    }
+-    for (k = 0; k < ions->dim; k++) {
+-      ion = (ION *) ArrayGet(ions, k);
+-      den = ion->n0;
+-      if (den+1 != 1) {
+-	blk1 = ion->iblock[0];
+-	if (blk1 != NULL) {
+-	  p = blk1->ib;
+-	  x[p] = den;
+-	}
+-      }
+-    }
+-  } else if (norm_mode == 2) {
++  
++  if (norm_mode == 2) {
++    //normalize to sum of all ions 
+     den = 0.0;
+     if (ion0.n0 > 0) den += ion0.n0;
+     for (i = 0; i < ions->dim; i++) {
+@@ -3167,7 +3159,7 @@ void FixNorm(int m) {
+ 	    x[k0] = den;
+ 	    p = k0;
+ 	    for (k = 0; k < n; k++) {
+-	      if (norm_mode == 1) {
++	      if (norm_mode > 0) {
+ 		if (k < k1 && k >= k0) bmatrix[p] = 1.0;
+ 		else bmatrix[p] = 0.0;
+ 	      } else {
+@@ -3191,7 +3183,7 @@ void FixNorm(int m) {
+       x[k0] = den;
+       p = k0;
+       for (k = 0; k < n; k++) {
+-	if (norm_mode == 1) {
++	if (norm_mode > 0) {
+ 	  if (k < k1 && k >= k0) bmatrix[p] = 1.0;
+ 	  else bmatrix[p] = 0.0;
+ 	} else {       
+@@ -3200,7 +3192,20 @@ void FixNorm(int m) {
+ 	}
+ 	p += n;
+       }
+-    } 
++    }
++    if (norm_mode > 1) {
++      // norm_mode=3, same as 1, but first eq. normalize sum of all ions
++      den = 0.0;
++      for (i = 0; i < n; i++) {
++	den += x[i];
++      }
++      x[0] = den;
++      p = 0;
++      for (k = 0; k < n; k++) {
++	bmatrix[p] = 1.0;
++	p += n;
++      }
++    }
+   }
+ }
+ 
+@@ -3700,6 +3705,7 @@ int BlockPopulation(int miter) {
+ 
+     if (info != 0) {
+       printf("Error in solving BlockMatrix: %d\n", info);
++      DumpRates("error.bm", 0, 0, -1, 1);
+       exit(1);
+     }
+ 
+@@ -4413,6 +4419,7 @@ int SpecTable(char *fn, int rrc, double strength_threshold) {
+       r.rrate = ion->j[m]+1.0;
+       r.trate = blk->total_rate[p];
+       r.wstk = 0.0;
++      r.wimp = 0.0;
+       rx.sdev = 0.0;
+       r.strength = blk->n[p];
+       WriteSPRecord(f, &r, &rx, iuta);
+@@ -4511,6 +4518,7 @@ int SpecTable(char *fn, int rrc, double strength_threshold) {
+ 		int n0 = type%100;
+ 		int n1 = (type/100)%100;
+ 		int dn = abs(n0-n1)%2;
++		int n2 = type/10000;
+ 		wi0 = malloc(sizeof(double)*_starknp);
+ 		we0 = r.trate;
+ 		for (ip = 0; ip < _starknp; ip++) {
+@@ -4518,10 +4526,18 @@ int SpecTable(char *fn, int rrc, double strength_threshold) {
+ 		  wi0[ip] += fblk->rc2[(ion->ilev[rt->f]*_starknp+ip)];
+ 		  wi0[ip] *= WCOEF;
+ 		}
++		if (n2 > n1) {
++		  double fns = (n2-n1+1.0);
++		  fns *= sqrt(fns);
++		  we0 /= fns;
++		  for (ip = 0; ip < _starknp; ip++) {
++		    wi0[ip] /= fns;
++		  }
++		}
+ 		r.wstk = CalcStarkQC(&we0, wi0, _stark_wd, ion->nele);
+ 		r.wimp = we0;
+-		//if (r.upper == 6 && r.lower == 0) {
+-		//  printf("ws: %g %g %g %g %g\n", r.trate, wi0[0], _stark_wd, r.wimp, r.wstk);
++		//if (r.upper == 1 && r.lower == 0) {
++		//  printf("ws: %g %g %g %g %g %g %g\n", r.trate, wi0[0], _stark_wd, r.wimp, r.wstk, iblk->rc1[ion->ilev[rt->i]],fblk->rc1[ion->ilev[rt->f]]);
+ 		//}
+ 		free(wi0);
+ 	      } else {
+@@ -5681,7 +5697,7 @@ int SetCXRates(int m0, char *tgt) {
+ 
+ int SetCERates(int inv) {
+   int nb, i, j, ib, jb, nrb;
+-  int n, m, m1, k;
++  int n, m, m1, m2, k;
+   int j1, j2;
+   int p, q;
+   ION *ion;
+@@ -5729,35 +5745,18 @@ int SetCERates(int inv) {
+       }
+       m = h.n_usr;
+       m1 = m + 1;
+-#pragma omp parallel default(shared) private(x, y, data, j)
+-      {
+-	data = _ce_data;
+-	y = data + 2;
+-	x = y + m1;
+-	if (h.tegrid[0] < 0) {
+-	  data[0] = -1.0;
+-	  for (j = 0; j < m; j++) {
+-	    x[j] = log(1 + eusr[j]);
+-	  }
+-	  x[m] = eusr[m-1]/(1+eusr[m-1]);
+-	} else {
+-	  data[0] = (h.te0*HARTREE_EV + bte)/bms;
+-	  for (j = 0; j < m; j++) {
+-	    x[j] = log((data[0] + eusr[j]*HARTREE_EV)/data[0]);
+-	  }	  
+-	  x[m] = eusr[m-1]/(data[0]/HARTREE_EV+eusr[m-1]);
+-	}
+-      }
++      m2 = m + 2;
+       nrb = Min(NRTB, h.ntransitions);
+       jb = 0;
+       for (i = 0; i < h.ntransitions; i++) {
+ 	n = ReadCERecord(f, &r[jb++], swp, &h);
+ 	if (jb == nrb) {
+ 	  ResetWidMPI();
+-#pragma omp parallel default(shared) private(ib, j1, j2, e, cs, j, data, y)
++#pragma omp parallel default(shared) private(ib, j1, j2, e, cs, j, data, x, y)
+ 	  {
+ 	  data = _ce_data;
+-	  y = data + 2;
++	  y = data + 4;
++	  x = y + m2;
+ 	  double b, c;
+ 	  int w = 0;
+ 	  for (ib = 0; ib < nrb; ib++) {
+@@ -5774,12 +5773,29 @@ int SetCERates(int inv) {
+ 	    j1 = ion->j[r[ib].lower];
+ 	    j2 = ion->j[r[ib].upper];
+ 	    e = ion->energy[r[ib].upper] - ion->energy[r[ib].lower];
++	    data[0] = (e+bte)/bms;
+ 	    data[1] = r[ib].bethe;
++	    data[2] = e;
++	    data[3] = fh.atom-h.nele;
+ 	    cs = r[ib].strength;
+ 	    y[m] = r[ib].born[0];
+-	    for (j = 0; j < m; j++) {
+-	      y[j] = cs[j];
++	    y[m1] = y[m];
++	    if (h.tegrid[0] < 0) {
++	      for (j = 0; j < m; j++) {
++		y[j] = cs[j];
++		x[j] = eusr[j]*e;
++	      }
++	    } else {
++	      for (j = 0; j < m; j++) {
++		y[j] = cs[j];
++		x[j] = eusr[j];
++	      }
++	    }
++	    x[m1] = r[ib].born[1];
++	    if (x[m1] > x[m-1]) {
++	      x[m] = pow(x[m-1],0.25)*pow(x[m1],0.75);
+ 	    }
++	    PrepCECrossData(m, data);
+ 	    CERate(&(rt[ib].dir), &(rt[ib].inv), inv, j1, j2, e, m,
+ 		   data, rt[ib].i, rt[ib].f);
+ 	    if (ion->ace > 0) {
+@@ -5821,35 +5837,18 @@ int SetCERates(int inv) {
+ 	}
+ 	m = h.n_usr;
+ 	m1 = m + 1;
+-#pragma omp parallel default(shared) private(x, y, data, j)
+-	{
+-	  data = _ce_data;
+-	  y = data + 2;
+-	  x = y + m1;
+-	  if (h.tegrid[0] < 0) {
+-	    data[0] = -1.0;
+-	    for (j = 0; j < m; j++) {
+-	      x[j] = log(1 + eusr[j]);
+-	    }
+-	    x[m] = eusr[m-1]/(1+eusr[m-1]);
+-	  } else {
+-	    data[0] = (h.te0*HARTREE_EV + bte)/bms;
+-	    for (j = 0; j < m; j++) {
+-	      x[j] = log((data[0] + eusr[j]*HARTREE_EV)/data[0]);
+-	    }	  
+-	    x[m] = eusr[m-1]/(data[0]/HARTREE_EV+eusr[m-1]);
+-	  }
+-	}
++	m2 = m + 2;
+ 	nrb = Min(NRTB, h.ntransitions);
+ 	jb = 0;
+ 	for (i = 0; i < h.ntransitions; i++) {
+ 	  n = ReadCERecord(f, &r[jb++], swp, &h);
+ 	  if (jb == nrb) {
+ 	    ResetWidMPI();
+-#pragma omp parallel default(shared) private(ib, j1, j2, e, cs, j, p, q, data, y)
++#pragma omp parallel default(shared) private(ib, j1, j2, e, cs, j, p, q, data, x, y)
+ 	    {	    
+ 	    data = _ce_data;
+-	    y = data + 2;
++	    y = data + 4;
++	    x = y + m2;
+ 	    double b, c;
+ 	    int w = 0;
+ 	    for (ib = 0; ib < nrb; ib++) {
+@@ -5882,12 +5881,29 @@ int SetCERates(int inv) {
+ 	      j1 = ion->j[rt[ib].i];
+ 	      j2 = ion->j[rt[ib].f];
+ 	      e = ion0.energy[q] - ion0.energy[p];
+-	      data[1] = r[ib].bethe;	
++	      data[0] = (e+bte)/bms;
++	      data[1] = r[ib].bethe;
++	      data[2] = e;
++	      data[3] = fh.atom - h.nele;
+ 	      cs = r[ib].strength;
+ 	      y[m] = r[ib].born[0];
+-	      for (j = 0; j < m; j++) {
+-		y[j] = cs[j];
++	      y[m1] = y[m];
++	      if (h.tegrid[0] < 0) {
++		for (j = 0; j < m; j++) {
++		  y[j] = cs[j];
++		  x[j] = eusr[j]*e;
++		}
++	      } else {
++		for (j = 0; j < m; j++) {
++		  y[j] = cs[j];
++		  x[j] = eusr[j];
++		}
++	      }
++	      x[m1] = r[ib].born[1];
++	      if (x[m1] > x[m-1]) {
++		x[m] = pow(x[m-1],0.25)*pow(x[m1],0.75);
+ 	      }
++	      PrepCECrossData(m, data);
+ 	      CERate(&(rt[ib].dir), &(rt[ib].inv), inv, j1, j2, e, m,
+ 		     data, rt[ib].i, rt[ib].f);
+ 	      if (ion0.ace > 0) {
+@@ -6011,8 +6027,10 @@ int SetTRRates(int inv) {
+ 		if (_ce_bethe > 0 &&
+ 		    (h.multipole == -1 || h.multipole == 0)) {
+ 		  data = _ce_data;
+-		  data[0] = (e*HARTREE_EV + bte)/bms;
++		  data[0] = (e + bte)/bms;
+ 		  data[1] = 2*gf/e;
++		  data[2] = e;
++		  data[3] = fh.atom - h.nele;
+ 		  rtx[jb].dir = 0.0;
+ 		  rtx[jb].inv = 0.0;
+ 		  rtx[jb].i = r[jb].lower;
+@@ -7941,6 +7959,10 @@ void SetOptionCRM(char *s, char *sp, int ip, double dp) {
+     _starkrij = dp;
+     return;
+   }
++  if (0 == strcmp(s, "crm:starkrij2")) {
++    _starkrij2 = dp;
++    return;
++  }
+   if (0 == strcmp(s, "crm:starkefs")) {
+     _starkefs = dp;
+     return;
+@@ -9648,4 +9670,3 @@ void RateCoefficients(char *ofn, int k0, int k1, int nexc, int ncap0,
+   CloseFile(f, &fh);
+   free(rc.rc);
+ }
+-
+diff --git a/faclib/dbase.c b/faclib/dbase.c
+index 7df1560d..c301b626 100644
+--- a/faclib/dbase.c
++++ b/faclib/dbase.c
+@@ -10059,7 +10059,7 @@ void CollapseDBase(char *ipr, char *opr, int k0, int k1,
+   LEVGRP *rg[N_ELEMENTS1];
+   EN_RECORD *ra[N_ELEMENTS1];  
+   TFILE *f0, *f1[7];
+-  double ei, des, te, e, cs, des0, des1, egrd[N_ELEMENTS1];
++  double ei, des, te, e, cs, cx, des0, des1, egrd[N_ELEMENTS1];
+   float fte;
+   int *im, tlevs, nt0, nt1, nt2, minlevs, maxlevs;
+   double wt0, wt1, tt0, tt1;
+@@ -10622,7 +10622,7 @@ void CollapseDBase(char *ipr, char *opr, int k0, int k1,
+     if (f1[2]) {
+       CE_RECORD **rt;
+       CE_HEADER ht;
+-      double data[2+(1+MAXNUSR)*3], ratio;
++      double data[4+(2+MAXNUSR)*4], ratio;
+       int neg = 6;
+       SetCEEGridType(1);
+       SetUsrCEEGridType(1);
+@@ -10655,7 +10655,6 @@ void CollapseDBase(char *ipr, char *opr, int k0, int k1,
+ 	    free(h2.usr_egrid);
+ 	    continue;
+ 	  }
+-	  PrepCECrossHeader(&h2, data);
+ 	  for (i = 0; i < h2.ntransitions; i++) {
+ 	    n = ReadCERecord(f0, &r2, swp, &h2);
+ 	    if (n == 0) break;
+@@ -10676,11 +10675,11 @@ void CollapseDBase(char *ipr, char *opr, int k0, int k1,
+ 		rt[j]->lower = rg[k][ilo].r.ilev;
+ 		rt[j]->upper = rg[k][iup].r.ilev;
+ 	      }
+-	      PrepCECrossRecord(0, &r2, &h2, data);
++	      PrepCECrossRecord(0, &r2, &h2, data, fh.atom);
+ 	      te = mem_en_table[r2.upper].energy - mem_en_table[r2.lower].energy;
+ 	      for (t = 0; t < neg; t++) {
+ 		e = te*ht.egrid[t]*HARTREE_EV;
+-		cs = InterpolateCECross(e, &r2, &h2, data, &ratio);
++		cs = InterpolateCECross(e, &r2, &h2, data, &cx, &ratio, 1);
+ 		rt[j]->strength[t] += cs;	      
+ 	      }
+ 	      if (r2.bethe >= 0.0) {
+diff --git a/faclib/f2c.f90 b/faclib/f2c.f90
+index a5939a2e..ad402e98 100644
+--- a/faclib/f2c.f90
++++ b/faclib/f2c.f90
+@@ -160,6 +160,7 @@ real(c_double) :: a3(*)
+ integer(c_int), value :: a4
+ real(c_double) :: a5(*)
+ real(c_double) :: a6(*)
++real(c_double),dimension(:),allocatable :: t
+ call UVIP3P(a0,a1,a2,a3,a4,&
+             a5,a6)
+ end subroutine
+diff --git a/faclib/interpolation.c b/faclib/interpolation.c
+index 39c09874..dc674b90 100644
+--- a/faclib/interpolation.c
++++ b/faclib/interpolation.c
+@@ -20,6 +20,7 @@
+ #include "cf77.h"
+ #include "nucleus.h"
+ #include "global.h"
++#include "coulomb.h"
+ 
+ static char *rcsid="$Id$";
+ #if __GNUC__ == 2
+@@ -674,52 +675,149 @@ int NewtonCotesIP(double *r, double *x, int i0, int i1, int m, int id) {
+   return 0;
+ }
+ 
+-void PrepCEFCrossHeader(CEF_HEADER *h, double *data) {
+-  double *eusr, *x, bte, bms;
+-  int m, m1, j;
+-
+-  eusr = h->egrid;
+-  m = h->n_egrid;
+-  m1 = m + 1;
+-  x = data+2+m1;
+-  BornFormFactorTE(&bte);
+-  bms = BornMass();
+-  data[0] = (h->te0*HARTREE_EV+bte)/bms;
++void PrepCECrossData(int m, double *data) {
++  int j, m1, m2;
++  double x0, e0, eth, eth1, bethe, *y, *x;
++  double z2, g2, u, gff;
++
++  m1 = m+1;
++  m2 = m+2;
++  y = data + 4;
++  x = y+m2;
++  eth1 = data[0];
++  bethe = data[1];
++  eth = data[2];
++  z2 = data[3]*data[3];
++  for (j = 0; j < m2; j++) {
++    e0 = eth1+x[j];
++    if (x[j] > 0) {
++      x[j] = eth1/e0;
++      if (x[j] < EPS7) {
++	x[j] = log(4/x[j]);
++      } else {
++	x[j] = sqrt(1-x[j]);
++	x[j] = log((1+x[j])/(1-x[j]));
++      }
++      x[j] = x[j]/(x[j]+2);
++    }
++    if (bethe > 0) {
++      if (j >= m) {
++	y[j] += bethe*log(e0/eth);
++      }
++      g2 = 0.5*z2/e0;
++      u = eth/e0;
++      gff = 1.8138*bethe*GauntEFF(g2, u);
++      y[j] /= gff;
++    }
++  }
+   for (j = 0; j < m; j++) {
+-    x[j] = log((data[0] + eusr[j]*HARTREE_EV)/data[0]);
++    y[j] = log(y[j]);
++  }
++  if (y[m] > 0) {
++    y[m] = log(y[m]);
++    y[m1] = log(y[m1]);
++  } else {
++    x[m] = x[m-1]+2.5;
++    x[m1] = x[m]+2.5;
++    double a = (y[m-1]-y[m-2])/(x[m-1]-x[m-2]);
++    if (a > -1.0) a = -1.0;
++    y[m] = y[m-1] + a*(x[m]-x[m-1]);
++    y[m1] = y[m-1] + a*(x[m1]-x[m-1]);
+   }
+-  x[m] = eusr[m-1]/(data[0]/HARTREE_EV+eusr[m-1]);
+ }
+ 
+-void PrepCECrossHeader(CE_HEADER *h, double *data) {
+-  double *eusr, *x, bte, bms;
+-  int m, m1, j;
++double InterpCECrossData(int m, double *data, double e, double *cx, double *r) {
++  int n, m1, m2, one;
++  double x0, e0, eth, eth1, bethe, a, b, c, d, c0;
++  double *x, *y, *w, z2, g2, u, gff;
+ 
+-  eusr = h->usr_egrid;
+-  m = h->n_usr;
+-  m1 = m + 1;
+-  x = data+2+m1;
+-  BornFormFactorTE(&bte);
+-  bms = BornMass();
+-  if (h->tegrid[0] < 0) {
+-    data[0] = -1.0;
+-    for (j = 0; j < m; j++) {
+-      x[j] = log(1+bms*eusr[j]);
++  *cx = 0.0;
++  if (r && m > 0) *r = 1.0;
++  if (e < 0) return 0.0;
++  
++  eth1 = data[0];
++  bethe = data[1];
++  eth = data[2];
++  z2 = data[3]*data[3];
++  e0 = e+eth1;
++
++  if (m > 0) {
++    m1 = m+1;
++    m2 = m+2;
++    y = data + 4;
++    x = y+m2;
++    w = x+m2;
++    
++    x0 = eth1/e0;
++    if (x0 < EPS7) {
++      x0 = log(4/x0);
++    } else {
++      x0 = sqrt(1-x0);
++      x0 = log((1+x0)/(1-x0));
++    }
++    x0 = x0/(x0+2);
++    if (x0 < x[0]) {
++      a = exp(y[0]);
++    } else {
++      n = 2;
++      one = 1;
++      UVIP3P(n, m2, x, y, one, &x0, &a);
++      a = exp(a);
++    }
++    if (r) {
++      UVIP3P(n, m2, x, w, one, &x0, r);
++      if (*r < 0) *r = 0.0;
+     }
+-    x[m] = eusr[m-1]/(1 + eusr[m-1]);
+   } else {
+-    data[0] = (h->te0+bte)*HARTREE_EV/bms;
+-    for (j = 0; j < m; j++) {
+-      x[j] = log((data[0]+eusr[j]*HARTREE_EV)/data[0]);
++    if (bethe > 0) {
++      a = 1.0;
++    } else {
++      a = 0.0;
++    }
++  }
++
++  d = 2*e0;
++  if (bethe > 0) {
++    g2 = 0.5*z2/e0;
++    u = eth/e0;
++    gff = 1.8138*bethe*GauntEFF(g2, u);
++    if (XCEMode() == 1) {
++      d *= 1+0.5*FINE_STRUCTURE_CONST2*e0;
++      c = FINE_STRUCTURE_CONST2*d;
++      b = bethe*(log(0.5*d/e0)-c/(1+c));
++      gff += b;
++      gff *= 1+c;
++    }
++    a *= gff;
++  } else {
++    if (XCEMode() == 1) {
++      d *= 1+0.5*FINE_STRUCTURE_CONST2*e0;
++      c = FINE_STRUCTURE_CONST2*d;
++      a *= 1+c;
+     }
+-    x[m] = eusr[m-1]/(data[0]/HARTREE_EV+eusr[m-1]);
+   }
++  *cx = a*PI*AREA_AU20/d;
++
++  if (a < 0) {
++    a = 0.0;
++    *cx = 0.0;
++  }
++  if (r) {
++    a *= *r;
++    *cx *= *r;
++  }
++
++  //if (isnan(a) || isinf(a)) {
++  //  printf("invalid interp cross: %g %g\n", e, a);
++  //}
++  return a;
+ }
+ 
+-void PrepCEFCrossRecord(CEF_RECORD *r, CEF_HEADER *h, double *data) {
+-  double *eusr, *x, *y, e, b, c, bms, bte;
++void PrepCEFCrossRecord(CEF_RECORD *r, CEF_HEADER *h, double *data, double z) {
++  double *eusr, *x, *y, b, c, bms, bte;
++  double eth, eth1, d;
+   float *cs;
+-  int m, m1, j;
++  int m, m1, m2, j;
+   EN_SRECORD *mem_en_table;
+   int mem_en_table_size;
+ 
+@@ -728,39 +826,62 @@ void PrepCEFCrossRecord(CEF_RECORD *r, CEF_HEADER *h, double *data) {
+   eusr = h->egrid;
+   m = h->n_egrid;
+   m1 = m + 1;
+-  y = data + 2;
+-  x = y + m1;
+-  e = mem_en_table[r->upper].energy - mem_en_table[r->lower].energy;
++  m2 = m + 2;
++  y = data + 4;
++  x = y + m2;
++  eth = mem_en_table[r->upper].energy - mem_en_table[r->lower].energy;
++  BornFormFactorTE(&bte);
++  bms = BornMass();
++  eth1 = (eth + bte)/bms;
++  data[0] = eth1;
+   data[1] = r->bethe;
+-
++  data[2] = eth;
++  data[3] = z-h->nele;
+   cs = r->strength;
+   for (j = 0; j < m; j++) {
+     y[j] = Max(MINCS,cs[j]);
+   }
++  for (j = 0; j < m; j++) {
++    x[j] = eusr[j];
++  }
++  x[m1] = r->born[1];
++  y[m1] = r->born[0];
++  if (x[m1] > x[m-1]) {
++    x[m] = pow(x[m-1],0.25)*pow(x[m1],0.75);
++  }
+   y[m] = r->born[0];
++  PrepCECrossData(m, data);
+ }
+ 
+ void PrepCECrossRecord(int k, CE_RECORD *r, CE_HEADER *h,
+-		       double *data) {
+-  double *eusr, *x, *y, *w, e, b, c, bms, bte;
++		       double *data, double z) {
++  double *eusr, *x, *y, *u, *w, b, c, bms, bte;
++  double eth, eth1, d;
+   float *cs;
+-  int m, m1, j, t;
++  int m, m1, m2, j, t;
+   int j1, j2, t1, t2;
+   EN_SRECORD *mem_en_table;
+   int mem_en_table_size;
+ 
+-  mem_en_table = GetMemENTable(&mem_en_table_size);
+-
+   eusr = h->usr_egrid;
+   m = h->n_usr;
+   m1 = m + 1;
+-  y = data + 2;
+-  x = y + m1;
+-  w = x + m1;
+-  e = mem_en_table[r->upper].energy - mem_en_table[r->lower].energy;
+-  data[1] = r->bethe;
++  m2 = m + 2;
++  y = data + 4;
++  x = y + m2;
++  w = x + m2;
++  u = w + m2;
+   cs = r->strength;
+   if (k == 0) {
++    mem_en_table = GetMemENTable(&mem_en_table_size);
++    eth = mem_en_table[r->upper].energy - mem_en_table[r->lower].energy;
++    BornFormFactorTE(&bte);
++    bms = BornMass();
++    eth1 = (eth + bte)/bms;
++    data[0] = eth1;
++    data[1] = r->bethe;
++    data[2] = eth;
++    data[3] = z-h->nele;
+     if (h->msub) {
+       j1 = mem_en_table[r->lower].j;
+       j2 = mem_en_table[r->upper].j;
+@@ -782,236 +903,93 @@ void PrepCECrossRecord(int k, CE_RECORD *r, CE_HEADER *h,
+ 	y[j] = cs[j];
+       }
+     }
+-    y[m] = r->born[0];
+-  }
+   
+-  for (j = 0; j < m; j++) {
+-    y[j] = Max(MINCS, y[j]);
++    for (j = 0; j < m; j++) {
++      y[j] = Max(MINCS, y[j]);
++    }
++    y[m] = r->born[0];
++    y[m1] = r->born[0];
++    if (h->msub) {
++      for (j = 0; j < m; j++) {
++	u[j] = y[j];
++      }
++      u[m] = 0.0;
++      u[m1] = 0.0;
++    }
++    if (h->tegrid[0] < 0) {
++      for (j = 0; j < m; j++) {
++	x[j] = eusr[j]*eth;
++      }
++    } else {
++      for (j = 0; j < m; j++) {
++	x[j] = eusr[j];
++      }
++    }
++    x[m1] = r->born[1];
++    if (x[m1] > x[m-1]) {
++      x[m] = pow(x[m-1],0.25)*pow(x[m1],0.75);
++    }
++    PrepCECrossData(m, data);
+   }
+   
+   if (h->msub) {
+     for (j = 0; j < m; j++) {
+-      if (y[j]) {
+-	w[j] = cs[k*m+j]/y[j];
++      if (u[j]) {
++	w[j] = cs[k*m+j]/u[j];
+       } else {
+ 	w[j] = 1.0;
+       }
+     }
+     if (r->bethe < 0) {
+-      w[j] = w[j-1];
++      w[m] = w[j-1];
++      w[m1] = w[m];
+     } else {
+-      w[j] = r->params[k];
++      w[m] = r->params[k];
++      w[m1] = w[m];
+     }
+   }
+-  /*
+-  for (j = 0; j < m; j++) {
+-    y[j] = log(y[j]);
+-  }
+-  */
+ }
+ 
+ double InterpolateCEFCross(double e, CEF_RECORD *r, CEF_HEADER *h,
+-			   double *data) {
+-  double *x, *y, *w;
+-  int m, m1, n, one;
+-  double a, b, x0, y0, eth, e0, c, d;
+-  EN_SRECORD *mem_en_table;
+-  int mem_en_table_size;
+-  double bte, bms, eth1, et0;
+-
+-  mem_en_table = GetMemENFTable(&mem_en_table_size);
+-
+-  eth = mem_en_table[r->upper].energy - mem_en_table[r->lower].energy;
+-  eth = eth * HARTREE_EV;
++			   double *data, double *cx, int md) {
++  int m;
++  double a;
+ 
+   a = 0.0;
+-
+   if (e <= 0.0) return a;
+-
+-  BornFormFactorTE(&bte);
+-  bms = BornMass();
+-  eth1 = (eth + bte*HARTREE_EV)/bms;
+-  
+-  m = h->n_egrid;
+-  m1 = m + 1;
+-  et0 = data[0];
+-  x0 = log(1+e/et0);
+-  y = data + 2;
+-  x = y + m1;
+-  w = x + m1;
+-
+-  if (x0 < x[m-1]) {
+-    n = 2;
+-    one = 1;
+-    UVIP3P(n, m, x, y, one, &x0, &a);
+-    //a = exp(a);
++  e /= HARTREE_EV;
++  if (md == 0) {
++    m = 0;
+   } else {
+-    x0 = e/(et0 + e);
+-    y0 = y[m-1];
+-    if (data[1] > -EPS10) {
+-      if (XCEMode() == 1) {
+-	e0 = ((x[m]*et0/(1.0-x[m]))+eth1)/HARTREE_EV;
+-	d = 2.0*e0*(1.0+0.5*FINE_STRUCTURE_CONST2*e0);
+-	c = FINE_STRUCTURE_CONST2*d;
+-	b = log(0.5*d*HARTREE_EV/eth) - c/(1.0+c);
+-	y0 = y0/(1+c) - data[1]*b;
+-	a = y[m] + (x0-1.0)*(y0-y[m])/(x[m]-1.0);
+-	e0 = (e + eth1)/HARTREE_EV;
+-	d = 2.0*e0*(1.0+0.5*FINE_STRUCTURE_CONST2*e0);
+-	c = FINE_STRUCTURE_CONST2*d;
+-	b = log(0.5*d*HARTREE_EV/eth) - c/(1.0+c);
+-	a = (a + data[1]*b)*(1+c);
+-      } else {
+-	e0 = ((x[m]*et0/(1.0-x[m]))+eth1);
+-	b = log(e0/eth);
+-	y0 -= data[1]*b;
+-	a = y[m] + (x0-1.0)*(y0-y[m])/(x[m]-1.0);
+-	b = log((e+eth1)/eth);
+-	a += data[1]*b;
+-      }
+-      /*
+-      e0 = ((x[m]*et0/(1.0-x[m]))+eth1)/HARTREE_EV;
+-      b0 = 1.0 + FINE_STRUCTURE_CONST2*e0;
+-      b1 = 1.0 + FINE_STRUCTURE_CONST2*(e0-eth1/HARTREE_EV);
+-      y0 /= b0*b1;
+-      d = 2.0*e0*(1.0+0.5*FINE_STRUCTURE_CONST2*e0);
+-      c = FINE_STRUCTURE_CONST2*d;
+-      b = log(0.5*d*HARTREE_EV/eth) - c/(1.0+c);
+-      y0 -= data[1]*b;
+-      a = y[m] + (x0-1.0)*(y0-y[m])/(x[m]-1.0);
+-      e0 = (e + eth1)/HARTREE_EV;
+-      d = 2.0*e0*(1.0+0.5*FINE_STRUCTURE_CONST2*e0);
+-      c = FINE_STRUCTURE_CONST2*d;
+-      b = log(0.5*d*HARTREE_EV/eth) - c/(1.0+c);
+-      a += data[1]*b;
+-      b0 = 1.0 + FINE_STRUCTURE_CONST2*e0;
+-      b1 = 1.0 + FINE_STRUCTURE_CONST2*e/HARTREE_EV;
+-      a *= b0*b1;
+-    } else if (data[1]+1.0 == 1.0) {
+-      e0 = ((x[m]*et0/(1.0-x[m]))+eth1)/HARTREE_EV;
+-      b0 = 1.0 + FINE_STRUCTURE_CONST2*e0;
+-      b1 = 1.0 + FINE_STRUCTURE_CONST2*(e0-eth1/HARTREE_EV);
+-      y0 /= b0*b1;
+-      a = y[m] + (x0-1.0)*(y0-y[m])/(x[m]-1.0);
+-      b0 = 1.0 + FINE_STRUCTURE_CONST2*(e+eth1)/HARTREE_EV;
+-      b1 = 1.0 + FINE_STRUCTURE_CONST2*e/HARTREE_EV;
+-      a *= b0*b1;
+-      */
+-    } else {
+-      a = y[m] + (x0-1.0)*(y0-y[m])/(x[m]-1.0);
+-    }
++    m = h->n_egrid;
+   }
++  a = InterpCECrossData(m, data, e, cx, NULL);
+ 
+   return a;
+ }
+ 
+ double InterpolateCECross(double e, CE_RECORD *r, CE_HEADER *h,
+-			  double *data, double *ratio) {
+-  double *x, *y, *w;
+-  int m, m1, n, one;
+-  double a, b, x0, y0, eth, e0, c, d;
+-  EN_SRECORD *mem_en_table;
+-  int mem_en_table_size;
+-  double bte, bms, eth1, et0;
+-
+-  mem_en_table = GetMemENTable(&mem_en_table_size);
+-
+-  eth = mem_en_table[r->upper].energy - mem_en_table[r->lower].energy;
+-  eth = eth * HARTREE_EV;
++			  double *data, double *cx, double *ratio, int md) {
++  int m, m1;
++  double a, *ra;
+ 
+   a = 0.0;
+-  *ratio = 1.0;
+-
+-  if (e < 0.0) return a;
+-
+-  BornFormFactorTE(&bte);
+-  bms = BornMass();
+-  eth1 = (eth + bte*HARTREE_EV)/bms;
+-  if (data[0] > 0) {
+-    et0 = data[0];
++  if (e < 0.0) return a;  
++  e /= HARTREE_EV;
++  if (md == 0) {
++    m = 0;
+   } else {
+-    et0 = eth1;
++    m = h->n_usr;
+   }
+-  m = h->n_usr;
+-  m1 = m + 1;
+-  x0 = log(1+e/et0);
+-  y = data + 2;
+-  x = y + m1;
+-  w = x + m1;
+-
+-  if (x0 < x[m-1]) {
+-    n = 2;
+-    one = 1;
+-    UVIP3P(n, m, x, y, one, &x0, &a);
+-    //a = exp(a);
+-    if (h->msub) {
+-      UVIP3P(n, m, x, w, one, &x0, &b);
+-      if (b < 0.0) b = 0.0;
+-      a *= b;
+-      *ratio = b;
+-    }
++  if (h->msub) {
++    ra = ratio;
+   } else {
+-    x0 = e/(et0 + e);
+-    y0 = y[m-1];
+-    if (data[1] > -EPS10) {
+-      if (XCEMode() == 1) {
+-	e0 = ((x[m]*et0/(1.0-x[m]))+eth1)/HARTREE_EV;
+-	d = 2.0*e0*(1.0+0.5*FINE_STRUCTURE_CONST2*e0);
+-	c = FINE_STRUCTURE_CONST2*d;
+-	b = log(0.5*d*HARTREE_EV/eth) - c/(1.0+c);
+-	y0 = y0/(1+c) - data[1]*b;
+-	a = y[m] + (x0-1.0)*(y0-y[m])/(x[m]-1.0);
+-	e0 = (e + eth1)/HARTREE_EV;
+-	d = 2.0*e0*(1.0+0.5*FINE_STRUCTURE_CONST2*e0);
+-	c = FINE_STRUCTURE_CONST2*d;
+-	b = log(0.5*d*HARTREE_EV/eth) - c/(1.0+c);
+-	a = (a + data[1]*b)*(1+c);
+-      } else {
+-	e0 = ((x[m]*et0/(1.0-x[m]))+eth1);
+-	b = log(e0/eth);
+-	y0 -= data[1]*b;
+-	a = y[m] + (x0-1.0)*(y0-y[m])/(x[m]-1.0);
+-	b = log((e+eth1)/eth);
+-	a += data[1]*b;
+-      }
+-      /*
+-      e0 = ((x[m]*et0/(1.0-x[m]))+eth1)/HARTREE_EV;
+-      b0 = 1.0 + FINE_STRUCTURE_CONST2*e0;
+-      b1 = 1.0 + FINE_STRUCTURE_CONST2*(e0-eth1/HARTREE_EV);
+-      y0 /= b0*b1;
+-      d = 2.0*e0*(1.0+0.5*FINE_STRUCTURE_CONST2*e0);
+-      c = FINE_STRUCTURE_CONST2*d;
+-      b = log(0.5*d*HARTREE_EV/eth) - c/(1.0+c);
+-      y0 -= data[1]*b;
+-      a = y[m] + (x0-1.0)*(y0-y[m])/(x[m]-1.0);
+-      e0 = (e + eth1)/HARTREE_EV;
+-      d = 2.0*e0*(1.0+0.5*FINE_STRUCTURE_CONST2*e0);
+-      c = FINE_STRUCTURE_CONST2*d;
+-      b = log(0.5*d*HARTREE_EV/eth) - c/(1.0+c);
+-      a += data[1]*b;
+-      b0 = 1.0 + FINE_STRUCTURE_CONST2*e0;
+-      b1 = 1.0 + FINE_STRUCTURE_CONST2*e/HARTREE_EV;
+-      a *= b0*b1;
+-    } else if (data[1]+1.0 == 1.0) {
+-      e0 = ((x[m]*et0/(1.0-x[m]))+eth1)/HARTREE_EV;
+-      b0 = 1.0 + FINE_STRUCTURE_CONST2*e0;
+-      b1 = 1.0 + FINE_STRUCTURE_CONST2*(e0-eth1/HARTREE_EV);
+-      y0 /= b0*b1;
+-      a = y[m] + (x0-1.0)*(y0-y[m])/(x[m]-1.0);
+-      b0 = 1.0 + FINE_STRUCTURE_CONST2*(e+eth1)/HARTREE_EV;
+-      b1 = 1.0 + FINE_STRUCTURE_CONST2*e/HARTREE_EV;
+-      a *= b0*b1;
+-      */
+-    } else {
+-      a = y[m] + (x0-1.0)*(y0-y[m])/(x[m]-1.0);
+-    }
+-    if (h->msub) {
+-      b = w[m] + (x0-1.0)*(w[m-1]-w[m])/(x[m]-1.0);
+-      a *= b;
+-      *ratio = b;
+-    }
++    ra = NULL;
++  }
++  a = InterpCECrossData(m, data, e, cx, ra);
++  if (isnan(a) || isinf(a)) {
++    printf("invalid interp ce cross: %d %d %g %g\n", r->lower, r->upper, e, a);
+   }
+-
+   return a;
+ }
+ 
+@@ -1026,7 +1004,7 @@ int CEMFCross(char *ifn, char *ofn, int i0, int i1,
+   CEMF_HEADER mh;
+   CEMF_RECORD mr;
+   int i, t, m, ith, iph;
+-  double data[2+(1+MAXNE)*3], e, cs, a;
++  double data[4+(2+MAXNE)*4], e, cs, a;
+   double eth, a1, cs1, k2, rp, e1, e0;
+   double bte, bms, be;
+   EN_SRECORD *mem_en_table;
+@@ -1060,7 +1038,6 @@ int CEMFCross(char *ifn, char *ofn, int i0, int i1,
+     n = ReadCEMFHeader(f1, &mh, swp);
+     if (n == 0) break;
+     CEMF2CEFHeader(&mh, &h);
+-    PrepCEFCrossHeader(&h, data);
+     for (i = 0; i < mh.ntransitions; i++) {
+       n = ReadCEMFRecord(f1, &mr, swp, &mh);
+       if ((mr.lower == i0 || i0 < 0) && (mr.upper == i1 || i1 < 0)) {
+@@ -1076,7 +1053,7 @@ int CEMFCross(char *ifn, char *ofn, int i0, int i1,
+ 	    fprintf(f2, "# %2d %2d %11.4E %11.4E\n",
+ 		    ith, iph, mh.thetagrid[ith]*180/PI, mh.phigrid[iph]*180/PI);
+ 	    CEMF2CEFRecord(&mr, &r, &mh, ith, iph);
+-	    PrepCEFCrossRecord(&r, &h, data);
++	    PrepCEFCrossRecord(&r, &h, data, fh.atom);
+ 	    for (t = 0; t < negy; t++) {
+ 	      if (mp == 0) {
+ 		e0 = egy[t]/bms;
+@@ -1086,31 +1063,8 @@ int CEMFCross(char *ifn, char *ofn, int i0, int i1,
+ 		e0 = e1 + be;
+ 	      }
+ 	      if (e1 > 0) {
+-		cs = InterpolateCEFCross(e1, &r, &h, data);
+-		a = e0/HARTREE_EV;
+-		if (XCEMode() == 1) {
+-		  a *= (1.0+0.5*FINE_STRUCTURE_CONST2*a);
+-		}
+-		a = PI*AREA_AU20*cs/(2.0*a);
+-		if (data[1] > -EPS10) {
+-		  cs1 = data[1]*log(e0/e) + r.born[0];
+-		  if (XCEMode() == 1) {
+-		    k2 = e0/HARTREE_EV;
+-		    k2 = 2.0*k2*(1.0+0.5*FINE_STRUCTURE_CONST2*k2);
+-		    a1 = FINE_STRUCTURE_CONST2*k2;
+-		    cs1 = data[1]*(log(0.5*k2/eth) - a1/(1+a1));
+-		    cs1 += r.born[0];
+-		    cs1 *= 1+a1;
+-		  }
+-		  a1 = e0/HARTREE_EV;
+-		  if (XCEMode() == 1) {
+-		    a1 *= (1.0+0.5*FINE_STRUCTURE_CONST2*a);
+-		  }
+-		  a1 = PI*AREA_AU20*cs1/(2.0*a1);
+-		} else {
+-		  cs1 = cs;
+-		  a1 = a;
+-		}
++		cs = InterpolateCEFCross(e1, &r, &h, data, &a, 1);
++		cs1 = InterpolateCEFCross(e1, &r, &h, data, &a1, 0);
+ 	      } else {
+ 		cs = 0.0;
+ 		a = 0.0;
+@@ -1167,7 +1121,7 @@ int CEFCross(char *ifn, char *ofn, int i0, int i1,
+   CEF_HEADER h;
+   CEF_RECORD r;
+   int i, t, m;
+-  double data[2+(1+MAXNE)*3], e, cs, a;
++  double data[4+(2+MAXNE)*4], e, cs, a;
+   double eth, a1, cs1, k2, rp, e1, e0;
+   double bte, bms, be;
+   EN_SRECORD *mem_en_table;
+@@ -1207,7 +1161,6 @@ int CEFCross(char *ifn, char *ofn, int i0, int i1,
+   while (1) {
+     n = ReadCEFHeader(f1, &h, swp);
+     if (n == 0) break;
+-    PrepCEFCrossHeader(&h, data);
+     for (i = 0; i < h.ntransitions; i++) {
+       n = ReadCEFRecord(f1, &r, swp, &h);
+       if ((r.lower == i0 || i0 < 0) && (r.upper == i1 || i1 < 0)) {
+@@ -1218,7 +1171,7 @@ int CEFCross(char *ifn, char *ofn, int i0, int i1,
+ 		r.upper, mem_en_table[r.upper].p, mem_en_table[r.upper].j,
+ 		e, negy);
+ 	be = (e + bte*HARTREE_EV)/bms;
+-	PrepCEFCrossRecord(&r, &h, data);
++	PrepCEFCrossRecord(&r, &h, data, fh.atom);
+ 	for (t = 0; t < negy; t++) {
+ 	  if (mp == 0) {
+ 	    e0 = egy[t]/bms;
+@@ -1228,31 +1181,8 @@ int CEFCross(char *ifn, char *ofn, int i0, int i1,
+ 	    e0 = e1 + be;
+ 	  }
+ 	  if (e1 > 0) {
+-	    cs = InterpolateCEFCross(e1, &r, &h, data);
+-	    a = e0/HARTREE_EV;
+-	    if (XCEMode() == 1) {
+-	      a *= (1.0+0.5*FINE_STRUCTURE_CONST2*a);
+-	    }
+-	    a = PI*AREA_AU20*cs/(2.0*a);
+-	    if (data[1] > -EPS10) {
+-	      cs1 = data[1]*log(e0/e) + r.born[0];
+-	      if (XCEMode() == 1) {
+-		k2 = e0/HARTREE_EV;
+-		k2 = 2.0*k2*(1.0+0.5*FINE_STRUCTURE_CONST2*k2);
+-		a1 = FINE_STRUCTURE_CONST2*k2;
+-		cs1 = data[1]*(log(0.5*k2/eth) - a1/(1+a1));
+-		cs1 += r.born[0];
+-		cs1 *= 1+a1;
+-	      }
+-	      a1 = e0/HARTREE_EV;
+-	      if (XCEMode() == 1) {
+-		a1 *= (1.0+0.5*FINE_STRUCTURE_CONST2*a);
+-	      }
+-	      a1 = PI*AREA_AU20*cs1/(2.0*a1);
+-	    } else {
+-	      cs1 = cs;
+-	      a1 = a;
+-	    }
++	    cs = InterpolateCEFCross(e1, &r, &h, data, &a, 1);
++	    cs1 = InterpolateCEFCross(e1, &r, &h, data, &a1, 0);
+ 	  } else {
+ 	    cs = 0.0;
+ 	    a = 0.0;
+@@ -1299,7 +1229,7 @@ int CECross(char *ifn, char *ofn, int i0, int i1,
+   CE_HEADER h;
+   CE_RECORD r;
+   int i, t, m, k;
+-  double data[2+(1+MAXNUSR)*3], e, cs, a, ratio;
++  double data[4+(2+MAXNUSR)*4], e, cs, a, ratio;
+   double eth, a1, cs1, k2, rp, e1, e0;
+   double bte, bms, be;
+   EN_SRECORD *mem_en_table;
+@@ -1339,7 +1269,6 @@ int CECross(char *ifn, char *ofn, int i0, int i1,
+   while (1) {
+     n = ReadCEHeader(f1, &h, swp);
+     if (n == 0) break;
+-    PrepCECrossHeader(&h, data);
+     for (i = 0; i < h.ntransitions; i++) {
+       n = ReadCERecord(f1, &r, swp, &h);
+       if ((r.lower == i0 || i0 < 0) && (r.upper == i1 || i1 < 0)) {
+@@ -1351,7 +1280,7 @@ int CECross(char *ifn, char *ofn, int i0, int i1,
+ 		e, negy, r.nsub);
+ 	be = (e + bte*HARTREE_EV)/bms;
+ 	for (k = 0; k < r.nsub; k++) {
+-	  PrepCECrossRecord(k, &r, &h, data);
++	  PrepCECrossRecord(k, &r, &h, data, fh.atom);
+ 	  for (t = 0; t < negy; t++) {
+ 	    if (mp == 0) {
+ 	      e0 = egy[t]/bms;
+@@ -1361,31 +1290,12 @@ int CECross(char *ifn, char *ofn, int i0, int i1,
+ 	      e0 = e1 + be;
+ 	    }
+ 	    if (e1 > 0) {
+-	      cs = InterpolateCECross(e1, &r, &h, data, &ratio);
+-	      a = e0/HARTREE_EV;
+-	      if (XCEMode() == 1) {
+-		a *= (1.0+0.5*FINE_STRUCTURE_CONST2*a);
+-	      }
+-	      a = PI*AREA_AU20*cs/(2.0*a);
+-	      if (!h.msub) a /= (mem_en_table[r.lower].j+1.0);
+-	      if (data[1] > -EPS10) {
+-		cs1 = data[1]*log(e0/e) + r.born[0];
+-		if (XCEMode() == 1) {
+-		  k2 = e0/HARTREE_EV;
+-		  k2 = 2.0*k2*(1.0+0.5*FINE_STRUCTURE_CONST2*k2);
+-		  a1 = FINE_STRUCTURE_CONST2*k2;
+-		  cs1 = data[1]*(log(0.5*k2/eth) - a1/(1+a1));
+-		  cs1 += r.born[0];
+-		  cs1 *= 1+a1;
+-		}
+-		a1 = e0/HARTREE_EV;
+-		if (XCEMode() == 1) {
+-		  a1 *= (1.0+0.5*FINE_STRUCTURE_CONST2*a);
+-		}
+-		a1 = PI*AREA_AU20*cs1/(2.0*a1);
+-	      } else {
+-		cs1 = cs;
+-		a1 = a;
++	      ratio = 1.0;
++	      cs = InterpolateCECross(e1, &r, &h, data, &a, &ratio, 1);
++	      cs1 = InterpolateCECross(e1, &r, &h, data, &a1, &ratio, 0);
++	      if (!h.msub) {
++		a /= (mem_en_table[r.lower].j+1.0);
++		a1 /= (mem_en_table[r.lower].j+1.0);
+ 	      }
+ 	    } else {
+ 	      cs = 0.0;
+@@ -1440,7 +1350,7 @@ int CEMFMaxwell(char *ifn, char *ofn, int i0, int i1,
+   CEMF_HEADER mh;
+   CEMF_RECORD mr;
+   int i, t, m, p, ith, iph;
+-  double data[2+(1+MAXNE)*4], e, cs, a, c, b;
++  double data[4+(2+MAXNE)*4], e, cs, a, cs1, a1, c, c1, b, cx, cx1;
+   double *xg = gauss_xw[0];
+   double *wg = gauss_xw[1];
+   EN_SRECORD *mem_en_table;
+@@ -1474,7 +1384,6 @@ int CEMFMaxwell(char *ifn, char *ofn, int i0, int i1,
+     n = ReadCEMFHeader(f1, &mh, swp);
+     if (n == 0) break;
+     CEMF2CEFHeader(&mh, &h);
+-    PrepCEFCrossHeader(&h, data);
+     for (i = 0; i < mh.ntransitions; i++) {
+       n = ReadCEMFRecord(f1, &mr, swp, &mh);
+       if ((mr.lower == i0 || i0 < 0) && (mr.upper == i1 || i1 < 0)) {
+@@ -1489,14 +1398,16 @@ int CEMFMaxwell(char *ifn, char *ofn, int i0, int i1,
+ 	    fprintf(f2, "# %2d %2d %11.4E %11.4E\n",
+ 		    ith, iph, mh.thetagrid[ith]*180.0/PI, mh.phigrid[iph]*180.0/PI);
+ 	    CEMF2CEFRecord(&mr, &r, &mh, ith, iph);
+-	    PrepCEFCrossRecord(&r, &h, data);
++	    PrepCEFCrossRecord(&r, &h, data, fh.atom);
+ 	    for (t = 0; t < nt; t++) {
+ 	      cs = 0.0;
++	      cs1 = 0.0;
+ 	      tms = temp[t]/bms;
+ 	      theta = FINE_STRUCTURE_CONST2*tms/HARTREE_EV;
+ 	      for (p = 0; p < 15; p++) {
+ 		a = tms*xg[p];
+-		c = InterpolateCEFCross(a, &r, &h, data);
++		c = InterpolateCEFCross(a, &r, &h, data, &cx, 1);
++		c1 = InterpolateCEFCross(a, &r, &h, data, &cx1, 0);
+ 		b = (a + e/bms)/HARTREE_EV;
+ 		b = FINE_STRUCTURE_CONST2*b;
+ 		a = 1+0.5*b;
+@@ -1506,11 +1417,14 @@ int CEMFMaxwell(char *ifn, char *ofn, int i0, int i1,
+ 		}
+ 		b *= MaxwellRC(e/temp[t]+xg[p],theta);
+ 		cs += wg[p]*c*b;
++		cs1 += wg[p]*c1*b;
+ 	      }
+ 	      a = 217.16*sqrt(HARTREE_EV/(2.0*tms));
+-	      a *= cs*exp(-e/temp[t]);
+-	      fprintf(f2, "%11.4E\t%11.4E\t%11.4E\n",
+-		      temp[t], cs, a);
++	      a *= exp(-e/temp[t]);
++	      a1 = a*cs1;
++	      a *= cs;
++	      fprintf(f2, "%11.4E\t%11.4E\t%11.4E\t%11.4E\t%11.4E\n",
++		      temp[t], cs, a, cs1, a1);
+ 	    }
+ 	    fprintf(f2, "\n\n");
+ 	  }
+@@ -1559,7 +1473,7 @@ int CEFMaxwell(char *ifn, char *ofn, int i0, int i1,
+   CEF_HEADER h;
+   CEF_RECORD r;
+   int i, t, m, p;
+-  double data[2+(1+MAXNE)*4], e, cs, a, b, c;
++  double data[4+(2+MAXNE)*4], e, cs, a, cs1, a1, b, c, c1, cx, cx1;
+   double *xg = gauss_xw[0];
+   double *wg = gauss_xw[1];
+   EN_SRECORD *mem_en_table;
+@@ -1600,7 +1514,6 @@ int CEFMaxwell(char *ifn, char *ofn, int i0, int i1,
+   while (1) {
+     n = ReadCEFHeader(f1, &h, swp);
+     if (n == 0) break;
+-    PrepCEFCrossHeader(&h, data);
+     for (i = 0; i < h.ntransitions; i++) {
+       n = ReadCEFRecord(f1, &r, swp, &h);
+       if ((r.lower == i0 || i0 < 0) && (r.upper == i1 || i1 < 0)) {
+@@ -1610,14 +1523,16 @@ int CEFMaxwell(char *ifn, char *ofn, int i0, int i1,
+ 		r.lower, mem_en_table[r.lower].p, mem_en_table[r.lower].j,
+ 		r.upper, mem_en_table[r.upper].p, mem_en_table[r.upper].j,
+ 		e, nt);
+-	PrepCEFCrossRecord(&r, &h, data);
++	PrepCEFCrossRecord(&r, &h, data, fh.atom);
+ 	for (t = 0; t < nt; t++) {
+ 	  cs = 0.0;
++	  cs1 = 0.0;
+ 	  tms = temp[t]/bms;
+ 	  theta = FINE_STRUCTURE_CONST2*tms/HARTREE_EV;
+ 	  for (p = 0; p < 15; p++) {
+ 	    a = tms*xg[p];
+-	    c = InterpolateCEFCross(a, &r, &h, data);
++	    c = InterpolateCEFCross(a, &r, &h, data, &cx, 1);
++	    c1 = InterpolateCEFCross(a, &r, &h, data, &cx1, 0);
+ 	    b = (a + e/bms)/HARTREE_EV;
+ 	    b = FINE_STRUCTURE_CONST2*b;
+ 	    a = 1+0.5*b;
+@@ -1627,11 +1542,14 @@ int CEFMaxwell(char *ifn, char *ofn, int i0, int i1,
+ 	    }
+ 	    b *= MaxwellRC(e/temp[t]+xg[p], theta);
+ 	    cs += wg[p]*c*b;
++	    cs1 += wg[p]*c1*b;
+ 	  }
+ 	  a = 217.16*sqrt(HARTREE_EV/(2.0*tms));
+-	  a *= cs*exp(-e/temp[t]);
+-	  fprintf(f2, "%11.4E\t%11.4E\t%11.4E\n",
+-		  temp[t], cs, a);
++	  a *= exp(-e/temp[t]);
++	  a1 = a*cs1;
++	  a *= cs;
++	  fprintf(f2, "%11.4E\t%11.4E\t%11.4E\t%11.4E\t%11.4E\n",
++		  temp[t], cs, a, cs1, a1);
+ 	}
+ 	fprintf(f2, "\n\n");
+ 	if (i0 >= 0 && i1 >= 0) {
+@@ -1670,7 +1588,8 @@ int CEMaxwell(char *ifn, char *ofn, int i0, int i1,
+   CE_HEADER h;
+   CE_RECORD r;
+   int i, t, m, k, p;
+-  double data[2+(1+MAXNUSR)*4], e, cs, a, c, b, d, ratio;
++  double data[4+(2+MAXNUSR)*4], e, cs, a, cs1, a1, c;
++  double c1, b, d, cx, cx1, ratio;
+   double *xg = gauss_xw[0];
+   double *wg = gauss_xw[1];
+   EN_SRECORD *mem_en_table;
+@@ -1710,7 +1629,6 @@ int CEMaxwell(char *ifn, char *ofn, int i0, int i1,
+   while (1) {
+     n = ReadCEHeader(f1, &h, swp);
+     if (n == 0) break;
+-    PrepCECrossHeader(&h, data);
+     for (i = 0; i < h.ntransitions; i++) {
+       n = ReadCERecord(f1, &r, swp, &h);
+       if ((r.lower == i0 || i0 < 0) && (r.upper == i1 || i1 < 0)) {
+@@ -1721,14 +1639,16 @@ int CEMaxwell(char *ifn, char *ofn, int i0, int i1,
+ 		r.upper, mem_en_table[r.upper].j,
+ 		e, nt, r.nsub);
+ 	for (k = 0; k < r.nsub; k++) {
+-	  PrepCECrossRecord(k, &r, &h, data);
++	  PrepCECrossRecord(k, &r, &h, data, fh.atom);
+ 	  for (t = 0; t < nt; t++) {
+ 	    tms = temp[t]/bms;
+ 	    theta = FINE_STRUCTURE_CONST2*tms/HARTREE_EV;
+ 	    cs = 0.0;
++	    cs1 = 0.0;
+ 	    for (p = 0; p < 15; p++) {
+ 	      a = tms*xg[p];
+-	      c = InterpolateCECross(a, &r, &h, data, &ratio);
++	      c = InterpolateCECross(a, &r, &h, data, &cx, &ratio, 1);
++	      c1 = InterpolateCECross(a, &r, &h, data, &cx1, &ratio, 0);
+ 	      b = (a + e/bms)/HARTREE_EV;
+ 	      b = FINE_STRUCTURE_CONST2*b;
+ 	      a = 1+0.5*b;
+@@ -1737,13 +1657,20 @@ int CEMaxwell(char *ifn, char *ofn, int i0, int i1,
+ 		b /= a;
+ 	      }
+ 	      d = MaxwellRC(e/temp[t]+xg[p],theta);
+-	      cs += wg[p]*c*b*d;
++	      d *= b;
++	      cs += wg[p]*c*d;
++	      cs1 += wg[p]*c1*d;
+ 	    }
+ 	    a = 217.16*sqrt(HARTREE_EV/(2.0*tms));
+-	    a *= cs*exp(-e/temp[t]);
+-	    if (!h.msub) a /= (mem_en_table[r.lower].j+1.0);
+-	    fprintf(f2, "%11.4E\t%11.4E\t%11.4E\n",
+-		    temp[t], cs, a);
++	    a *= exp(-e/temp[t]);
++	    a1 = a*cs1;
++	    a *= cs;
++	    if (!h.msub) {
++	      a /= (mem_en_table[r.lower].j+1.0);
++	      a1 /= (mem_en_table[r.lower].j+1.0);
++	    }
++	    fprintf(f2, "%11.4E\t%11.4E\t%11.4E\t%11.4E\t%11.4E\n",
++		    temp[t], cs, a, cs1, a1);
+ 	  }
+ 	  fprintf(f2, "\n\n");
+ 	}
+@@ -3470,7 +3397,7 @@ void ModifyCE(int nc, MOD_RECORD *mr, int nr, MOD_RECORD *pr,
+   CE_HEADER h, *h0;
+   CE_RECORD r, *r0;
+   MOD_RECORD mr0;
+-  double a, data[2+(1+MAXNUSR)*3];
++  double a, cx, data[4+(2+MAXNUSR)*4];
+ 
+   if (GetMemENTable(&n) == NULL) {
+     printf("must build the in-memory enegy table for CE modification\n");
+@@ -3531,15 +3458,14 @@ void ModifyCE(int nc, MOD_RECORD *mr, int nr, MOD_RECORD *pr,
+ 	      r.born[0] = r0->born[0];
+ 	      r.born[1] = r0->born[1];
+ 	      p = 0;
+-	      PrepCECrossHeader(h0, data);
+ 	      for (j = 0; j < r.nsub; j++) {
+ 		if (h.msub) {
+ 		  r.params[j] = r0->params[j];
+ 		}
+-		PrepCECrossRecord(j, r0, h0, data);
++		PrepCECrossRecord(j, r0, h0, data, fh->atom);
+ 		for (t = 0; t < h.n_usr; t++) {
+ 		  r.strength[p] = InterpolateCECross(h.usr_egrid[t]*HARTREE_EV,
+-						     r0, h0, data, &a);
++						     r0, h0, data, &cx, &a, 1);
+ 		  p++;
+ 		}
+ 	      }
+diff --git a/faclib/interpolation.h b/faclib/interpolation.h
+index 4da03f90..928bc69c 100644
+--- a/faclib/interpolation.h
++++ b/faclib/interpolation.h
+@@ -65,20 +65,20 @@ double MaxwellRC(double x, double t);
+ int NewtonCotes(double *r, double *x, int i0, int i1, int m, int id);
+ int NewtonCotesIP(double *r, double *x, int i0, int i1, int m, int id);
+ double RRCrossHn(double z, double e, int n);
+-void PrepCECrossHeader(CE_HEADER *h, double *data);
++void PrepCECrossData(int m, double *data);
++double InterpCECrossData(int m, double *data, double e, double *cx, double *r);
+ void PrepCECrossRecord(int k, CE_RECORD *r, CE_HEADER *h,
+-		       double *data);
++		       double *data, double z);
+ double InterpolateCECross(double e, CE_RECORD *r, CE_HEADER *h,
+-			  double *data, double *ratio);
++			  double *data, double *cx, double *ratio, int md);
+ int CECross(char *ifn, char *ofn, int i0, int i1, 
+ 	    int negy, double *egy, int mp);
+ int CEMaxwell(char *ifn, char *ofn, int i0, int i1, 
+ 	      int nt, double *temp);
+-void PrepCEFCrossHeader(CEF_HEADER *h, double *data);
+ void PrepCEFCrossRecord(CEF_RECORD *r, CEF_HEADER *h,
+-			double *data);
++			double *data, double z);
+ double InterpolateCEFCross(double e, CEF_RECORD *r, CEF_HEADER *h,
+-			   double *data);
++			   double *data, double *cx, int md);
+ int CEFCross(char *ifn, char *ofn, int i0, int i1, 
+ 	     int negy, double *egy, int mp);
+ int CEFMaxwell(char *ifn, char *ofn, int i0, int i1, 
+diff --git a/faclib/mmalloc.c b/faclib/mmalloc.c
+index 0d0a2e6e..bff6de59 100644
+--- a/faclib/mmalloc.c
++++ b/faclib/mmalloc.c
+@@ -29,12 +29,12 @@ double dmsize() {
+ 
+ void *mmalloc(size_t size) {
+   size_t *p = NULL;
+-  int ns = size + sizeof(size_t);
++  size_t ns = size + sizeof(size_t);
+   p = (size_t *) malloc(ns);
+   if (p == NULL) {
+-    printf("malloc error: %zu %zu\n", size, _tsize);
+-    int *ix = 0;
+-    *ix = 0;
++    printf("malloc error: requested %zu bytes, current total %zu\n", size, _tsize);
++    fflush(stdout);
++    exit(1);
+   }
+   *p = ns;
+ #pragma omp atomic
+@@ -50,6 +50,7 @@ void *mcalloc(size_t n, size_t size) {
+   p = (size_t *) calloc(ns, 1);
+   if (p == NULL) {
+     printf("calloc error: %zu %zu %zu\n", n, size, _tsize);
++    fflush(stdout);
+     exit(1);
+   }
+   *p = ns;
+@@ -61,8 +62,8 @@ void *mcalloc(size_t n, size_t size) {
+ 
+ void *mrealloc(void *p, size_t size) {
+   size_t *ps;
+-  int ns = size+sizeof(size_t);
+-  int ns0 = 0;
++  size_t ns = size+sizeof(size_t);
++  size_t ns0 = 0;
+   
+   if (p) {
+     ps = (size_t *) p;
+@@ -72,13 +73,18 @@ void *mrealloc(void *p, size_t size) {
+   ps = (size_t *) realloc(ps, ns);
+   if (ps == NULL) {
+     printf("realloc error: %zu %zu\n", size, _tsize);
++    fflush(stdout);
+     exit(1);
+   }
+   *ps = ns;
+ 
+-  ns -= ns0;
++  if (ns >= ns0) {
+ #pragma omp atomic
+-  _tsize += ns;
++    _tsize += (ns - ns0);
++  } else {
++#pragma omp atomic
++    _tsize -= (ns0 - ns);
++  }
+ 
+   return &ps[1];
+ }
+diff --git a/faclib/orbital.c b/faclib/orbital.c
+index 4a8eefa8..a9f69cf4 100644
+--- a/faclib/orbital.c
++++ b/faclib/orbital.c
+@@ -23,17 +23,6 @@
+ #include "fftsg.h"
+ #include "global.h"
+ 
+-/*Debye Screening Helper*/
+-extern double EEScreenMu(void);
+-
+-static double _shx(double x){
+-	if (x<1e-6){
+-		return 1.0 + x*x/6.0;
+-	}
+-	if (x>400.0) x = 400.0;
+-	return sinh(x)/x;
+-}
+-
+ static char *rcsid="$Id$";
+ #if __GNUC__ == 2
+ #define USE(var) static void * use_##var = (&use_##var, (void *) &var) 
+@@ -4426,9 +4415,9 @@ void SetPotentialIPS(POTENTIAL *pot, int iter) {
+       double xd = x/pot->dps;
+       double xdd = xd/pot->dps;
+       if (_debye_mode == 0) {
+-	pot->ZPS[i] = pot->zps*(x-1.0);
+-	pot->dZPS[i] = -pot->zps*xd;
+-	pot->dZPS2[i] = pot->zps*xdd;
++	pot->ZPS[i] = -pot->zps*(x-1.0);
++	pot->dZPS[i] = pot->zps*xd;
++	pot->dZPS2[i] = -pot->zps*xdd;
+       } else if (_debye_mode == 1) {
+ 	pot->ZPS[i] = pot->Z[i]*(1.0-x);
+ 	pot->dZPS[i] = pot->Z[i]*xd + pot->dZ[i]*(1.0-x);
+@@ -4765,7 +4754,6 @@ int DensityToSZ(POTENTIAL *pot, double *d, double *z,
+ 		double *zx, double *jps, int md) {
+   int i, im, maxrp, k;
+   double nx, rx, a, vxs;
+-  double _mu = EEScreenMu();
+ 
+   if (pot->ips > 0 && pot->ups+1 == 1) {
+     maxrp = pot->ips+1;
+@@ -4788,23 +4776,16 @@ int DensityToSZ(POTENTIAL *pot, double *d, double *z,
+   im = maxrp-1;
+   for (i = 0; i <= im; i++) {
+     _dwork[i] = d[i]*pot->dr_drho[i];
+-    if (_mu > 0) _dwork[i] *= _shx(_mu*pot->rad[i]);
+   }
+   _dwork1[0] = d[0]*pot->rad[0]/3.0;
+   NewtonCotesIP(_dwork1, _dwork, 0, im, -1, 0);
+   for (i = 0; i <= im; i++) {
+     _dwork[i] = (d[i]/pot->rad[i])*pot->dr_drho[i];
+-    if (_mu >0) _dwork[i] *= exp(-_mu*pot->rad[i]);
+   }
+   _dwork2[im] = 0.0;
+   NewtonCotesIP(_dwork2, _dwork, 0, im, -1, -1);
+   for (i = 0; i <= im; i++) {
+-    if (_mu>0){
+-	    z[i] = exp(-_mu*pot->rad[i])*_dwork1[i]
+-		    + pot->rad[i]*_shx(_mu*pot->rad[i])*_dwork2[i];
+-    } else{
+     z[i] = _dwork1[i] + pot->rad[i]*_dwork2[i];
+-    }
+   }  
+   if (pot->ahx) {
+     for (i = 0; i <= im; i++) {
+diff --git a/faclib/polarization.c b/faclib/polarization.c
+index 39deee87..8a07c3bd 100644
+--- a/faclib/polarization.c
++++ b/faclib/polarization.c
+@@ -639,9 +639,9 @@ int SetMCERates(char *fn) {
+   int n, k, m, t, p, i, q;
+   int m1, m2, j1, j2, i0;
+   int swp, ncs;
+-  double data[2+(1+MAXNUSR)*4];
++  double data[4+(2+MAXNUSR)*4];
+   double *cs1, *cs2;
+-  double e1, e2, e, a, v, ratio;
++  double e1, e2, e, a, v, cs, ratio;
+   double esigma, energy;
+   double egrid[NEINT], rint[NEINT], fint[NEINT];
+   
+@@ -702,7 +702,6 @@ int SetMCERates(char *fn) {
+   while (1) {
+     n = ReadCEHeader(f, &h, swp);
+     if (n == 0) break;
+-    PrepCECrossHeader(&h, data);
+     for (i = 0; i < h.ntransitions; i++) {
+       n = ReadCERecord(f, &r, swp, &h);
+       e = levels[r.upper].energy - levels[r.lower].energy;
+@@ -714,17 +713,14 @@ int SetMCERates(char *fn) {
+ 	cs2 = cs1 + ncs;
+       }
+       for (k = 0; k < r.nsub; k++) {
+-	PrepCECrossRecord(k, &r, &h, data);
++	PrepCECrossRecord(k, &r, &h, data, fh.atom);
+ 	if (esigma > 0 && params.idr < 0) {
+ 	  i0 = -1;
+ 	  for (q = 0; q < NEINT; q++) {
+ 	    e2 = egrid[q] - e;
+ 	    if (e2 >= 0) {
+-	      rint[q] = InterpolateCECross(e2, &r, &h, data, &ratio);
+-	      a = egrid[q]/HARTREE_EV;
+-	      a *= (1.0 + 0.5*FINE_STRUCTURE_CONST2*a);
+-	      a = PI*AREA_AU20/(2.0*a);
+-	      rint[q] *= a*fint[q];
++	      cs = InterpolateCECross(e2, &r, &h, data, &a, &ratio, 1);
++	      rint[q] = a*fint[q];
+ 	      if (i0 < 0) i0 = q;
+ 	    }
+ 	  }
+@@ -736,26 +732,17 @@ int SetMCERates(char *fn) {
+ 	  }
+ 	  for (q = 0; q < NEINT; q++) {
+ 	    e2 = egrid[q];
+-	    rint[q] = InterpolateCECross(e2, &r, &h, data, &ratio);
+-	    a = e2/HARTREE_EV;
+-	    a *= (1.0 + 0.5*FINE_STRUCTURE_CONST2*a);
+-	    a = PI*AREA_AU20/(2.0*a);
+-	    rint[q] *= a*fint[q];
++	    cs = InterpolateCECross(e2, &r, &h, data, &a, &ratio, 1);
++	    rint[q] = a*fint[q];
+ 	  }
+ 	  cs2[k] = Simpson(rint, 0, NEINT-1)*(egrid[1]-egrid[0]);
+ 	} else {
+ 	  e2 = e1 - e;
+-	  cs1[k] = InterpolateCECross(e2, &r, &h, data, &ratio);
+-	  a = e1/HARTREE_EV;
+-	  a *= (1.0 + 0.5*FINE_STRUCTURE_CONST2*a);
+-	  a = PI*AREA_AU20/(2.0*a);
+-	  cs1[k] *= a*v;
++	  cs = InterpolateCECross(e2, &r, &h, data, &a, &ratio, 1);
++	  cs1[k] = a*v;
+ 	  e2 = e1;
+-	  cs2[k] = InterpolateCECross(e2, &r, &h, data, &ratio);
+-	  a = e2/HARTREE_EV;
+-	  a *= (1.0 + 0.5*FINE_STRUCTURE_CONST2*a);
+-	  a = PI*AREA_AU20/(2.0*a);
+-	  cs2[k] *= a*v;
++	  cs = InterpolateCECross(e2, &r, &h, data, &a, &ratio, 1);
++	  cs2[k] = a*v;
+ 	}
+       }
+       ce_rates[t].lower = r.lower;
+diff --git a/faclib/rates.c b/faclib/rates.c
+index e2419e18..ef02441a 100644
+--- a/faclib/rates.c
++++ b/faclib/rates.c
+@@ -499,206 +499,34 @@ int CXRate(double *dir, int *ip, int i0, int f0) {
+ }
+ 
+ double CERate1E(double e1, double eth0, int np, void *p) {
+-  double *x, *y;
+-  int m1, n, one;
+-  double *dp, a, x0, y0;
+-  double e0, d, c, b, b0, b1;
+-  double bte, bms, eth, e, et0;
+-
+-  BornFormFactorTE(&bte);
+-  bms = BornMass();  
+-  eth = (eth0 + bte*HARTREE_EV)/bms;
+-  e = e1/bms;
+-
+-  if (e < eth) return 0.0;
++  double *dp, a, b, e0, bms, eth;
+ 
+   dp = (double *) p;
++  bms = BornMass();
++  e0 = e1/bms/HARTREE_EV;
++  eth = dp[0];
++  if (e0 < eth) return 0.0;
+ 
+-  if (np == 0) {
+-    e0 = e/HARTREE_EV;
+-    d = 2.0*e0*(1.0+0.5*FINE_STRUCTURE_CONST2*e0);
+-    c = FINE_STRUCTURE_CONST2*d;
+-    b = log(1.05*d*HARTREE_EV/eth0) - c/(1.0+c);
+-    b = Max(0.0, b);
+-    a = dp[1]*b*(1+c);
+-    /*
+-    b0 = 1.0 + FINE_STRUCTURE_CONST2*e0;
+-    b1 = 1.0 + FINE_STRUCTURE_CONST2*(e0-eth/HARTREE_EV);
+-    a *= b0*b1;    
+-    */
+-  } else {
+-    if (dp[0] > 0) et0 = dp[0];
+-    else et0 = eth;
+-    m1 = np + 1;
+-    y = dp+2;
+-    x0 = (et0+e-eth)/et0;
+-    x0 = Max(1e-10, x0);
+-    x0 = log(x0);
+-    x = y + m1;
+-    if (x0 <= x[np-1]) {
+-      n = 2;
+-      one = 1;
+-      if (fabs(bms-1.0) < EPS3 || x0 >= x[0]) {
+-	UVIP3P(n, np, x, y, one, &x0, &a);
+-	if (a < 0.0) a = 0.0;
+-      } else {
+-	a = y[0] * pow(exp(x0-x[0]), 2.5);
+-      }
+-    } else {
+-      x0 = (e-eth)/(et0+e-eth);
+-      y0 = y[np-1];
+-      if (dp[1] > -EPS10) {
+-	if (XCEMode() == 1) {
+-	  e0 = (x[np]*et0/(1.0-x[np]) + eth)/HARTREE_EV;
+-	  d = 2.0*e0*(1.0+0.5*FINE_STRUCTURE_CONST2*e0);
+-	  c = FINE_STRUCTURE_CONST2*d;
+-	  b = log(0.5*d*HARTREE_EV/eth0) - c/(1.0+c);
+-	  y0 = y0/(1+c) - dp[1]*b;
+-	  a = y[np] + (x0-1.0)*(y0-y[np])/(x[np]-1.0);
+-	  e0 = e/HARTREE_EV;
+-	  d = 2.0*e0*(1.0+0.5*FINE_STRUCTURE_CONST2*e0);
+-	  c = FINE_STRUCTURE_CONST2*d;
+-	  b = log(0.5*d*HARTREE_EV/eth0) - c/(1.0+c);
+-	  a = (a + dp[1]*b)*(1+c);
+-	} else {
+-	  e0 = (x[np]*et0/(1.0-x[np]) + eth);
+-	  b = log(e0/eth0);
+-	  y0 -= dp[1]*b;
+-	  a = y[np] + (x0-1.0)*(y0-y[np])/(x[np]-1.0);
+-	  b = log(e/eth0);
+-	  a += dp[1]*b;
+-	}
+-      } else {
+-	a = y[np] + (x0-1.0)*(y0-y[np])/(x[np]-1.0);
+-      }
+-    }
+-  }
++  b = InterpCECrossData(np, dp, e0-eth, &a, NULL);
+   if (a <= 0.0) {
+     a = 0.0;
+     return a;
+-  }
+-  
+-  e0 = e/HARTREE_EV;
+-  b = 2.0*e0;
+-  if (XCEMode() == 1) {
+-    b *= (1.0+0.5*FINE_STRUCTURE_CONST2*e0);
+-  }
+-  a *= PI*AREA_AU20/b;
++  }  
+   a *= VelocityFromE(e1, bms);
+   return a;
+ }
+ 
+ double DERate1E(double e1, double eth0, int np, void *p) {
+-  double a, x0, y0, *x, *y;
+-  double *dp;
+-  int m1, n, one;
+-  double e0, d, c, b, b0, b1;
+-  double bte, bms, eth, e, et0;
++  double *dp, a, b, e0, bms;
+ 
+-  BornFormFactorTE(&bte);
++  if (e1 < 0) return 0.0;
+   bms = BornMass();
+-  eth = (eth0 + bte*HARTREE_EV)/bms;
+-  e = e1/bms;
+-
++  e0 = e1/bms/HARTREE_EV;
+   dp = (double *) p;
+-
+-  if (np == 0) {
+-    e0 = (e + eth)/HARTREE_EV;
+-    d = 2.0*e0*(1.0+0.5*FINE_STRUCTURE_CONST2*e0);
+-    c = FINE_STRUCTURE_CONST2*d;
+-    b = log(1.05*d*HARTREE_EV/eth0) - c/(1.0+c);
+-    b = Max(0.0, b);
+-    a = dp[1]*b*(1+c);
+-  } else {
+-    if (dp[0] > 0) {
+-      et0 = dp[0];
+-    } else {
+-      et0 = eth;
+-    }
+-    m1 = np + 1;
+-    x0 = log((et0+e)/et0);
+-    y = dp+2;
+-    x = y + m1;
+-
+-    if (x0 <= x[np-1]) {
+-      n = 2;
+-      one = 1;
+-      if (fabs(bms-1.0) < EPS3 || x0 >= x[0]) {
+-	UVIP3P(n, np, x, y, one, &x0, &a);
+-	if (a < 0.0) a = 0.0;
+-      } else {
+-	a = y[0] * pow(exp(x0-x[0]), 2.5);
+-      }
+-    } else {
+-      x0 = e/(et0+e);
+-      y0 = y[np-1]; 
+-      if (dp[1] > -EPS10) {
+-	if (XCEMode() == 1) {
+-	  e0 = (x[np]*et0/(1.0-x[np]) + eth)/HARTREE_EV;
+-	  d = 2.0*e0*(1.0+0.5*FINE_STRUCTURE_CONST2*e0);
+-	  c = FINE_STRUCTURE_CONST2*d;
+-	  b = log(0.5*d*HARTREE_EV/eth0) - c/(1.0+c);
+-	  y0 = y0/(1+c) - dp[1]*b;
+-	  a = y[np] + (x0-1.0)*(y0-y[np])/(x[np]-1.0);
+-	  e0 = (e+eth)/HARTREE_EV;
+-	  d = 2.0*e0*(1.0+0.5*FINE_STRUCTURE_CONST2*e0);
+-	  c = FINE_STRUCTURE_CONST2*d;
+-	  b = log(0.5*d*HARTREE_EV/eth0) - c/(1.0+c);
+-	  a = (a + dp[1]*b)*(1+c);
+-	} else {
+-	  e0 = (x[np]*et0/(1.0-x[np]) + eth);
+-	  b = log(e0/eth0);
+-	  y0 -= dp[1]*b;
+-	  a = y[np] + (x0-1.0)*(y0-y[np])/(x[np]-1.0);
+-	  b = log((e+eth)/eth0);
+-	  a += dp[1]*b;
+-	}
+-	/*
+-	e0 = (x[np]*et0/(1.0-x[np]) + eth)/HARTREE_EV;
+-	b0 = 1.0 + FINE_STRUCTURE_CONST2*e0;
+-	b1 = 1.0 + FINE_STRUCTURE_CONST2*(e0-eth/HARTREE_EV);
+-	y0 /= b0*b1;
+-	d = 2.0*e0*(1.0+0.5*FINE_STRUCTURE_CONST2*e0);
+-	c = FINE_STRUCTURE_CONST2*d;
+-	b = log(0.5*d*HARTREE_EV/eth0) - c/(1.0+c);  
+-	y0 -= dp[1]*b;
+-	a = y[np] + (x0-1.0)*(y0-y[np])/(x[np]-1.0);
+-	e0 = (e + eth)/HARTREE_EV;
+-	d = 2.0*e0*(1.0+0.5*FINE_STRUCTURE_CONST2*e0);
+-	c = FINE_STRUCTURE_CONST2*d;
+-	b = log(0.5*d*HARTREE_EV/eth0) - c/(1.0+c);  
+-	a += dp[1]*b;
+-	b0 = 1.0 + FINE_STRUCTURE_CONST2*e0;
+-	b1 = 1.0 + FINE_STRUCTURE_CONST2*(e0-eth/HARTREE_EV);
+-	a *= b0*b1;
+-      } else if (dp[1] + 1.0 == 1.0) {
+-	e0 = (x[np]*et0/(1.0-x[np]) + eth)/HARTREE_EV;
+-	b0 = 1.0 + FINE_STRUCTURE_CONST2*e0;
+-	b1 = 1.0 + FINE_STRUCTURE_CONST2*(e0-eth/HARTREE_EV);
+-	y0 /= b0*b1;
+-	a = y[np] + (x0-1.0)*(y0-y[np])/(x[np]-1.0);
+-	e0 = (e + eth)/HARTREE_EV;
+-	b0 = 1.0 + FINE_STRUCTURE_CONST2*e0;
+-	b1 = 1.0 + FINE_STRUCTURE_CONST2*(e0-eth/HARTREE_EV);
+-	a *= b0*b1;
+-	*/
+-      } else {
+-	a = y[np] + (x0-1.0)*(y0-y[np])/(x[np]-1.0);
+-      }
+-    }
+-  }
+-  if (a <= 0.0) {
+-    a = 0.0;
+-    return a;
+-  }
+-
+-  e0 = e/HARTREE_EV;
+-  b = 2.0*e0;
+-  if (XCEMode() == 1) {
+-    b *= (1.0+0.5*FINE_STRUCTURE_CONST2*e0);
+-  }
+-  a *= PI*AREA_AU20/b;
++  
++  b = InterpCECrossData(np, dp, e0, &a, NULL);
+   a *= VelocityFromE(e1, bms);
++  
+   return a;
+ }
+   
+diff --git a/faclib/structure.c b/faclib/structure.c
+index 5a428b82..dd480495 100644
+--- a/faclib/structure.c
++++ b/faclib/structure.c
+@@ -460,7 +460,7 @@ int ConstructHamiltonDiagonal(int isym, int k, int *kg, int m) {
+   }
+   if (!(h->basis)) goto ERROR;
+ 
+-  h->msize = h->dim*h->n_basis + h->dim;
++  h->msize = (size_t)h->dim * (size_t)h->n_basis + h->dim;
+   if (h->hamilton == NULL) {
+     h->hsize0 = h->hsize;
+     h->hamilton = (double *) malloc(sizeof(double)*h->hsize);
+@@ -7090,7 +7090,7 @@ int AllocHamMem(HAMILTON *h, int hdim, int nbasis) {
+   h->iham = nhams;
+   h->n_basis = nbasis;
+ 
+-  h->msize = h->dim * h->n_basis + h->dim;
++  h->msize = (size_t)h->dim * (size_t)h->n_basis + (size_t)h->dim;
+   if (h->mixing == NULL) {
+     h->msize0 = h->msize;
+     h->mixing = (double *) malloc(sizeof(double)*(size_t)h->msize);
+@@ -7127,10 +7127,10 @@ int AllocHamMem(HAMILTON *h, int hdim, int nbasis) {
+     return 0;
+   }
+   
+-  t = hdim*(hdim+1)/2;
++  t = (size_t)hdim * (size_t)(hdim+1)/2;
+   h->dsize = t;
+   h->dsize2 = t*2;
+-  h->hsize = t + hdim*jp + jp;
++  h->hsize = t + (size_t)hdim*(size_t)jp + (size_t)jp;
+   if (h->hamilton == NULL) {
+     h->hsize0 = h->hsize;
+     h->hamilton = (double *) malloc(sizeof(double)*(size_t)h->hsize);
+@@ -7147,7 +7147,7 @@ int AllocHamMem(HAMILTON *h, int hdim, int nbasis) {
+   size_t wl = 3*t;
+   size_t wi = 0;
+   if (nbasis > hdim) {
+-    wl += t + hdim*(nbasis-hdim);
++    wl += t + (size_t)hdim*(size_t)(nbasis-hdim);
+     wi += nbasis-hdim;
+   }
+   if (h->work == NULL) {
+diff --git a/faclib/Makefile.in b/faclib/Makefile.in
+index 3c1c7870..ec8488af 100644
+--- a/faclib/Makefile.in
++++ b/faclib/Makefile.in
+@@ -26,7 +26,7 @@ endif
+ 
+ faclib: ${OBJS}
+ ifdef F2C
+-	$(FC) -c -o f2c.o f2c.f90
++	$(FC) $(FFLAGS) -c -o f2c.o f2c.f90
+ endif
+ 	ar r ${TOPDIR}/libfac.a ${OBJS} ${FOBJ}
+ 
+diff --git a/faclib/coulomb.c b/faclib/coulomb.c
+index a5aac2d4..9969c3b8 100644
+--- a/faclib/coulomb.c
++++ b/faclib/coulomb.c
+@@ -41,6 +41,135 @@ static int kl_hydrogenic_max;
+ static int dipole_nmax = 0;
+ static double **dipole_array = NULL;
+ 
++static double _gff_HummerD[88] = {
++	8.98694018e+00, -4.00951586e+00,  8.80887127e-01,  2.64024511e-02,
++       -4.58064591e-02, -3.56805570e-03,  2.82779807e-03,  3.36586020e-04,
++       -8.00693699e-01,  9.46602170e-01,  9.04340253e-02, -9.60845145e-02,
++       -1.88562986e-02,  1.05031389e-02,  2.80088996e-03, -1.07820920e-03,
++       -3.78130510e-01,  1.10272633e-01, -1.54361918e-02,  8.31056111e-03,
++        2.17962052e-02,  4.25972629e-03, -4.18158879e-03, -1.77020833e-03,
++        1.87721313e-02, -1.00488570e-01, -5.48336638e-02, -4.52015441e-03,
++        8.36653043e-03,  3.70027393e-03,  6.88932042e-04,  9.46031320e-05,
++        7.30015839e-02,  3.57678550e-03, -4.54530702e-03, -1.01796560e-02,
++       -9.53021192e-03, -3.45018616e-03,  1.04048291e-03,  1.40707354e-03,
++       -1.74467155e-03,  2.86401386e-02,  1.90339484e-02,  7.09107449e-03,
++       -9.66837139e-04, -2.99910746e-03, -1.82064223e-03, -3.87408208e-04,
++       -1.70726837e-02, -4.69425478e-03,  1.31169152e-03,  5.31670314e-03,
++        5.17819310e-03,  2.45122893e-03, -2.27732161e-05, -8.18235906e-04,
++        2.56733166e-04, -9.15533997e-03, -6.99747919e-03, -3.57151864e-03,
++       -2.09610104e-04,  1.55382249e-03,  1.50958469e-03,  6.21262784e-04,
++        4.09832253e-03,  1.63521846e-03, -5.91888350e-04, -2.33309105e-03,
++       -2.48413831e-03, -1.35999606e-03, -5.37142615e-05,  5.55354956e-04,
++        3.83756240e-05,  2.93832523e-03,  2.39374706e-03,  1.32883981e-03,
++        9.13501331e-05, -7.13725230e-04, -7.65684816e-04, -3.50468380e-04,
++       -8.49199182e-04, -3.61532773e-04,  3.14801526e-04,  8.90920765e-04,
++        9.86973752e-04,  6.13467118e-04,  1.06888339e-04, -2.04608010e-04};
++
++static double _I0A[] =
++{
++-4.41534164647933937950E-18,
++ 3.33079451882223809783E-17,
++-2.43127984654795469359E-16,
++ 1.71539128555513303061E-15,
++-1.16853328779934516808E-14,
++ 7.67618549860493561688E-14,
++-4.85644678311192946090E-13,
++ 2.95505266312963983461E-12,
++-1.72682629144155570723E-11,
++ 9.67580903537323691224E-11,
++-5.18979560163526290666E-10,
++ 2.65982372468238665035E-9,
++-1.30002500998624804212E-8,
++ 6.04699502254191894932E-8,
++-2.67079385394061173391E-7,
++ 1.11738753912010371815E-6,
++-4.41673835845875056359E-6,
++ 1.64484480707288970893E-5,
++-5.75419501008210370398E-5,
++ 1.88502885095841655729E-4,
++-5.76375574538582365885E-4,
++ 1.63947561694133579842E-3,
++-4.32430999505057594430E-3,
++ 1.05464603945949983183E-2,
++-2.37374148058994688156E-2,
++ 4.93052842396707084878E-2,
++-9.49010970480476444210E-2,
++ 1.71620901522208775349E-1,
++-3.04682672343198398683E-1,
++ 6.76795274409476084995E-1
++};
++
++static double _I0B[] =
++{
++-7.23318048787475395456E-18,
++-4.83050448594418207126E-18,
++ 4.46562142029675999901E-17,
++ 3.46122286769746109310E-17,
++-2.82762398051658348494E-16,
++-3.42548561967721913462E-16,
++ 1.77256013305652638360E-15,
++ 3.81168066935262242075E-15,
++-9.55484669882830764870E-15,
++-4.15056934728722208663E-14,
++ 1.54008621752140982691E-14,
++ 3.85277838274214270114E-13,
++ 7.18012445138366623367E-13,
++-1.79417853150680611778E-12,
++-1.32158118404477131188E-11,
++-3.14991652796324136454E-11,
++ 1.18891471078464383424E-11,
++ 4.94060238822496958910E-10,
++ 3.39623202570838634515E-9,
++ 2.26666899049817806459E-8,
++ 2.04891858946906374183E-7,
++ 2.89137052083475648297E-6,
++ 6.88975834691682398426E-5,
++ 3.36911647825569408990E-3,
++ 8.04490411014108831608E-1
++};
++
++static double _K0A[] =
++{
++ 1.37446543561352307156E-16,
++ 4.25981614279661018399E-14,
++ 1.03496952576338420167E-11,
++ 1.90451637722020886025E-9,
++ 2.53479107902614945675E-7,
++ 2.28621210311945178607E-5,
++ 1.26461541144692592338E-3,
++ 3.59799365153615016266E-2,
++ 3.44289899924628486886E-1,
++-5.35327393233902768720E-1
++};
++
++static double _K0B[] = {
++ 5.30043377268626276149E-18,
++-1.64758043015242134646E-17,
++ 5.21039150503902756861E-17,
++-1.67823109680541210385E-16,
++ 5.51205597852431940784E-16,
++-1.84859337734377901440E-15,
++ 6.34007647740507060557E-15,
++-2.22751332699166985548E-14,
++ 8.03289077536357521100E-14,
++-2.98009692317273043925E-13,
++ 1.14034058820847496303E-12,
++-4.51459788337394416547E-12,
++ 1.85594911495471785253E-11,
++-7.95748924447710747776E-11,
++ 3.57739728140030116597E-10,
++-1.69753450938905987466E-9,
++ 8.57403401741422608519E-9,
++-4.66048989768794782956E-8,
++ 2.76681363944501510342E-7,
++-1.83175552271911948767E-6,
++ 1.39498137188764993662E-5,
++-1.28495495816278026384E-4,
++ 1.56988388573005337491E-3,
++-3.14481013119645005427E-2,
++ 2.44030308206595545468E0
++};
++
+ static int _cbindex[CBMULT][CBMULT+1];
+ static double *****_cb = NULL;
+ 
+@@ -1008,6 +1137,393 @@ int CoulombMultip(char *fn, double z, double te, double e1,
+   return 0;
+ }
+ 
++double GauntEFF(double xni2, double x) {
++  double r, r0, xni, pxn, xxn, xe;
++  double c0 = 0.551328895;
++  double c1 = pow(PI,-2./3.);
++  double c2 = 1.781;
++
++  if (x < EPS7) {
++    r = 4.0/x;
++  } else {
++    xe = sqrt(1-x);
++    r = (1+xe)/(1-xe);
++  }
++  if (xni2 < 1e-20) {
++    return c0*log(r);
++  }
++  xni = sqrt(xni2);
++  pxn = PI*xni;
++  xxn = x*xni;
++  xe = c2*xni;
++  r = log(1 + r/xe);
++  xe = log(xe);
++  r0 = pxn/sinh(pxn);
++  r += r0*r0*xe;
++  xe = 10*(x-6./7.);
++  if (xe < 0) {
++    r0 = 5/(1+exp(xe))-2.0;
++  } else {
++    xe = exp(-xe);
++    r0 = 5*xe/(1+xe)-2.0;
++  }
++  r0 *= (10/3.0)*xni2*exp(-1.5*pxn);
++  r -= r0;
++  r *= c0;
++  r0 = xxn/(xxn+c1);
++  r += r0;
++  return r;
++}
++
++double ChebyshevEval(double x, double *coeffs, int n) {  
++  double b0, b1, b2, *p;
++  int i;
++  p = coeffs;
++  b0 = *p++;
++  b1 = 0.0;
++  i = n-1;
++  do {
++    b2 = b1;
++    b1 = b0;
++    b0 = x*b1 - b2 + *p++;
++  } while (--i);
++  return (0.5*(b0-b2));
++}
++
++//exp(-x)*I0(x)
++double XBesselI0(double x) {
++  if (x < 0) x = -x;
++  double r;
++  if (x <= 8) {
++    r = ChebyshevEval(0.5*x-2, _I0A, 30);
++  } else {
++    r = ChebyshevEval(32./x-2, _I0B, 25)/sqrt(x);
++  }
++  return r;
++}
++
++//exp(x)*K0(x)
++double XBesselK0(double x) {
++  if (x <= 0.0) return -1.0;
++  double r;
++  if (x <= 2.0) {
++    r = exp(x);
++    r *= ChebyshevEval(x*x-2, _K0A, 10)-r*log(0.5*x)*XBesselI0(x);
++  } else {
++    r = ChebyshevEval(8/x-2, _K0B, 25)/sqrt(x);
++  }
++  
++  return r;
++}
++
++double GauntHummer(double g2, double u) {
++  double c[8];
++  double xg, xu, tm1, tm2, t, gff;
++  int i, j;
++
++  if (g2 < 1e-20) {
++    //born approx.
++    gff = 0.5513288954*XBesselK0(0.5*u);
++    return gff;
++  }
++  
++  g2 = Min(1e3, g2);
++  g2 = Max(1e-3, g2);
++  u = Min(31.6227766, u);
++  u = Max(1e-4, u);
++  
++  g2 = log10(g2);
++  u = log10(u);
++  
++  xg = g2/3.0;
++  tm1 = xg;
++  tm2 = 1.0;
++  for (j = 0; j < 8; j++) {
++    c[j] = _gff_HummerD[j]*0.5 + _gff_HummerD[8+j]*xg; 
++  }
++  for (i = 2; i < 11; i++) {
++    t = 2*xg*tm1 - tm2;
++    for (j = 0; j < 8; j++) {
++      c[j] += _gff_HummerD[8*i+j]*t;
++    }
++    tm2 = tm1;
++    tm1 = t;
++  }
++
++  xu = (2.0*u + 2.5)/5.5;
++  tm2 = 1.0;
++  tm1 = xu;
++  gff = c[0]*0.5 + c[1]*tm1;
++  for (j = 2; j < 8; j++) {
++    t = 2.0*xu*tm1 - tm2;
++    gff += c[j]*t;
++    tm2 = tm1;
++    tm1 = t;
++  }
++  return gff;
++}
++
++double GauntIFF(double z2, double t, double de, double msg, double ne, int m) {
++  double *xg, *wg, e1, e0, um, r, r0, tf, emu, d0, d1, dn;
++  double p0 = 0.858, p1 = 0.25054, p2 = 0.072;
++  int n = GaussXW(&xg, &wg);
++  int i;
++
++  if (ne > 0) {
++    //degeneracy correction
++    tf = 0.5*pow(3*PI*PI*ne*VOLUME_AU, 2./3.)*HARTREE_EV;
++    r0 = t/tf;
++    e0 = pow(r0, -(1+p0));
++    e1 = e0*r0;
++    d1 = (p1*e0 + p2*sqrt(e0))/(1+p1*e1);
++    d0 = 1.5*log(r0) + 0.28468287;
++    emu = d0-d1;
++    dn = exp(d1);
++  } else {
++    dn = 1.0;
++    emu = 1.0;
++  }
++  
++  r = 0.0;
++  if (m == 0) {
++    for (i = 0; i < n; i++) {
++      e1 = t*xg[i];
++      e0 = e1 + de;
++      r0 = GauntEFF(z2/e0, de/e0);
++      if (ne > 0) {
++	tf = xg[i] + emu;
++	if (tf > 0) {
++	  r0 *= dn/(1+exp(-tf));
++	} else {
++	  tf = exp(tf);
++	  r0 *= dn*tf/(1+tf);
++	}
++      }
++      r += r0*wg[i];
++    }
++    return r;
++  }
++  if (m < 4) {
++    um = msg;
++    if (um < EPS10) um = 2;
++    double s = 2./um;
++    double g5 = exp(DLOGAM(5/um));
++    double g3 = exp(DLOGAM(3/um));
++    double g32 = sqrt(PI)/2;
++    double a = (2*g5)/(3*g3);
++    if (m == 1) {
++      for (i = 0; i < n; i++) {
++	double s1 = pow(xg[i], s);
++	e1 = t*s1/a;
++	e0 = e1 + de;
++	r0 = GauntEFF(z2/e0, de/e0);
++	r0 *= s1/xg[i];
++	if (ne > 0) {
++	  tf = s1/a + emu;
++	  if (tf > 0) {
++	    r0 *= dn/(1+exp(-tf));
++	  } else {
++	    tf = exp(tf);
++	    r0 *= dn*tf/(1+tf);
++	  }
++	}
++	r += r0 * wg[i];
++      }
++      r *= (g32/g3)*sqrt(a);
++    } else if (m == 2) {
++      for (i = 0; i < n; i++) {
++	double s1 = pow(xg[i], s);
++	e1 = t*s1/a;
++	e0 = e1 + de;
++	r0 = GauntEFF(z2/e0, de/e0);
++	if (ne > 0) {
++	  tf = s1/a + emu;
++	  if (tf > 0) {
++	    r0 *= dn/(1+exp(-tf));
++	  } else {
++	    tf = exp(tf);
++	    r0 *= dn*tf/(1+tf);
++	  }
++	}
++	r += r0 * wg[i];
++      }
++      r *= (g32/g3)*sqrt(a)*a/s;
++    } else {
++      double si = 1/s;
++      for (i = 0; i < n; i++) {
++	double s1 = pow(xg[i], s);
++	e1 = t*s1/a;
++	e0 = e1 + de;
++	r0 = GauntEFF(z2/e0, de/e0);
++	r0 *= s1/xg[i];
++	double x = pow(a*e0/t, si)*(1-pow(e1/e0,si));
++	r0 *= (1-exp(-x))/(a*de/t);
++	if (ne > 0) {
++	  tf = s1/a + emu;
++	  if (tf > 0) {
++	    r0 *= dn/(1+exp(-tf));
++	  } else {
++	    tf = exp(tf);
++	    r0 *= dn*tf/(1+tf);
++	  }
++	}
++	r += r0 * wg[i];
++      }
++      r *= (g32/g3)*sqrt(a)*a;
++    }
++    return r;
++  }
++
++  return 0.0;
++}
++
++// m <  0, Pradler fit for e-dep factor.
++// m == 0, Hummer fit for thermally averaged
++// m == 1, 2, Scheuer/Elwert approx.
++// m == 3, Menzel & Pekeris
++// m == 4, interpolation of Scheuer/Elwert & Menzel/Pekeris
++// m == 5, combination of Hummer & m=4
++// m == 6, combination of Hummer & GauntIFF
++// m >  6, GauntIFF
++double GauntTFF(double g2, double u, int m) {
++  double r, r0, um;
++
++  if (m < 0) {
++    //e-dep fit, kt=e0    
++    r = GauntEFF(g2, u);
++    return r;
++  }
++  if (m == 0) {
++    r = GauntHummer(g2, u);
++    return r;
++  }
++  if (m == 1) {
++    r = -0.55133*(0.5*log(g2) + log(u) + 0.056745);
++    return r;
++  }
++  if (m == 2) {
++    r = 0.5*log(g2) + 0.056745;
++    if (r < -0.80888) r = -0.80888;
++    r += log(u);
++    r *= -0.55133;
++    return r;
++  }
++  if (m == 3) {
++    r = pow(u/g2, 1./3);
++    r = 1+0.1728*r*(1+2/u)-0.0496*r*r*(1+2./(3*u)+4./(3*u*u));
++    return r;
++  }
++  if (m == 4) {
++    double xg = log10(g2);
++    double xu1 = 0.5-0.667*xg;
++    double u1 = pow(10, xu1);
++    double xu0 = xu1-3.0;
++    double u0 = pow(10, xu0);
++    if (u >= u1*1.00001) {
++      r = pow(u/g2, 1./3);
++      r = 1+0.1728*r*(1+2/u)-0.0496*r*r*(1+2./(3*u)+4./(3*u*u));
++    } else if (u <= u0*0.99999) {
++      r = GauntTFF(g2, u, 2);
++    } else {
++      double r1 = pow(u1/g2, 1./3);
++      double r2 = r1*r1;
++      double u2 = u1*u1;
++      double u3 = u2*u1;
++      double k1 = 0.1728*((1+2/u1)/(g2*r2*3)-r1*2/u2);
++      k1 -= 0.0496*(2*(1+2/(3*u1)+4/(3*u2))/(3*g2*r1)-(2/(3*u2)+8/(3*u3))*r2);
++      k1 *= u1;
++      r1 = 1+0.1728*r1*(1+2/u1)-0.0496*r2*(1+2./(3*u1)+4./(3*u2));
++      double k0 = -0.55133;
++      r0 = GauntTFF(g2, u0, 2);
++      xu0 = log(u0);
++      xu1 = log(u1);
++      double u02 = xu0*xu0;
++      double u12 = xu1*xu1;
++      double u03 = u02*xu0;
++      double u13 = u12*xu1;
++      double u0u1 = xu0*xu1;
++      double u01 = xu0+xu1;
++      double uxd = xu1-xu0;
++      double a = 0.5*(k1-k0)/uxd;
++      double c = (u13-u03)/3.0-u01*(u12-u02)/2.0+u0u1*uxd;
++      double b = (r1-r0-k0*uxd-a*uxd*uxd)/c;
++      double xu = log(u);
++      uxd = xu-xu0;
++      u12 = xu*xu;
++      u13 = u12*xu;
++      c = (u13-u03)/3.0-u01*(u12-u02)/2.0+u0u1*uxd;
++      r = r0 + k0*uxd + a*uxd*uxd + b*c;
++    }
++    return r;
++  }
++  if (m == 5) {
++    if (g2 > 1e3) {
++      r = GauntTFF(g2, u, 4);
++      r0 = GauntTFF(1e3, u, 4);
++      r = (r/r0)*GauntTFF(1e3, u, 5);
++    } else if (u < 1e-4) {
++      r = GauntTFF(g2, u, 4);
++      r0 = GauntTFF(g2, 1e-4, 4);
++      r = (r/r0)*GauntTFF(g2, 1e-4, 5);      
++    } else {
++      um = 31.6227766;
++      if (u <= um) {
++	r = GauntHummer(g2, u);
++      } else {
++	r = GauntTFF(g2,u,9)*GauntHummer(g2,um)/GauntTFF(g2,um,9);
++      }
++    }
++    return r;
++  }
++  if (m == 6) {
++    um = 31.6227766;
++    if (g2 > 1e3) {
++      r = GauntTFF(g2, u, 9);
++      if (u < 1e-4) {
++	r0 = GauntTFF(1e3, 1e-4, 9);
++	r = (r/r0)*GauntHummer(1e3, 1e-4);
++      } else if (u > um) {
++	r0 = GauntTFF(1e3, um, 9);
++	r = (r/r0)*GauntHummer(1e3, um);
++      } else {
++	r0 = GauntTFF(1e3, u, 9);
++	r = (r/r0)*GauntHummer(1e3, u);
++      }
++    } else if (g2 < 1e-3) {
++      r = GauntTFF(g2, u, 9);
++      if (u < 1e-4) {
++	r0 = GauntTFF(1e-3, 1e-4, 9);
++	r = (r/r0)*GauntHummer(1e-3,1e-4);
++      } else if (u > um) {
++	r0 = GauntTFF(1e-3, um, 9);
++	r = (r/r0)*GauntHummer(1e-3, um);
++      } else {
++	r0 = GauntTFF(1e-3, u, 9);
++	r = (r/r0)*GauntHummer(1e-3, u);
++      }
++    } else {
++      if (u >= 1e-4 && u <= um) {
++	r = GauntHummer(g2, u);
++      } else if (u < 1e-4) {
++	r = GauntTFF(g2, u, 9);
++	r0 = GauntTFF(g2, 1e-4, 9);
++	r = (r/r0)*GauntHummer(g2, 1e-4);
++      } else {
++	r = GauntTFF(g2, u, 9);
++	r0 = GauntTFF(g2, um, 9);
++	r = (r/r0)*GauntHummer(g2, um);
++      }
++    }
++    return r;
++  }
++
++  double de = 1.0;
++  double t = de/u;
++  double z2 = g2*t;
++  r = GauntIFF(z2, t, de, 0.0, 0.0, 0);
++  return r;
++}
++
+ int InitCoulomb(void) {
+   int i, ie1, ie2, ite;
+ 
+diff --git a/faclib/coulomb.h b/faclib/coulomb.h
+index 4025c5fd..9e0d8fb2 100644
+--- a/faclib/coulomb.h
++++ b/faclib/coulomb.h
+@@ -96,5 +96,9 @@ int     PrepCoulombBethe(int ne2, int nte, int ne1, double z,
+ int     CoulombBethe(char *s, double z, double te, double e1);
+ int     InitCoulomb(void);
+ void InitHydrogenicDipole(int n);
++double GauntHummer(double g2, double u);
++double GauntIFF(double z2, double t, double de, double msg, double ne, int m);
++double GauntTFF(double g2, double u, int m);
++double GauntEFF(double g2, double u);
+ 
+ #endif
+diff --git a/faclib/crm.c b/faclib/crm.c
+index e8ffd8f9..e0a0883a 100644
+--- a/faclib/crm.c
++++ b/faclib/crm.c
+@@ -70,7 +70,7 @@ static int _sp_trm = 1;
+ static int _rates_block = RATES_BLOCK;
+ static int _lblock_block = LBLOCK_BLOCK;
+ 
+-static double _ce_data[2+(1+MAXNUSR)*2];
++static double _ce_data[4+(2+MAXNUSR)*4];
+ static double _rr_data[1+MAXNUSR*4];
+ static int _ce_bethe = 0;
+ 
+@@ -86,7 +86,8 @@ static double _starkzb = 1.0;
+ static double _starkaix = 1.0;
+ static double _starksmx = 3.0;
+ static double _starkmfs = 1.5;
+-static double _starkrij = 0.75;
++static double _starkrij = 1.0;
++static double _starkrij2 = 0.5;
+ static double _starkefs = 1.0;
+ static double _starkix1 = 1.0;
+ static double _starkix2 = 4.0;
+@@ -1860,20 +1861,28 @@ int InitBlocks(void) {
+ 	  b = FINE_STRUCTURE_CONST * de;
+ 	  b *= 2.0*b*FINE_STRUCTURE_CONST;
+ 	  a /= b;
++	  double zt = z-ion->nele+1.0;
+ 	  double fij = a/(ion->j[r->f]+1.0);
+-	  double eta = de/(3*tea);
+-	  double rij = sqrt(fij*1.5*_starkrij/de);
+-	  b = _starkrij*StarkFW(eta*rij);
+-	  double rdne = 6.25e2*electron_density*a*(b/de)/sqrt(2*tea);
+-	  double rupe = rdne*exp(-de/tea)*(ion->j[r->i]+1.0)/(ion->j[r->f]+1.0);
++	  double za = zt*FINE_STRUCTURE_CONST;
+ 	  int type = TransitionType(blk1->ncomplex, blk2->ncomplex);
+ 	  int nlo = type%100;
+ 	  int nup = (type/100)%100;
+-	  double zt = z-ion->nele+1.0;
+-	  double za = zt*FINE_STRUCTURE_CONST;
+ 	  double efs = (_starkefs*0.25*zt*zt/(nup*nup*nup))*(za*za);
+-	  de = Max(de, efs);
+-	  de *= RATE_AU;
++	  double rde = Max(efs, de);
++	  double rij = sqrt(fij*1.5*_starkrij*(ion->j[r->i]+1.0)/rde);
++	  if (nup == 2 && nlo == 2 && ion->nele == 1) rij *= _starkrij2;
++	  b = zt-1.0;
++	  b = Max(0.01, b);
++	  b = 0.5*b*b/tea;
++	  double wp = 1.364e-7*sqrt(electron_density);
++	  wp = Max(wp, de);
++	  b = GauntTFF(b, wp/tea, 6);
++	  if (ion->nele < z) {
++	    b *= 3/(1+2/(zt*zt*zt));
++	  }	  
++	  double rdne = 3e2*electron_density*a*(b/de)/sqrt(tea);
++	  double rupe = rdne*exp(-de/tea)*(ion->j[r->i]+1.0)/(ion->j[r->f]+1.0);
++	  de = rde*RATE_AU;
+ 	  double rdn = LimitImpactWidth(rdne, de, 1);
+ 	  double rup = LimitImpactWidth(rupe, de, 1);
+ 	  j = ion->ilev[r->i];
+@@ -1895,8 +1904,8 @@ int InitBlocks(void) {
+ #pragma omp atomic
+ 	    blk2->rc1[kf] += rup;
+ 	  }
+-	  //if (r->i == 6) {
+-	  //  printf("ri: %d %d %g %g %g %g %g %g %g %g %g %g %g\n", r->f, nup, zt, fij, eta, rij, de, rdne, rdn, ri0, ri1, blk1->rc1[j], blk1->rc2[j]);	    
++	  //if (r->i == 1 && r->f == 0) {
++	  //  printf("ri: %d %d %g %g %g %g %g %g %g %g %g %g %g\n", r->f, nup, zt, a, b, rij, de, rdne, rdn, ri0, ri1, blk1->rc1[j], blk1->rc2[j]);	    
+ 	  //}
+ 	}
+       }
+@@ -2064,7 +2073,7 @@ int InitBlocks(void) {
+       m = blk1->iion;
+     }
+   }
+-      
++  
+   return 0;
+ }
+ 
+@@ -3107,7 +3116,7 @@ int RateTable(char *fn, int nc, char *sc[], int md) {
+   return 0;
+ }
+ 
+-void FixNorm(int m) {
++void FixNorm(int miter) {
+   LBLOCK *blk1;
+   ION *ion;
+   int k0, k1, iion, k, p, i, n;
+@@ -3116,26 +3125,9 @@ void FixNorm(int m) {
+   n = blocks->dim;
+   x = bmatrix + n*n;
+   for (i = 0; i < n; i++) x[i] = 0.0;
+-
+-  if (norm_mode == 3) {
+-    x[0] = 1.0;
+-    p = 0;
+-    for (k = 0; k < n; k++) {
+-      bmatrix[p] = 1.0;
+-      p += n;
+-    }
+-    for (k = 0; k < ions->dim; k++) {
+-      ion = (ION *) ArrayGet(ions, k);
+-      den = ion->n0;
+-      if (den+1 != 1) {
+-	blk1 = ion->iblock[0];
+-	if (blk1 != NULL) {
+-	  p = blk1->ib;
+-	  x[p] = den;
+-	}
+-      }
+-    }
+-  } else if (norm_mode == 2) {
++  
++  if (norm_mode == 2) {
++    //normalize to sum of all ions 
+     den = 0.0;
+     if (ion0.n0 > 0) den += ion0.n0;
+     for (i = 0; i < ions->dim; i++) {
+@@ -3167,7 +3159,7 @@ void FixNorm(int m) {
+ 	    x[k0] = den;
+ 	    p = k0;
+ 	    for (k = 0; k < n; k++) {
+-	      if (norm_mode == 1) {
++	      if (norm_mode > 0) {
+ 		if (k < k1 && k >= k0) bmatrix[p] = 1.0;
+ 		else bmatrix[p] = 0.0;
+ 	      } else {
+@@ -3191,7 +3183,7 @@ void FixNorm(int m) {
+       x[k0] = den;
+       p = k0;
+       for (k = 0; k < n; k++) {
+-	if (norm_mode == 1) {
++	if (norm_mode > 0) {
+ 	  if (k < k1 && k >= k0) bmatrix[p] = 1.0;
+ 	  else bmatrix[p] = 0.0;
+ 	} else {       
+@@ -3200,7 +3192,20 @@ void FixNorm(int m) {
+ 	}
+ 	p += n;
+       }
+-    } 
++    }
++    if (norm_mode > 1) {
++      // norm_mode=3, same as 1, but first eq. normalize sum of all ions
++      den = 0.0;
++      for (i = 0; i < n; i++) {
++	den += x[i];
++      }
++      x[0] = den;
++      p = 0;
++      for (k = 0; k < n; k++) {
++	bmatrix[p] = 1.0;
++	p += n;
++      }
++    }
+   }
+ }
+ 
+@@ -3700,6 +3705,7 @@ int BlockPopulation(int miter) {
+ 
+     if (info != 0) {
+       printf("Error in solving BlockMatrix: %d\n", info);
++      DumpRates("error.bm", 0, 0, -1, 1);
+       exit(1);
+     }
+ 
+@@ -4413,6 +4419,7 @@ int SpecTable(char *fn, int rrc, double strength_threshold) {
+       r.rrate = ion->j[m]+1.0;
+       r.trate = blk->total_rate[p];
+       r.wstk = 0.0;
++      r.wimp = 0.0;
+       rx.sdev = 0.0;
+       r.strength = blk->n[p];
+       WriteSPRecord(f, &r, &rx, iuta);
+@@ -4511,6 +4518,7 @@ int SpecTable(char *fn, int rrc, double strength_threshold) {
+ 		int n0 = type%100;
+ 		int n1 = (type/100)%100;
+ 		int dn = abs(n0-n1)%2;
++		int n2 = type/10000;
+ 		wi0 = malloc(sizeof(double)*_starknp);
+ 		we0 = r.trate;
+ 		for (ip = 0; ip < _starknp; ip++) {
+@@ -4518,10 +4526,18 @@ int SpecTable(char *fn, int rrc, double strength_threshold) {
+ 		  wi0[ip] += fblk->rc2[(ion->ilev[rt->f]*_starknp+ip)];
+ 		  wi0[ip] *= WCOEF;
+ 		}
++		if (n2 > n1) {
++		  double fns = (n2-n1+1.0);
++		  fns *= sqrt(fns);
++		  we0 /= fns;
++		  for (ip = 0; ip < _starknp; ip++) {
++		    wi0[ip] /= fns;
++		  }
++		}
+ 		r.wstk = CalcStarkQC(&we0, wi0, _stark_wd, ion->nele);
+ 		r.wimp = we0;
+-		//if (r.upper == 6 && r.lower == 0) {
+-		//  printf("ws: %g %g %g %g %g\n", r.trate, wi0[0], _stark_wd, r.wimp, r.wstk);
++		//if (r.upper == 1 && r.lower == 0) {
++		//  printf("ws: %g %g %g %g %g %g %g\n", r.trate, wi0[0], _stark_wd, r.wimp, r.wstk, iblk->rc1[ion->ilev[rt->i]],fblk->rc1[ion->ilev[rt->f]]);
+ 		//}
+ 		free(wi0);
+ 	      } else {
+@@ -5681,7 +5697,7 @@ int SetCXRates(int m0, char *tgt) {
+ 
+ int SetCERates(int inv) {
+   int nb, i, j, ib, jb, nrb;
+-  int n, m, m1, k;
++  int n, m, m1, m2, k;
+   int j1, j2;
+   int p, q;
+   ION *ion;
+@@ -5729,35 +5745,18 @@ int SetCERates(int inv) {
+       }
+       m = h.n_usr;
+       m1 = m + 1;
+-#pragma omp parallel default(shared) private(x, y, data, j)
+-      {
+-	data = _ce_data;
+-	y = data + 2;
+-	x = y + m1;
+-	if (h.tegrid[0] < 0) {
+-	  data[0] = -1.0;
+-	  for (j = 0; j < m; j++) {
+-	    x[j] = log(1 + eusr[j]);
+-	  }
+-	  x[m] = eusr[m-1]/(1+eusr[m-1]);
+-	} else {
+-	  data[0] = (h.te0*HARTREE_EV + bte)/bms;
+-	  for (j = 0; j < m; j++) {
+-	    x[j] = log((data[0] + eusr[j]*HARTREE_EV)/data[0]);
+-	  }	  
+-	  x[m] = eusr[m-1]/(data[0]/HARTREE_EV+eusr[m-1]);
+-	}
+-      }
++      m2 = m + 2;
+       nrb = Min(NRTB, h.ntransitions);
+       jb = 0;
+       for (i = 0; i < h.ntransitions; i++) {
+ 	n = ReadCERecord(f, &r[jb++], swp, &h);
+ 	if (jb == nrb) {
+ 	  ResetWidMPI();
+-#pragma omp parallel default(shared) private(ib, j1, j2, e, cs, j, data, y)
++#pragma omp parallel default(shared) private(ib, j1, j2, e, cs, j, data, x, y)
+ 	  {
+ 	  data = _ce_data;
+-	  y = data + 2;
++	  y = data + 4;
++	  x = y + m2;
+ 	  double b, c;
+ 	  int w = 0;
+ 	  for (ib = 0; ib < nrb; ib++) {
+@@ -5774,12 +5773,29 @@ int SetCERates(int inv) {
+ 	    j1 = ion->j[r[ib].lower];
+ 	    j2 = ion->j[r[ib].upper];
+ 	    e = ion->energy[r[ib].upper] - ion->energy[r[ib].lower];
++	    data[0] = (e+bte)/bms;
+ 	    data[1] = r[ib].bethe;
++	    data[2] = e;
++	    data[3] = fh.atom-h.nele;
+ 	    cs = r[ib].strength;
+ 	    y[m] = r[ib].born[0];
+-	    for (j = 0; j < m; j++) {
+-	      y[j] = cs[j];
++	    y[m1] = y[m];
++	    if (h.tegrid[0] < 0) {
++	      for (j = 0; j < m; j++) {
++		y[j] = cs[j];
++		x[j] = eusr[j]*e;
++	      }
++	    } else {
++	      for (j = 0; j < m; j++) {
++		y[j] = cs[j];
++		x[j] = eusr[j];
++	      }
++	    }
++	    x[m1] = r[ib].born[1];
++	    if (x[m1] > x[m-1]) {
++	      x[m] = pow(x[m-1],0.25)*pow(x[m1],0.75);
+ 	    }
++	    PrepCECrossData(m, data);
+ 	    CERate(&(rt[ib].dir), &(rt[ib].inv), inv, j1, j2, e, m,
+ 		   data, rt[ib].i, rt[ib].f);
+ 	    if (ion->ace > 0) {
+@@ -5821,35 +5837,18 @@ int SetCERates(int inv) {
+ 	}
+ 	m = h.n_usr;
+ 	m1 = m + 1;
+-#pragma omp parallel default(shared) private(x, y, data, j)
+-	{
+-	  data = _ce_data;
+-	  y = data + 2;
+-	  x = y + m1;
+-	  if (h.tegrid[0] < 0) {
+-	    data[0] = -1.0;
+-	    for (j = 0; j < m; j++) {
+-	      x[j] = log(1 + eusr[j]);
+-	    }
+-	    x[m] = eusr[m-1]/(1+eusr[m-1]);
+-	  } else {
+-	    data[0] = (h.te0*HARTREE_EV + bte)/bms;
+-	    for (j = 0; j < m; j++) {
+-	      x[j] = log((data[0] + eusr[j]*HARTREE_EV)/data[0]);
+-	    }	  
+-	    x[m] = eusr[m-1]/(data[0]/HARTREE_EV+eusr[m-1]);
+-	  }
+-	}
++	m2 = m + 2;
+ 	nrb = Min(NRTB, h.ntransitions);
+ 	jb = 0;
+ 	for (i = 0; i < h.ntransitions; i++) {
+ 	  n = ReadCERecord(f, &r[jb++], swp, &h);
+ 	  if (jb == nrb) {
+ 	    ResetWidMPI();
+-#pragma omp parallel default(shared) private(ib, j1, j2, e, cs, j, p, q, data, y)
++#pragma omp parallel default(shared) private(ib, j1, j2, e, cs, j, p, q, data, x, y)
+ 	    {	    
+ 	    data = _ce_data;
+-	    y = data + 2;
++	    y = data + 4;
++	    x = y + m2;
+ 	    double b, c;
+ 	    int w = 0;
+ 	    for (ib = 0; ib < nrb; ib++) {
+@@ -5882,12 +5881,29 @@ int SetCERates(int inv) {
+ 	      j1 = ion->j[rt[ib].i];
+ 	      j2 = ion->j[rt[ib].f];
+ 	      e = ion0.energy[q] - ion0.energy[p];
+-	      data[1] = r[ib].bethe;	
++	      data[0] = (e+bte)/bms;
++	      data[1] = r[ib].bethe;
++	      data[2] = e;
++	      data[3] = fh.atom - h.nele;
+ 	      cs = r[ib].strength;
+ 	      y[m] = r[ib].born[0];
+-	      for (j = 0; j < m; j++) {
+-		y[j] = cs[j];
++	      y[m1] = y[m];
++	      if (h.tegrid[0] < 0) {
++		for (j = 0; j < m; j++) {
++		  y[j] = cs[j];
++		  x[j] = eusr[j]*e;
++		}
++	      } else {
++		for (j = 0; j < m; j++) {
++		  y[j] = cs[j];
++		  x[j] = eusr[j];
++		}
++	      }
++	      x[m1] = r[ib].born[1];
++	      if (x[m1] > x[m-1]) {
++		x[m] = pow(x[m-1],0.25)*pow(x[m1],0.75);
+ 	      }
++	      PrepCECrossData(m, data);
+ 	      CERate(&(rt[ib].dir), &(rt[ib].inv), inv, j1, j2, e, m,
+ 		     data, rt[ib].i, rt[ib].f);
+ 	      if (ion0.ace > 0) {
+@@ -6011,8 +6027,10 @@ int SetTRRates(int inv) {
+ 		if (_ce_bethe > 0 &&
+ 		    (h.multipole == -1 || h.multipole == 0)) {
+ 		  data = _ce_data;
+-		  data[0] = (e*HARTREE_EV + bte)/bms;
++		  data[0] = (e + bte)/bms;
+ 		  data[1] = 2*gf/e;
++		  data[2] = e;
++		  data[3] = fh.atom - h.nele;
+ 		  rtx[jb].dir = 0.0;
+ 		  rtx[jb].inv = 0.0;
+ 		  rtx[jb].i = r[jb].lower;
+@@ -7941,6 +7959,10 @@ void SetOptionCRM(char *s, char *sp, int ip, double dp) {
+     _starkrij = dp;
+     return;
+   }
++  if (0 == strcmp(s, "crm:starkrij2")) {
++    _starkrij2 = dp;
++    return;
++  }
+   if (0 == strcmp(s, "crm:starkefs")) {
+     _starkefs = dp;
+     return;
+@@ -9648,4 +9670,3 @@ void RateCoefficients(char *ofn, int k0, int k1, int nexc, int ncap0,
+   CloseFile(f, &fh);
+   free(rc.rc);
+ }
+-
+diff --git a/faclib/dbase.c b/faclib/dbase.c
+index 7df1560d..c301b626 100644
+--- a/faclib/dbase.c
++++ b/faclib/dbase.c
+@@ -10059,7 +10059,7 @@ void CollapseDBase(char *ipr, char *opr, int k0, int k1,
+   LEVGRP *rg[N_ELEMENTS1];
+   EN_RECORD *ra[N_ELEMENTS1];  
+   TFILE *f0, *f1[7];
+-  double ei, des, te, e, cs, des0, des1, egrd[N_ELEMENTS1];
++  double ei, des, te, e, cs, cx, des0, des1, egrd[N_ELEMENTS1];
+   float fte;
+   int *im, tlevs, nt0, nt1, nt2, minlevs, maxlevs;
+   double wt0, wt1, tt0, tt1;
+@@ -10622,7 +10622,7 @@ void CollapseDBase(char *ipr, char *opr, int k0, int k1,
+     if (f1[2]) {
+       CE_RECORD **rt;
+       CE_HEADER ht;
+-      double data[2+(1+MAXNUSR)*3], ratio;
++      double data[4+(2+MAXNUSR)*4], ratio;
+       int neg = 6;
+       SetCEEGridType(1);
+       SetUsrCEEGridType(1);
+@@ -10655,7 +10655,6 @@ void CollapseDBase(char *ipr, char *opr, int k0, int k1,
+ 	    free(h2.usr_egrid);
+ 	    continue;
+ 	  }
+-	  PrepCECrossHeader(&h2, data);
+ 	  for (i = 0; i < h2.ntransitions; i++) {
+ 	    n = ReadCERecord(f0, &r2, swp, &h2);
+ 	    if (n == 0) break;
+@@ -10676,11 +10675,11 @@ void CollapseDBase(char *ipr, char *opr, int k0, int k1,
+ 		rt[j]->lower = rg[k][ilo].r.ilev;
+ 		rt[j]->upper = rg[k][iup].r.ilev;
+ 	      }
+-	      PrepCECrossRecord(0, &r2, &h2, data);
++	      PrepCECrossRecord(0, &r2, &h2, data, fh.atom);
+ 	      te = mem_en_table[r2.upper].energy - mem_en_table[r2.lower].energy;
+ 	      for (t = 0; t < neg; t++) {
+ 		e = te*ht.egrid[t]*HARTREE_EV;
+-		cs = InterpolateCECross(e, &r2, &h2, data, &ratio);
++		cs = InterpolateCECross(e, &r2, &h2, data, &cx, &ratio, 1);
+ 		rt[j]->strength[t] += cs;	      
+ 	      }
+ 	      if (r2.bethe >= 0.0) {
+diff --git a/faclib/f2c.f90 b/faclib/f2c.f90
+index a5939a2e..ad402e98 100644
+--- a/faclib/f2c.f90
++++ b/faclib/f2c.f90
+@@ -160,6 +160,7 @@ real(c_double) :: a3(*)
+ integer(c_int), value :: a4
+ real(c_double) :: a5(*)
+ real(c_double) :: a6(*)
++real(c_double),dimension(:),allocatable :: t
+ call UVIP3P(a0,a1,a2,a3,a4,&
+             a5,a6)
+ end subroutine
+diff --git a/faclib/interpolation.c b/faclib/interpolation.c
+index 39c09874..dc674b90 100644
+--- a/faclib/interpolation.c
++++ b/faclib/interpolation.c
+@@ -20,6 +20,7 @@
+ #include "cf77.h"
+ #include "nucleus.h"
+ #include "global.h"
++#include "coulomb.h"
+ 
+ static char *rcsid="$Id$";
+ #if __GNUC__ == 2
+@@ -674,52 +675,149 @@ int NewtonCotesIP(double *r, double *x, int i0, int i1, int m, int id) {
+   return 0;
+ }
+ 
+-void PrepCEFCrossHeader(CEF_HEADER *h, double *data) {
+-  double *eusr, *x, bte, bms;
+-  int m, m1, j;
+-
+-  eusr = h->egrid;
+-  m = h->n_egrid;
+-  m1 = m + 1;
+-  x = data+2+m1;
+-  BornFormFactorTE(&bte);
+-  bms = BornMass();
+-  data[0] = (h->te0*HARTREE_EV+bte)/bms;
++void PrepCECrossData(int m, double *data) {
++  int j, m1, m2;
++  double x0, e0, eth, eth1, bethe, *y, *x;
++  double z2, g2, u, gff;
++
++  m1 = m+1;
++  m2 = m+2;
++  y = data + 4;
++  x = y+m2;
++  eth1 = data[0];
++  bethe = data[1];
++  eth = data[2];
++  z2 = data[3]*data[3];
++  for (j = 0; j < m2; j++) {
++    e0 = eth1+x[j];
++    if (x[j] > 0) {
++      x[j] = eth1/e0;
++      if (x[j] < EPS7) {
++	x[j] = log(4/x[j]);
++      } else {
++	x[j] = sqrt(1-x[j]);
++	x[j] = log((1+x[j])/(1-x[j]));
++      }
++      x[j] = x[j]/(x[j]+2);
++    }
++    if (bethe > 0) {
++      if (j >= m) {
++	y[j] += bethe*log(e0/eth);
++      }
++      g2 = 0.5*z2/e0;
++      u = eth/e0;
++      gff = 1.8138*bethe*GauntEFF(g2, u);
++      y[j] /= gff;
++    }
++  }
+   for (j = 0; j < m; j++) {
+-    x[j] = log((data[0] + eusr[j]*HARTREE_EV)/data[0]);
++    y[j] = log(y[j]);
++  }
++  if (y[m] > 0) {
++    y[m] = log(y[m]);
++    y[m1] = log(y[m1]);
++  } else {
++    x[m] = x[m-1]+2.5;
++    x[m1] = x[m]+2.5;
++    double a = (y[m-1]-y[m-2])/(x[m-1]-x[m-2]);
++    if (a > -1.0) a = -1.0;
++    y[m] = y[m-1] + a*(x[m]-x[m-1]);
++    y[m1] = y[m-1] + a*(x[m1]-x[m-1]);
+   }
+-  x[m] = eusr[m-1]/(data[0]/HARTREE_EV+eusr[m-1]);
+ }
+ 
+-void PrepCECrossHeader(CE_HEADER *h, double *data) {
+-  double *eusr, *x, bte, bms;
+-  int m, m1, j;
++double InterpCECrossData(int m, double *data, double e, double *cx, double *r) {
++  int n, m1, m2, one;
++  double x0, e0, eth, eth1, bethe, a, b, c, d, c0;
++  double *x, *y, *w, z2, g2, u, gff;
+ 
+-  eusr = h->usr_egrid;
+-  m = h->n_usr;
+-  m1 = m + 1;
+-  x = data+2+m1;
+-  BornFormFactorTE(&bte);
+-  bms = BornMass();
+-  if (h->tegrid[0] < 0) {
+-    data[0] = -1.0;
+-    for (j = 0; j < m; j++) {
+-      x[j] = log(1+bms*eusr[j]);
++  *cx = 0.0;
++  if (r && m > 0) *r = 1.0;
++  if (e < 0) return 0.0;
++  
++  eth1 = data[0];
++  bethe = data[1];
++  eth = data[2];
++  z2 = data[3]*data[3];
++  e0 = e+eth1;
++
++  if (m > 0) {
++    m1 = m+1;
++    m2 = m+2;
++    y = data + 4;
++    x = y+m2;
++    w = x+m2;
++    
++    x0 = eth1/e0;
++    if (x0 < EPS7) {
++      x0 = log(4/x0);
++    } else {
++      x0 = sqrt(1-x0);
++      x0 = log((1+x0)/(1-x0));
++    }
++    x0 = x0/(x0+2);
++    if (x0 < x[0]) {
++      a = exp(y[0]);
++    } else {
++      n = 2;
++      one = 1;
++      UVIP3P(n, m2, x, y, one, &x0, &a);
++      a = exp(a);
++    }
++    if (r) {
++      UVIP3P(n, m2, x, w, one, &x0, r);
++      if (*r < 0) *r = 0.0;
+     }
+-    x[m] = eusr[m-1]/(1 + eusr[m-1]);
+   } else {
+-    data[0] = (h->te0+bte)*HARTREE_EV/bms;
+-    for (j = 0; j < m; j++) {
+-      x[j] = log((data[0]+eusr[j]*HARTREE_EV)/data[0]);
++    if (bethe > 0) {
++      a = 1.0;
++    } else {
++      a = 0.0;
++    }
++  }
++
++  d = 2*e0;
++  if (bethe > 0) {
++    g2 = 0.5*z2/e0;
++    u = eth/e0;
++    gff = 1.8138*bethe*GauntEFF(g2, u);
++    if (XCEMode() == 1) {
++      d *= 1+0.5*FINE_STRUCTURE_CONST2*e0;
++      c = FINE_STRUCTURE_CONST2*d;
++      b = bethe*(log(0.5*d/e0)-c/(1+c));
++      gff += b;
++      gff *= 1+c;
++    }
++    a *= gff;
++  } else {
++    if (XCEMode() == 1) {
++      d *= 1+0.5*FINE_STRUCTURE_CONST2*e0;
++      c = FINE_STRUCTURE_CONST2*d;
++      a *= 1+c;
+     }
+-    x[m] = eusr[m-1]/(data[0]/HARTREE_EV+eusr[m-1]);
+   }
++  *cx = a*PI*AREA_AU20/d;
++
++  if (a < 0) {
++    a = 0.0;
++    *cx = 0.0;
++  }
++  if (r) {
++    a *= *r;
++    *cx *= *r;
++  }
++
++  //if (isnan(a) || isinf(a)) {
++  //  printf("invalid interp cross: %g %g\n", e, a);
++  //}
++  return a;
+ }
+ 
+-void PrepCEFCrossRecord(CEF_RECORD *r, CEF_HEADER *h, double *data) {
+-  double *eusr, *x, *y, e, b, c, bms, bte;
++void PrepCEFCrossRecord(CEF_RECORD *r, CEF_HEADER *h, double *data, double z) {
++  double *eusr, *x, *y, b, c, bms, bte;
++  double eth, eth1, d;
+   float *cs;
+-  int m, m1, j;
++  int m, m1, m2, j;
+   EN_SRECORD *mem_en_table;
+   int mem_en_table_size;
+ 
+@@ -728,39 +826,62 @@ void PrepCEFCrossRecord(CEF_RECORD *r, CEF_HEADER *h, double *data) {
+   eusr = h->egrid;
+   m = h->n_egrid;
+   m1 = m + 1;
+-  y = data + 2;
+-  x = y + m1;
+-  e = mem_en_table[r->upper].energy - mem_en_table[r->lower].energy;
++  m2 = m + 2;
++  y = data + 4;
++  x = y + m2;
++  eth = mem_en_table[r->upper].energy - mem_en_table[r->lower].energy;
++  BornFormFactorTE(&bte);
++  bms = BornMass();
++  eth1 = (eth + bte)/bms;
++  data[0] = eth1;
+   data[1] = r->bethe;
+-
++  data[2] = eth;
++  data[3] = z-h->nele;
+   cs = r->strength;
+   for (j = 0; j < m; j++) {
+     y[j] = Max(MINCS,cs[j]);
+   }
++  for (j = 0; j < m; j++) {
++    x[j] = eusr[j];
++  }
++  x[m1] = r->born[1];
++  y[m1] = r->born[0];
++  if (x[m1] > x[m-1]) {
++    x[m] = pow(x[m-1],0.25)*pow(x[m1],0.75);
++  }
+   y[m] = r->born[0];
++  PrepCECrossData(m, data);
+ }
+ 
+ void PrepCECrossRecord(int k, CE_RECORD *r, CE_HEADER *h,
+-		       double *data) {
+-  double *eusr, *x, *y, *w, e, b, c, bms, bte;
++		       double *data, double z) {
++  double *eusr, *x, *y, *u, *w, b, c, bms, bte;
++  double eth, eth1, d;
+   float *cs;
+-  int m, m1, j, t;
++  int m, m1, m2, j, t;
+   int j1, j2, t1, t2;
+   EN_SRECORD *mem_en_table;
+   int mem_en_table_size;
+ 
+-  mem_en_table = GetMemENTable(&mem_en_table_size);
+-
+   eusr = h->usr_egrid;
+   m = h->n_usr;
+   m1 = m + 1;
+-  y = data + 2;
+-  x = y + m1;
+-  w = x + m1;
+-  e = mem_en_table[r->upper].energy - mem_en_table[r->lower].energy;
+-  data[1] = r->bethe;
++  m2 = m + 2;
++  y = data + 4;
++  x = y + m2;
++  w = x + m2;
++  u = w + m2;
+   cs = r->strength;
+   if (k == 0) {
++    mem_en_table = GetMemENTable(&mem_en_table_size);
++    eth = mem_en_table[r->upper].energy - mem_en_table[r->lower].energy;
++    BornFormFactorTE(&bte);
++    bms = BornMass();
++    eth1 = (eth + bte)/bms;
++    data[0] = eth1;
++    data[1] = r->bethe;
++    data[2] = eth;
++    data[3] = z-h->nele;
+     if (h->msub) {
+       j1 = mem_en_table[r->lower].j;
+       j2 = mem_en_table[r->upper].j;
+@@ -782,236 +903,93 @@ void PrepCECrossRecord(int k, CE_RECORD *r, CE_HEADER *h,
+ 	y[j] = cs[j];
+       }
+     }
+-    y[m] = r->born[0];
+-  }
+   
+-  for (j = 0; j < m; j++) {
+-    y[j] = Max(MINCS, y[j]);
++    for (j = 0; j < m; j++) {
++      y[j] = Max(MINCS, y[j]);
++    }
++    y[m] = r->born[0];
++    y[m1] = r->born[0];
++    if (h->msub) {
++      for (j = 0; j < m; j++) {
++	u[j] = y[j];
++      }
++      u[m] = 0.0;
++      u[m1] = 0.0;
++    }
++    if (h->tegrid[0] < 0) {
++      for (j = 0; j < m; j++) {
++	x[j] = eusr[j]*eth;
++      }
++    } else {
++      for (j = 0; j < m; j++) {
++	x[j] = eusr[j];
++      }
++    }
++    x[m1] = r->born[1];
++    if (x[m1] > x[m-1]) {
++      x[m] = pow(x[m-1],0.25)*pow(x[m1],0.75);
++    }
++    PrepCECrossData(m, data);
+   }
+   
+   if (h->msub) {
+     for (j = 0; j < m; j++) {
+-      if (y[j]) {
+-	w[j] = cs[k*m+j]/y[j];
++      if (u[j]) {
++	w[j] = cs[k*m+j]/u[j];
+       } else {
+ 	w[j] = 1.0;
+       }
+     }
+     if (r->bethe < 0) {
+-      w[j] = w[j-1];
++      w[m] = w[j-1];
++      w[m1] = w[m];
+     } else {
+-      w[j] = r->params[k];
++      w[m] = r->params[k];
++      w[m1] = w[m];
+     }
+   }
+-  /*
+-  for (j = 0; j < m; j++) {
+-    y[j] = log(y[j]);
+-  }
+-  */
+ }
+ 
+ double InterpolateCEFCross(double e, CEF_RECORD *r, CEF_HEADER *h,
+-			   double *data) {
+-  double *x, *y, *w;
+-  int m, m1, n, one;
+-  double a, b, x0, y0, eth, e0, c, d;
+-  EN_SRECORD *mem_en_table;
+-  int mem_en_table_size;
+-  double bte, bms, eth1, et0;
+-
+-  mem_en_table = GetMemENFTable(&mem_en_table_size);
+-
+-  eth = mem_en_table[r->upper].energy - mem_en_table[r->lower].energy;
+-  eth = eth * HARTREE_EV;
++			   double *data, double *cx, int md) {
++  int m;
++  double a;
+ 
+   a = 0.0;
+-
+   if (e <= 0.0) return a;
+-
+-  BornFormFactorTE(&bte);
+-  bms = BornMass();
+-  eth1 = (eth + bte*HARTREE_EV)/bms;
+-  
+-  m = h->n_egrid;
+-  m1 = m + 1;
+-  et0 = data[0];
+-  x0 = log(1+e/et0);
+-  y = data + 2;
+-  x = y + m1;
+-  w = x + m1;
+-
+-  if (x0 < x[m-1]) {
+-    n = 2;
+-    one = 1;
+-    UVIP3P(n, m, x, y, one, &x0, &a);
+-    //a = exp(a);
++  e /= HARTREE_EV;
++  if (md == 0) {
++    m = 0;
+   } else {
+-    x0 = e/(et0 + e);
+-    y0 = y[m-1];
+-    if (data[1] > -EPS10) {
+-      if (XCEMode() == 1) {
+-	e0 = ((x[m]*et0/(1.0-x[m]))+eth1)/HARTREE_EV;
+-	d = 2.0*e0*(1.0+0.5*FINE_STRUCTURE_CONST2*e0);
+-	c = FINE_STRUCTURE_CONST2*d;
+-	b = log(0.5*d*HARTREE_EV/eth) - c/(1.0+c);
+-	y0 = y0/(1+c) - data[1]*b;
+-	a = y[m] + (x0-1.0)*(y0-y[m])/(x[m]-1.0);
+-	e0 = (e + eth1)/HARTREE_EV;
+-	d = 2.0*e0*(1.0+0.5*FINE_STRUCTURE_CONST2*e0);
+-	c = FINE_STRUCTURE_CONST2*d;
+-	b = log(0.5*d*HARTREE_EV/eth) - c/(1.0+c);
+-	a = (a + data[1]*b)*(1+c);
+-      } else {
+-	e0 = ((x[m]*et0/(1.0-x[m]))+eth1);
+-	b = log(e0/eth);
+-	y0 -= data[1]*b;
+-	a = y[m] + (x0-1.0)*(y0-y[m])/(x[m]-1.0);
+-	b = log((e+eth1)/eth);
+-	a += data[1]*b;
+-      }
+-      /*
+-      e0 = ((x[m]*et0/(1.0-x[m]))+eth1)/HARTREE_EV;
+-      b0 = 1.0 + FINE_STRUCTURE_CONST2*e0;
+-      b1 = 1.0 + FINE_STRUCTURE_CONST2*(e0-eth1/HARTREE_EV);
+-      y0 /= b0*b1;
+-      d = 2.0*e0*(1.0+0.5*FINE_STRUCTURE_CONST2*e0);
+-      c = FINE_STRUCTURE_CONST2*d;
+-      b = log(0.5*d*HARTREE_EV/eth) - c/(1.0+c);
+-      y0 -= data[1]*b;
+-      a = y[m] + (x0-1.0)*(y0-y[m])/(x[m]-1.0);
+-      e0 = (e + eth1)/HARTREE_EV;
+-      d = 2.0*e0*(1.0+0.5*FINE_STRUCTURE_CONST2*e0);
+-      c = FINE_STRUCTURE_CONST2*d;
+-      b = log(0.5*d*HARTREE_EV/eth) - c/(1.0+c);
+-      a += data[1]*b;
+-      b0 = 1.0 + FINE_STRUCTURE_CONST2*e0;
+-      b1 = 1.0 + FINE_STRUCTURE_CONST2*e/HARTREE_EV;
+-      a *= b0*b1;
+-    } else if (data[1]+1.0 == 1.0) {
+-      e0 = ((x[m]*et0/(1.0-x[m]))+eth1)/HARTREE_EV;
+-      b0 = 1.0 + FINE_STRUCTURE_CONST2*e0;
+-      b1 = 1.0 + FINE_STRUCTURE_CONST2*(e0-eth1/HARTREE_EV);
+-      y0 /= b0*b1;
+-      a = y[m] + (x0-1.0)*(y0-y[m])/(x[m]-1.0);
+-      b0 = 1.0 + FINE_STRUCTURE_CONST2*(e+eth1)/HARTREE_EV;
+-      b1 = 1.0 + FINE_STRUCTURE_CONST2*e/HARTREE_EV;
+-      a *= b0*b1;
+-      */
+-    } else {
+-      a = y[m] + (x0-1.0)*(y0-y[m])/(x[m]-1.0);
+-    }
++    m = h->n_egrid;
+   }
++  a = InterpCECrossData(m, data, e, cx, NULL);
+ 
+   return a;
+ }
+ 
+ double InterpolateCECross(double e, CE_RECORD *r, CE_HEADER *h,
+-			  double *data, double *ratio) {
+-  double *x, *y, *w;
+-  int m, m1, n, one;
+-  double a, b, x0, y0, eth, e0, c, d;
+-  EN_SRECORD *mem_en_table;
+-  int mem_en_table_size;
+-  double bte, bms, eth1, et0;
+-
+-  mem_en_table = GetMemENTable(&mem_en_table_size);
+-
+-  eth = mem_en_table[r->upper].energy - mem_en_table[r->lower].energy;
+-  eth = eth * HARTREE_EV;
++			  double *data, double *cx, double *ratio, int md) {
++  int m, m1;
++  double a, *ra;
+ 
+   a = 0.0;
+-  *ratio = 1.0;
+-
+-  if (e < 0.0) return a;
+-
+-  BornFormFactorTE(&bte);
+-  bms = BornMass();
+-  eth1 = (eth + bte*HARTREE_EV)/bms;
+-  if (data[0] > 0) {
+-    et0 = data[0];
++  if (e < 0.0) return a;  
++  e /= HARTREE_EV;
++  if (md == 0) {
++    m = 0;
+   } else {
+-    et0 = eth1;
++    m = h->n_usr;
+   }
+-  m = h->n_usr;
+-  m1 = m + 1;
+-  x0 = log(1+e/et0);
+-  y = data + 2;
+-  x = y + m1;
+-  w = x + m1;
+-
+-  if (x0 < x[m-1]) {
+-    n = 2;
+-    one = 1;
+-    UVIP3P(n, m, x, y, one, &x0, &a);
+-    //a = exp(a);
+-    if (h->msub) {
+-      UVIP3P(n, m, x, w, one, &x0, &b);
+-      if (b < 0.0) b = 0.0;
+-      a *= b;
+-      *ratio = b;
+-    }
++  if (h->msub) {
++    ra = ratio;
+   } else {
+-    x0 = e/(et0 + e);
+-    y0 = y[m-1];
+-    if (data[1] > -EPS10) {
+-      if (XCEMode() == 1) {
+-	e0 = ((x[m]*et0/(1.0-x[m]))+eth1)/HARTREE_EV;
+-	d = 2.0*e0*(1.0+0.5*FINE_STRUCTURE_CONST2*e0);
+-	c = FINE_STRUCTURE_CONST2*d;
+-	b = log(0.5*d*HARTREE_EV/eth) - c/(1.0+c);
+-	y0 = y0/(1+c) - data[1]*b;
+-	a = y[m] + (x0-1.0)*(y0-y[m])/(x[m]-1.0);
+-	e0 = (e + eth1)/HARTREE_EV;
+-	d = 2.0*e0*(1.0+0.5*FINE_STRUCTURE_CONST2*e0);
+-	c = FINE_STRUCTURE_CONST2*d;
+-	b = log(0.5*d*HARTREE_EV/eth) - c/(1.0+c);
+-	a = (a + data[1]*b)*(1+c);
+-      } else {
+-	e0 = ((x[m]*et0/(1.0-x[m]))+eth1);
+-	b = log(e0/eth);
+-	y0 -= data[1]*b;
+-	a = y[m] + (x0-1.0)*(y0-y[m])/(x[m]-1.0);
+-	b = log((e+eth1)/eth);
+-	a += data[1]*b;
+-      }
+-      /*
+-      e0 = ((x[m]*et0/(1.0-x[m]))+eth1)/HARTREE_EV;
+-      b0 = 1.0 + FINE_STRUCTURE_CONST2*e0;
+-      b1 = 1.0 + FINE_STRUCTURE_CONST2*(e0-eth1/HARTREE_EV);
+-      y0 /= b0*b1;
+-      d = 2.0*e0*(1.0+0.5*FINE_STRUCTURE_CONST2*e0);
+-      c = FINE_STRUCTURE_CONST2*d;
+-      b = log(0.5*d*HARTREE_EV/eth) - c/(1.0+c);
+-      y0 -= data[1]*b;
+-      a = y[m] + (x0-1.0)*(y0-y[m])/(x[m]-1.0);
+-      e0 = (e + eth1)/HARTREE_EV;
+-      d = 2.0*e0*(1.0+0.5*FINE_STRUCTURE_CONST2*e0);
+-      c = FINE_STRUCTURE_CONST2*d;
+-      b = log(0.5*d*HARTREE_EV/eth) - c/(1.0+c);
+-      a += data[1]*b;
+-      b0 = 1.0 + FINE_STRUCTURE_CONST2*e0;
+-      b1 = 1.0 + FINE_STRUCTURE_CONST2*e/HARTREE_EV;
+-      a *= b0*b1;
+-    } else if (data[1]+1.0 == 1.0) {
+-      e0 = ((x[m]*et0/(1.0-x[m]))+eth1)/HARTREE_EV;
+-      b0 = 1.0 + FINE_STRUCTURE_CONST2*e0;
+-      b1 = 1.0 + FINE_STRUCTURE_CONST2*(e0-eth1/HARTREE_EV);
+-      y0 /= b0*b1;
+-      a = y[m] + (x0-1.0)*(y0-y[m])/(x[m]-1.0);
+-      b0 = 1.0 + FINE_STRUCTURE_CONST2*(e+eth1)/HARTREE_EV;
+-      b1 = 1.0 + FINE_STRUCTURE_CONST2*e/HARTREE_EV;
+-      a *= b0*b1;
+-      */
+-    } else {
+-      a = y[m] + (x0-1.0)*(y0-y[m])/(x[m]-1.0);
+-    }
+-    if (h->msub) {
+-      b = w[m] + (x0-1.0)*(w[m-1]-w[m])/(x[m]-1.0);
+-      a *= b;
+-      *ratio = b;
+-    }
++    ra = NULL;
++  }
++  a = InterpCECrossData(m, data, e, cx, ra);
++  if (isnan(a) || isinf(a)) {
++    printf("invalid interp ce cross: %d %d %g %g\n", r->lower, r->upper, e, a);
+   }
+-
+   return a;
+ }
+ 
+@@ -1026,7 +1004,7 @@ int CEMFCross(char *ifn, char *ofn, int i0, int i1,
+   CEMF_HEADER mh;
+   CEMF_RECORD mr;
+   int i, t, m, ith, iph;
+-  double data[2+(1+MAXNE)*3], e, cs, a;
++  double data[4+(2+MAXNE)*4], e, cs, a;
+   double eth, a1, cs1, k2, rp, e1, e0;
+   double bte, bms, be;
+   EN_SRECORD *mem_en_table;
+@@ -1060,7 +1038,6 @@ int CEMFCross(char *ifn, char *ofn, int i0, int i1,
+     n = ReadCEMFHeader(f1, &mh, swp);
+     if (n == 0) break;
+     CEMF2CEFHeader(&mh, &h);
+-    PrepCEFCrossHeader(&h, data);
+     for (i = 0; i < mh.ntransitions; i++) {
+       n = ReadCEMFRecord(f1, &mr, swp, &mh);
+       if ((mr.lower == i0 || i0 < 0) && (mr.upper == i1 || i1 < 0)) {
+@@ -1076,7 +1053,7 @@ int CEMFCross(char *ifn, char *ofn, int i0, int i1,
+ 	    fprintf(f2, "# %2d %2d %11.4E %11.4E\n",
+ 		    ith, iph, mh.thetagrid[ith]*180/PI, mh.phigrid[iph]*180/PI);
+ 	    CEMF2CEFRecord(&mr, &r, &mh, ith, iph);
+-	    PrepCEFCrossRecord(&r, &h, data);
++	    PrepCEFCrossRecord(&r, &h, data, fh.atom);
+ 	    for (t = 0; t < negy; t++) {
+ 	      if (mp == 0) {
+ 		e0 = egy[t]/bms;
+@@ -1086,31 +1063,8 @@ int CEMFCross(char *ifn, char *ofn, int i0, int i1,
+ 		e0 = e1 + be;
+ 	      }
+ 	      if (e1 > 0) {
+-		cs = InterpolateCEFCross(e1, &r, &h, data);
+-		a = e0/HARTREE_EV;
+-		if (XCEMode() == 1) {
+-		  a *= (1.0+0.5*FINE_STRUCTURE_CONST2*a);
+-		}
+-		a = PI*AREA_AU20*cs/(2.0*a);
+-		if (data[1] > -EPS10) {
+-		  cs1 = data[1]*log(e0/e) + r.born[0];
+-		  if (XCEMode() == 1) {
+-		    k2 = e0/HARTREE_EV;
+-		    k2 = 2.0*k2*(1.0+0.5*FINE_STRUCTURE_CONST2*k2);
+-		    a1 = FINE_STRUCTURE_CONST2*k2;
+-		    cs1 = data[1]*(log(0.5*k2/eth) - a1/(1+a1));
+-		    cs1 += r.born[0];
+-		    cs1 *= 1+a1;
+-		  }
+-		  a1 = e0/HARTREE_EV;
+-		  if (XCEMode() == 1) {
+-		    a1 *= (1.0+0.5*FINE_STRUCTURE_CONST2*a);
+-		  }
+-		  a1 = PI*AREA_AU20*cs1/(2.0*a1);
+-		} else {
+-		  cs1 = cs;
+-		  a1 = a;
+-		}
++		cs = InterpolateCEFCross(e1, &r, &h, data, &a, 1);
++		cs1 = InterpolateCEFCross(e1, &r, &h, data, &a1, 0);
+ 	      } else {
+ 		cs = 0.0;
+ 		a = 0.0;
+@@ -1167,7 +1121,7 @@ int CEFCross(char *ifn, char *ofn, int i0, int i1,
+   CEF_HEADER h;
+   CEF_RECORD r;
+   int i, t, m;
+-  double data[2+(1+MAXNE)*3], e, cs, a;
++  double data[4+(2+MAXNE)*4], e, cs, a;
+   double eth, a1, cs1, k2, rp, e1, e0;
+   double bte, bms, be;
+   EN_SRECORD *mem_en_table;
+@@ -1207,7 +1161,6 @@ int CEFCross(char *ifn, char *ofn, int i0, int i1,
+   while (1) {
+     n = ReadCEFHeader(f1, &h, swp);
+     if (n == 0) break;
+-    PrepCEFCrossHeader(&h, data);
+     for (i = 0; i < h.ntransitions; i++) {
+       n = ReadCEFRecord(f1, &r, swp, &h);
+       if ((r.lower == i0 || i0 < 0) && (r.upper == i1 || i1 < 0)) {
+@@ -1218,7 +1171,7 @@ int CEFCross(char *ifn, char *ofn, int i0, int i1,
+ 		r.upper, mem_en_table[r.upper].p, mem_en_table[r.upper].j,
+ 		e, negy);
+ 	be = (e + bte*HARTREE_EV)/bms;
+-	PrepCEFCrossRecord(&r, &h, data);
++	PrepCEFCrossRecord(&r, &h, data, fh.atom);
+ 	for (t = 0; t < negy; t++) {
+ 	  if (mp == 0) {
+ 	    e0 = egy[t]/bms;
+@@ -1228,31 +1181,8 @@ int CEFCross(char *ifn, char *ofn, int i0, int i1,
+ 	    e0 = e1 + be;
+ 	  }
+ 	  if (e1 > 0) {
+-	    cs = InterpolateCEFCross(e1, &r, &h, data);
+-	    a = e0/HARTREE_EV;
+-	    if (XCEMode() == 1) {
+-	      a *= (1.0+0.5*FINE_STRUCTURE_CONST2*a);
+-	    }
+-	    a = PI*AREA_AU20*cs/(2.0*a);
+-	    if (data[1] > -EPS10) {
+-	      cs1 = data[1]*log(e0/e) + r.born[0];
+-	      if (XCEMode() == 1) {
+-		k2 = e0/HARTREE_EV;
+-		k2 = 2.0*k2*(1.0+0.5*FINE_STRUCTURE_CONST2*k2);
+-		a1 = FINE_STRUCTURE_CONST2*k2;
+-		cs1 = data[1]*(log(0.5*k2/eth) - a1/(1+a1));
+-		cs1 += r.born[0];
+-		cs1 *= 1+a1;
+-	      }
+-	      a1 = e0/HARTREE_EV;
+-	      if (XCEMode() == 1) {
+-		a1 *= (1.0+0.5*FINE_STRUCTURE_CONST2*a);
+-	      }
+-	      a1 = PI*AREA_AU20*cs1/(2.0*a1);
+-	    } else {
+-	      cs1 = cs;
+-	      a1 = a;
+-	    }
++	    cs = InterpolateCEFCross(e1, &r, &h, data, &a, 1);
++	    cs1 = InterpolateCEFCross(e1, &r, &h, data, &a1, 0);
+ 	  } else {
+ 	    cs = 0.0;
+ 	    a = 0.0;
+@@ -1299,7 +1229,7 @@ int CECross(char *ifn, char *ofn, int i0, int i1,
+   CE_HEADER h;
+   CE_RECORD r;
+   int i, t, m, k;
+-  double data[2+(1+MAXNUSR)*3], e, cs, a, ratio;
++  double data[4+(2+MAXNUSR)*4], e, cs, a, ratio;
+   double eth, a1, cs1, k2, rp, e1, e0;
+   double bte, bms, be;
+   EN_SRECORD *mem_en_table;
+@@ -1339,7 +1269,6 @@ int CECross(char *ifn, char *ofn, int i0, int i1,
+   while (1) {
+     n = ReadCEHeader(f1, &h, swp);
+     if (n == 0) break;
+-    PrepCECrossHeader(&h, data);
+     for (i = 0; i < h.ntransitions; i++) {
+       n = ReadCERecord(f1, &r, swp, &h);
+       if ((r.lower == i0 || i0 < 0) && (r.upper == i1 || i1 < 0)) {
+@@ -1351,7 +1280,7 @@ int CECross(char *ifn, char *ofn, int i0, int i1,
+ 		e, negy, r.nsub);
+ 	be = (e + bte*HARTREE_EV)/bms;
+ 	for (k = 0; k < r.nsub; k++) {
+-	  PrepCECrossRecord(k, &r, &h, data);
++	  PrepCECrossRecord(k, &r, &h, data, fh.atom);
+ 	  for (t = 0; t < negy; t++) {
+ 	    if (mp == 0) {
+ 	      e0 = egy[t]/bms;
+@@ -1361,31 +1290,12 @@ int CECross(char *ifn, char *ofn, int i0, int i1,
+ 	      e0 = e1 + be;
+ 	    }
+ 	    if (e1 > 0) {
+-	      cs = InterpolateCECross(e1, &r, &h, data, &ratio);
+-	      a = e0/HARTREE_EV;
+-	      if (XCEMode() == 1) {
+-		a *= (1.0+0.5*FINE_STRUCTURE_CONST2*a);
+-	      }
+-	      a = PI*AREA_AU20*cs/(2.0*a);
+-	      if (!h.msub) a /= (mem_en_table[r.lower].j+1.0);
+-	      if (data[1] > -EPS10) {
+-		cs1 = data[1]*log(e0/e) + r.born[0];
+-		if (XCEMode() == 1) {
+-		  k2 = e0/HARTREE_EV;
+-		  k2 = 2.0*k2*(1.0+0.5*FINE_STRUCTURE_CONST2*k2);
+-		  a1 = FINE_STRUCTURE_CONST2*k2;
+-		  cs1 = data[1]*(log(0.5*k2/eth) - a1/(1+a1));
+-		  cs1 += r.born[0];
+-		  cs1 *= 1+a1;
+-		}
+-		a1 = e0/HARTREE_EV;
+-		if (XCEMode() == 1) {
+-		  a1 *= (1.0+0.5*FINE_STRUCTURE_CONST2*a);
+-		}
+-		a1 = PI*AREA_AU20*cs1/(2.0*a1);
+-	      } else {
+-		cs1 = cs;
+-		a1 = a;
++	      ratio = 1.0;
++	      cs = InterpolateCECross(e1, &r, &h, data, &a, &ratio, 1);
++	      cs1 = InterpolateCECross(e1, &r, &h, data, &a1, &ratio, 0);
++	      if (!h.msub) {
++		a /= (mem_en_table[r.lower].j+1.0);
++		a1 /= (mem_en_table[r.lower].j+1.0);
+ 	      }
+ 	    } else {
+ 	      cs = 0.0;
+@@ -1440,7 +1350,7 @@ int CEMFMaxwell(char *ifn, char *ofn, int i0, int i1,
+   CEMF_HEADER mh;
+   CEMF_RECORD mr;
+   int i, t, m, p, ith, iph;
+-  double data[2+(1+MAXNE)*4], e, cs, a, c, b;
++  double data[4+(2+MAXNE)*4], e, cs, a, cs1, a1, c, c1, b, cx, cx1;
+   double *xg = gauss_xw[0];
+   double *wg = gauss_xw[1];
+   EN_SRECORD *mem_en_table;
+@@ -1474,7 +1384,6 @@ int CEMFMaxwell(char *ifn, char *ofn, int i0, int i1,
+     n = ReadCEMFHeader(f1, &mh, swp);
+     if (n == 0) break;
+     CEMF2CEFHeader(&mh, &h);
+-    PrepCEFCrossHeader(&h, data);
+     for (i = 0; i < mh.ntransitions; i++) {
+       n = ReadCEMFRecord(f1, &mr, swp, &mh);
+       if ((mr.lower == i0 || i0 < 0) && (mr.upper == i1 || i1 < 0)) {
+@@ -1489,14 +1398,16 @@ int CEMFMaxwell(char *ifn, char *ofn, int i0, int i1,
+ 	    fprintf(f2, "# %2d %2d %11.4E %11.4E\n",
+ 		    ith, iph, mh.thetagrid[ith]*180.0/PI, mh.phigrid[iph]*180.0/PI);
+ 	    CEMF2CEFRecord(&mr, &r, &mh, ith, iph);
+-	    PrepCEFCrossRecord(&r, &h, data);
++	    PrepCEFCrossRecord(&r, &h, data, fh.atom);
+ 	    for (t = 0; t < nt; t++) {
+ 	      cs = 0.0;
++	      cs1 = 0.0;
+ 	      tms = temp[t]/bms;
+ 	      theta = FINE_STRUCTURE_CONST2*tms/HARTREE_EV;
+ 	      for (p = 0; p < 15; p++) {
+ 		a = tms*xg[p];
+-		c = InterpolateCEFCross(a, &r, &h, data);
++		c = InterpolateCEFCross(a, &r, &h, data, &cx, 1);
++		c1 = InterpolateCEFCross(a, &r, &h, data, &cx1, 0);
+ 		b = (a + e/bms)/HARTREE_EV;
+ 		b = FINE_STRUCTURE_CONST2*b;
+ 		a = 1+0.5*b;
+@@ -1506,11 +1417,14 @@ int CEMFMaxwell(char *ifn, char *ofn, int i0, int i1,
+ 		}
+ 		b *= MaxwellRC(e/temp[t]+xg[p],theta);
+ 		cs += wg[p]*c*b;
++		cs1 += wg[p]*c1*b;
+ 	      }
+ 	      a = 217.16*sqrt(HARTREE_EV/(2.0*tms));
+-	      a *= cs*exp(-e/temp[t]);
+-	      fprintf(f2, "%11.4E\t%11.4E\t%11.4E\n",
+-		      temp[t], cs, a);
++	      a *= exp(-e/temp[t]);
++	      a1 = a*cs1;
++	      a *= cs;
++	      fprintf(f2, "%11.4E\t%11.4E\t%11.4E\t%11.4E\t%11.4E\n",
++		      temp[t], cs, a, cs1, a1);
+ 	    }
+ 	    fprintf(f2, "\n\n");
+ 	  }
+@@ -1559,7 +1473,7 @@ int CEFMaxwell(char *ifn, char *ofn, int i0, int i1,
+   CEF_HEADER h;
+   CEF_RECORD r;
+   int i, t, m, p;
+-  double data[2+(1+MAXNE)*4], e, cs, a, b, c;
++  double data[4+(2+MAXNE)*4], e, cs, a, cs1, a1, b, c, c1, cx, cx1;
+   double *xg = gauss_xw[0];
+   double *wg = gauss_xw[1];
+   EN_SRECORD *mem_en_table;
+@@ -1600,7 +1514,6 @@ int CEFMaxwell(char *ifn, char *ofn, int i0, int i1,
+   while (1) {
+     n = ReadCEFHeader(f1, &h, swp);
+     if (n == 0) break;
+-    PrepCEFCrossHeader(&h, data);
+     for (i = 0; i < h.ntransitions; i++) {
+       n = ReadCEFRecord(f1, &r, swp, &h);
+       if ((r.lower == i0 || i0 < 0) && (r.upper == i1 || i1 < 0)) {
+@@ -1610,14 +1523,16 @@ int CEFMaxwell(char *ifn, char *ofn, int i0, int i1,
+ 		r.lower, mem_en_table[r.lower].p, mem_en_table[r.lower].j,
+ 		r.upper, mem_en_table[r.upper].p, mem_en_table[r.upper].j,
+ 		e, nt);
+-	PrepCEFCrossRecord(&r, &h, data);
++	PrepCEFCrossRecord(&r, &h, data, fh.atom);
+ 	for (t = 0; t < nt; t++) {
+ 	  cs = 0.0;
++	  cs1 = 0.0;
+ 	  tms = temp[t]/bms;
+ 	  theta = FINE_STRUCTURE_CONST2*tms/HARTREE_EV;
+ 	  for (p = 0; p < 15; p++) {
+ 	    a = tms*xg[p];
+-	    c = InterpolateCEFCross(a, &r, &h, data);
++	    c = InterpolateCEFCross(a, &r, &h, data, &cx, 1);
++	    c1 = InterpolateCEFCross(a, &r, &h, data, &cx1, 0);
+ 	    b = (a + e/bms)/HARTREE_EV;
+ 	    b = FINE_STRUCTURE_CONST2*b;
+ 	    a = 1+0.5*b;
+@@ -1627,11 +1542,14 @@ int CEFMaxwell(char *ifn, char *ofn, int i0, int i1,
+ 	    }
+ 	    b *= MaxwellRC(e/temp[t]+xg[p], theta);
+ 	    cs += wg[p]*c*b;
++	    cs1 += wg[p]*c1*b;
+ 	  }
+ 	  a = 217.16*sqrt(HARTREE_EV/(2.0*tms));
+-	  a *= cs*exp(-e/temp[t]);
+-	  fprintf(f2, "%11.4E\t%11.4E\t%11.4E\n",
+-		  temp[t], cs, a);
++	  a *= exp(-e/temp[t]);
++	  a1 = a*cs1;
++	  a *= cs;
++	  fprintf(f2, "%11.4E\t%11.4E\t%11.4E\t%11.4E\t%11.4E\n",
++		  temp[t], cs, a, cs1, a1);
+ 	}
+ 	fprintf(f2, "\n\n");
+ 	if (i0 >= 0 && i1 >= 0) {
+@@ -1670,7 +1588,8 @@ int CEMaxwell(char *ifn, char *ofn, int i0, int i1,
+   CE_HEADER h;
+   CE_RECORD r;
+   int i, t, m, k, p;
+-  double data[2+(1+MAXNUSR)*4], e, cs, a, c, b, d, ratio;
++  double data[4+(2+MAXNUSR)*4], e, cs, a, cs1, a1, c;
++  double c1, b, d, cx, cx1, ratio;
+   double *xg = gauss_xw[0];
+   double *wg = gauss_xw[1];
+   EN_SRECORD *mem_en_table;
+@@ -1710,7 +1629,6 @@ int CEMaxwell(char *ifn, char *ofn, int i0, int i1,
+   while (1) {
+     n = ReadCEHeader(f1, &h, swp);
+     if (n == 0) break;
+-    PrepCECrossHeader(&h, data);
+     for (i = 0; i < h.ntransitions; i++) {
+       n = ReadCERecord(f1, &r, swp, &h);
+       if ((r.lower == i0 || i0 < 0) && (r.upper == i1 || i1 < 0)) {
+@@ -1721,14 +1639,16 @@ int CEMaxwell(char *ifn, char *ofn, int i0, int i1,
+ 		r.upper, mem_en_table[r.upper].j,
+ 		e, nt, r.nsub);
+ 	for (k = 0; k < r.nsub; k++) {
+-	  PrepCECrossRecord(k, &r, &h, data);
++	  PrepCECrossRecord(k, &r, &h, data, fh.atom);
+ 	  for (t = 0; t < nt; t++) {
+ 	    tms = temp[t]/bms;
+ 	    theta = FINE_STRUCTURE_CONST2*tms/HARTREE_EV;
+ 	    cs = 0.0;
++	    cs1 = 0.0;
+ 	    for (p = 0; p < 15; p++) {
+ 	      a = tms*xg[p];
+-	      c = InterpolateCECross(a, &r, &h, data, &ratio);
++	      c = InterpolateCECross(a, &r, &h, data, &cx, &ratio, 1);
++	      c1 = InterpolateCECross(a, &r, &h, data, &cx1, &ratio, 0);
+ 	      b = (a + e/bms)/HARTREE_EV;
+ 	      b = FINE_STRUCTURE_CONST2*b;
+ 	      a = 1+0.5*b;
+@@ -1737,13 +1657,20 @@ int CEMaxwell(char *ifn, char *ofn, int i0, int i1,
+ 		b /= a;
+ 	      }
+ 	      d = MaxwellRC(e/temp[t]+xg[p],theta);
+-	      cs += wg[p]*c*b*d;
++	      d *= b;
++	      cs += wg[p]*c*d;
++	      cs1 += wg[p]*c1*d;
+ 	    }
+ 	    a = 217.16*sqrt(HARTREE_EV/(2.0*tms));
+-	    a *= cs*exp(-e/temp[t]);
+-	    if (!h.msub) a /= (mem_en_table[r.lower].j+1.0);
+-	    fprintf(f2, "%11.4E\t%11.4E\t%11.4E\n",
+-		    temp[t], cs, a);
++	    a *= exp(-e/temp[t]);
++	    a1 = a*cs1;
++	    a *= cs;
++	    if (!h.msub) {
++	      a /= (mem_en_table[r.lower].j+1.0);
++	      a1 /= (mem_en_table[r.lower].j+1.0);
++	    }
++	    fprintf(f2, "%11.4E\t%11.4E\t%11.4E\t%11.4E\t%11.4E\n",
++		    temp[t], cs, a, cs1, a1);
+ 	  }
+ 	  fprintf(f2, "\n\n");
+ 	}
+@@ -3470,7 +3397,7 @@ void ModifyCE(int nc, MOD_RECORD *mr, int nr, MOD_RECORD *pr,
+   CE_HEADER h, *h0;
+   CE_RECORD r, *r0;
+   MOD_RECORD mr0;
+-  double a, data[2+(1+MAXNUSR)*3];
++  double a, cx, data[4+(2+MAXNUSR)*4];
+ 
+   if (GetMemENTable(&n) == NULL) {
+     printf("must build the in-memory enegy table for CE modification\n");
+@@ -3531,15 +3458,14 @@ void ModifyCE(int nc, MOD_RECORD *mr, int nr, MOD_RECORD *pr,
+ 	      r.born[0] = r0->born[0];
+ 	      r.born[1] = r0->born[1];
+ 	      p = 0;
+-	      PrepCECrossHeader(h0, data);
+ 	      for (j = 0; j < r.nsub; j++) {
+ 		if (h.msub) {
+ 		  r.params[j] = r0->params[j];
+ 		}
+-		PrepCECrossRecord(j, r0, h0, data);
++		PrepCECrossRecord(j, r0, h0, data, fh->atom);
+ 		for (t = 0; t < h.n_usr; t++) {
+ 		  r.strength[p] = InterpolateCECross(h.usr_egrid[t]*HARTREE_EV,
+-						     r0, h0, data, &a);
++						     r0, h0, data, &cx, &a, 1);
+ 		  p++;
+ 		}
+ 	      }
+diff --git a/faclib/interpolation.h b/faclib/interpolation.h
+index 4da03f90..928bc69c 100644
+--- a/faclib/interpolation.h
++++ b/faclib/interpolation.h
+@@ -65,20 +65,20 @@ double MaxwellRC(double x, double t);
+ int NewtonCotes(double *r, double *x, int i0, int i1, int m, int id);
+ int NewtonCotesIP(double *r, double *x, int i0, int i1, int m, int id);
+ double RRCrossHn(double z, double e, int n);
+-void PrepCECrossHeader(CE_HEADER *h, double *data);
++void PrepCECrossData(int m, double *data);
++double InterpCECrossData(int m, double *data, double e, double *cx, double *r);
+ void PrepCECrossRecord(int k, CE_RECORD *r, CE_HEADER *h,
+-		       double *data);
++		       double *data, double z);
+ double InterpolateCECross(double e, CE_RECORD *r, CE_HEADER *h,
+-			  double *data, double *ratio);
++			  double *data, double *cx, double *ratio, int md);
+ int CECross(char *ifn, char *ofn, int i0, int i1, 
+ 	    int negy, double *egy, int mp);
+ int CEMaxwell(char *ifn, char *ofn, int i0, int i1, 
+ 	      int nt, double *temp);
+-void PrepCEFCrossHeader(CEF_HEADER *h, double *data);
+ void PrepCEFCrossRecord(CEF_RECORD *r, CEF_HEADER *h,
+-			double *data);
++			double *data, double z);
+ double InterpolateCEFCross(double e, CEF_RECORD *r, CEF_HEADER *h,
+-			   double *data);
++			   double *data, double *cx, int md);
+ int CEFCross(char *ifn, char *ofn, int i0, int i1, 
+ 	     int negy, double *egy, int mp);
+ int CEFMaxwell(char *ifn, char *ofn, int i0, int i1, 
+diff --git a/faclib/mmalloc.c b/faclib/mmalloc.c
+index 0d0a2e6e..bff6de59 100644
+--- a/faclib/mmalloc.c
++++ b/faclib/mmalloc.c
+@@ -29,12 +29,12 @@ double dmsize() {
+ 
+ void *mmalloc(size_t size) {
+   size_t *p = NULL;
+-  int ns = size + sizeof(size_t);
++  size_t ns = size + sizeof(size_t);
+   p = (size_t *) malloc(ns);
+   if (p == NULL) {
+-    printf("malloc error: %zu %zu\n", size, _tsize);
+-    int *ix = 0;
+-    *ix = 0;
++    printf("malloc error: requested %zu bytes, current total %zu\n", size, _tsize);
++    fflush(stdout);
++    exit(1);
+   }
+   *p = ns;
+ #pragma omp atomic
+@@ -50,6 +50,7 @@ void *mcalloc(size_t n, size_t size) {
+   p = (size_t *) calloc(ns, 1);
+   if (p == NULL) {
+     printf("calloc error: %zu %zu %zu\n", n, size, _tsize);
++    fflush(stdout);
+     exit(1);
+   }
+   *p = ns;
+@@ -61,8 +62,8 @@ void *mcalloc(size_t n, size_t size) {
+ 
+ void *mrealloc(void *p, size_t size) {
+   size_t *ps;
+-  int ns = size+sizeof(size_t);
+-  int ns0 = 0;
++  size_t ns = size+sizeof(size_t);
++  size_t ns0 = 0;
+   
+   if (p) {
+     ps = (size_t *) p;
+@@ -72,13 +73,18 @@ void *mrealloc(void *p, size_t size) {
+   ps = (size_t *) realloc(ps, ns);
+   if (ps == NULL) {
+     printf("realloc error: %zu %zu\n", size, _tsize);
++    fflush(stdout);
+     exit(1);
+   }
+   *ps = ns;
+ 
+-  ns -= ns0;
++  if (ns >= ns0) {
+ #pragma omp atomic
+-  _tsize += ns;
++    _tsize += (ns - ns0);
++  } else {
++#pragma omp atomic
++    _tsize -= (ns0 - ns);
++  }
+ 
+   return &ps[1];
+ }
+diff --git a/faclib/orbital.c b/faclib/orbital.c
+index 4a8eefa8..a9f69cf4 100644
+--- a/faclib/orbital.c
++++ b/faclib/orbital.c
+@@ -23,17 +23,6 @@
+ #include "fftsg.h"
+ #include "global.h"
+ 
+-/*Debye Screening Helper*/
+-extern double EEScreenMu(void);
+-
+-static double _shx(double x){
+-	if (x<1e-6){
+-		return 1.0 + x*x/6.0;
+-	}
+-	if (x>400.0) x = 400.0;
+-	return sinh(x)/x;
+-}
+-
+ static char *rcsid="$Id$";
+ #if __GNUC__ == 2
+ #define USE(var) static void * use_##var = (&use_##var, (void *) &var) 
+@@ -4426,9 +4415,9 @@ void SetPotentialIPS(POTENTIAL *pot, int iter) {
+       double xd = x/pot->dps;
+       double xdd = xd/pot->dps;
+       if (_debye_mode == 0) {
+-	pot->ZPS[i] = pot->zps*(x-1.0);
+-	pot->dZPS[i] = -pot->zps*xd;
+-	pot->dZPS2[i] = pot->zps*xdd;
++	pot->ZPS[i] = -pot->zps*(x-1.0);
++	pot->dZPS[i] = pot->zps*xd;
++	pot->dZPS2[i] = -pot->zps*xdd;
+       } else if (_debye_mode == 1) {
+ 	pot->ZPS[i] = pot->Z[i]*(1.0-x);
+ 	pot->dZPS[i] = pot->Z[i]*xd + pot->dZ[i]*(1.0-x);
+@@ -4765,7 +4754,6 @@ int DensityToSZ(POTENTIAL *pot, double *d, double *z,
+ 		double *zx, double *jps, int md) {
+   int i, im, maxrp, k;
+   double nx, rx, a, vxs;
+-  double _mu = EEScreenMu();
+ 
+   if (pot->ips > 0 && pot->ups+1 == 1) {
+     maxrp = pot->ips+1;
+@@ -4788,23 +4776,16 @@ int DensityToSZ(POTENTIAL *pot, double *d, double *z,
+   im = maxrp-1;
+   for (i = 0; i <= im; i++) {
+     _dwork[i] = d[i]*pot->dr_drho[i];
+-    if (_mu > 0) _dwork[i] *= _shx(_mu*pot->rad[i]);
+   }
+   _dwork1[0] = d[0]*pot->rad[0]/3.0;
+   NewtonCotesIP(_dwork1, _dwork, 0, im, -1, 0);
+   for (i = 0; i <= im; i++) {
+     _dwork[i] = (d[i]/pot->rad[i])*pot->dr_drho[i];
+-    if (_mu >0) _dwork[i] *= exp(-_mu*pot->rad[i]);
+   }
+   _dwork2[im] = 0.0;
+   NewtonCotesIP(_dwork2, _dwork, 0, im, -1, -1);
+   for (i = 0; i <= im; i++) {
+-    if (_mu>0){
+-	    z[i] = exp(-_mu*pot->rad[i])*_dwork1[i]
+-		    + pot->rad[i]*_shx(_mu*pot->rad[i])*_dwork2[i];
+-    } else{
+     z[i] = _dwork1[i] + pot->rad[i]*_dwork2[i];
+-    }
+   }  
+   if (pot->ahx) {
+     for (i = 0; i <= im; i++) {
+diff --git a/faclib/polarization.c b/faclib/polarization.c
+index 39deee87..8a07c3bd 100644
+--- a/faclib/polarization.c
++++ b/faclib/polarization.c
+@@ -639,9 +639,9 @@ int SetMCERates(char *fn) {
+   int n, k, m, t, p, i, q;
+   int m1, m2, j1, j2, i0;
+   int swp, ncs;
+-  double data[2+(1+MAXNUSR)*4];
++  double data[4+(2+MAXNUSR)*4];
+   double *cs1, *cs2;
+-  double e1, e2, e, a, v, ratio;
++  double e1, e2, e, a, v, cs, ratio;
+   double esigma, energy;
+   double egrid[NEINT], rint[NEINT], fint[NEINT];
+   
+@@ -702,7 +702,6 @@ int SetMCERates(char *fn) {
+   while (1) {
+     n = ReadCEHeader(f, &h, swp);
+     if (n == 0) break;
+-    PrepCECrossHeader(&h, data);
+     for (i = 0; i < h.ntransitions; i++) {
+       n = ReadCERecord(f, &r, swp, &h);
+       e = levels[r.upper].energy - levels[r.lower].energy;
+@@ -714,17 +713,14 @@ int SetMCERates(char *fn) {
+ 	cs2 = cs1 + ncs;
+       }
+       for (k = 0; k < r.nsub; k++) {
+-	PrepCECrossRecord(k, &r, &h, data);
++	PrepCECrossRecord(k, &r, &h, data, fh.atom);
+ 	if (esigma > 0 && params.idr < 0) {
+ 	  i0 = -1;
+ 	  for (q = 0; q < NEINT; q++) {
+ 	    e2 = egrid[q] - e;
+ 	    if (e2 >= 0) {
+-	      rint[q] = InterpolateCECross(e2, &r, &h, data, &ratio);
+-	      a = egrid[q]/HARTREE_EV;
+-	      a *= (1.0 + 0.5*FINE_STRUCTURE_CONST2*a);
+-	      a = PI*AREA_AU20/(2.0*a);
+-	      rint[q] *= a*fint[q];
++	      cs = InterpolateCECross(e2, &r, &h, data, &a, &ratio, 1);
++	      rint[q] = a*fint[q];
+ 	      if (i0 < 0) i0 = q;
+ 	    }
+ 	  }
+@@ -736,26 +732,17 @@ int SetMCERates(char *fn) {
+ 	  }
+ 	  for (q = 0; q < NEINT; q++) {
+ 	    e2 = egrid[q];
+-	    rint[q] = InterpolateCECross(e2, &r, &h, data, &ratio);
+-	    a = e2/HARTREE_EV;
+-	    a *= (1.0 + 0.5*FINE_STRUCTURE_CONST2*a);
+-	    a = PI*AREA_AU20/(2.0*a);
+-	    rint[q] *= a*fint[q];
++	    cs = InterpolateCECross(e2, &r, &h, data, &a, &ratio, 1);
++	    rint[q] = a*fint[q];
+ 	  }
+ 	  cs2[k] = Simpson(rint, 0, NEINT-1)*(egrid[1]-egrid[0]);
+ 	} else {
+ 	  e2 = e1 - e;
+-	  cs1[k] = InterpolateCECross(e2, &r, &h, data, &ratio);
+-	  a = e1/HARTREE_EV;
+-	  a *= (1.0 + 0.5*FINE_STRUCTURE_CONST2*a);
+-	  a = PI*AREA_AU20/(2.0*a);
+-	  cs1[k] *= a*v;
++	  cs = InterpolateCECross(e2, &r, &h, data, &a, &ratio, 1);
++	  cs1[k] = a*v;
+ 	  e2 = e1;
+-	  cs2[k] = InterpolateCECross(e2, &r, &h, data, &ratio);
+-	  a = e2/HARTREE_EV;
+-	  a *= (1.0 + 0.5*FINE_STRUCTURE_CONST2*a);
+-	  a = PI*AREA_AU20/(2.0*a);
+-	  cs2[k] *= a*v;
++	  cs = InterpolateCECross(e2, &r, &h, data, &a, &ratio, 1);
++	  cs2[k] = a*v;
+ 	}
+       }
+       ce_rates[t].lower = r.lower;
+diff --git a/faclib/rates.c b/faclib/rates.c
+index e2419e18..ef02441a 100644
+--- a/faclib/rates.c
++++ b/faclib/rates.c
+@@ -499,206 +499,34 @@ int CXRate(double *dir, int *ip, int i0, int f0) {
+ }
+ 
+ double CERate1E(double e1, double eth0, int np, void *p) {
+-  double *x, *y;
+-  int m1, n, one;
+-  double *dp, a, x0, y0;
+-  double e0, d, c, b, b0, b1;
+-  double bte, bms, eth, e, et0;
+-
+-  BornFormFactorTE(&bte);
+-  bms = BornMass();  
+-  eth = (eth0 + bte*HARTREE_EV)/bms;
+-  e = e1/bms;
+-
+-  if (e < eth) return 0.0;
++  double *dp, a, b, e0, bms, eth;
+ 
+   dp = (double *) p;
++  bms = BornMass();
++  e0 = e1/bms/HARTREE_EV;
++  eth = dp[0];
++  if (e0 < eth) return 0.0;
+ 
+-  if (np == 0) {
+-    e0 = e/HARTREE_EV;
+-    d = 2.0*e0*(1.0+0.5*FINE_STRUCTURE_CONST2*e0);
+-    c = FINE_STRUCTURE_CONST2*d;
+-    b = log(1.05*d*HARTREE_EV/eth0) - c/(1.0+c);
+-    b = Max(0.0, b);
+-    a = dp[1]*b*(1+c);
+-    /*
+-    b0 = 1.0 + FINE_STRUCTURE_CONST2*e0;
+-    b1 = 1.0 + FINE_STRUCTURE_CONST2*(e0-eth/HARTREE_EV);
+-    a *= b0*b1;    
+-    */
+-  } else {
+-    if (dp[0] > 0) et0 = dp[0];
+-    else et0 = eth;
+-    m1 = np + 1;
+-    y = dp+2;
+-    x0 = (et0+e-eth)/et0;
+-    x0 = Max(1e-10, x0);
+-    x0 = log(x0);
+-    x = y + m1;
+-    if (x0 <= x[np-1]) {
+-      n = 2;
+-      one = 1;
+-      if (fabs(bms-1.0) < EPS3 || x0 >= x[0]) {
+-	UVIP3P(n, np, x, y, one, &x0, &a);
+-	if (a < 0.0) a = 0.0;
+-      } else {
+-	a = y[0] * pow(exp(x0-x[0]), 2.5);
+-      }
+-    } else {
+-      x0 = (e-eth)/(et0+e-eth);
+-      y0 = y[np-1];
+-      if (dp[1] > -EPS10) {
+-	if (XCEMode() == 1) {
+-	  e0 = (x[np]*et0/(1.0-x[np]) + eth)/HARTREE_EV;
+-	  d = 2.0*e0*(1.0+0.5*FINE_STRUCTURE_CONST2*e0);
+-	  c = FINE_STRUCTURE_CONST2*d;
+-	  b = log(0.5*d*HARTREE_EV/eth0) - c/(1.0+c);
+-	  y0 = y0/(1+c) - dp[1]*b;
+-	  a = y[np] + (x0-1.0)*(y0-y[np])/(x[np]-1.0);
+-	  e0 = e/HARTREE_EV;
+-	  d = 2.0*e0*(1.0+0.5*FINE_STRUCTURE_CONST2*e0);
+-	  c = FINE_STRUCTURE_CONST2*d;
+-	  b = log(0.5*d*HARTREE_EV/eth0) - c/(1.0+c);
+-	  a = (a + dp[1]*b)*(1+c);
+-	} else {
+-	  e0 = (x[np]*et0/(1.0-x[np]) + eth);
+-	  b = log(e0/eth0);
+-	  y0 -= dp[1]*b;
+-	  a = y[np] + (x0-1.0)*(y0-y[np])/(x[np]-1.0);
+-	  b = log(e/eth0);
+-	  a += dp[1]*b;
+-	}
+-      } else {
+-	a = y[np] + (x0-1.0)*(y0-y[np])/(x[np]-1.0);
+-      }
+-    }
+-  }
++  b = InterpCECrossData(np, dp, e0-eth, &a, NULL);
+   if (a <= 0.0) {
+     a = 0.0;
+     return a;
+-  }
+-  
+-  e0 = e/HARTREE_EV;
+-  b = 2.0*e0;
+-  if (XCEMode() == 1) {
+-    b *= (1.0+0.5*FINE_STRUCTURE_CONST2*e0);
+-  }
+-  a *= PI*AREA_AU20/b;
++  }  
+   a *= VelocityFromE(e1, bms);
+   return a;
+ }
+ 
+ double DERate1E(double e1, double eth0, int np, void *p) {
+-  double a, x0, y0, *x, *y;
+-  double *dp;
+-  int m1, n, one;
+-  double e0, d, c, b, b0, b1;
+-  double bte, bms, eth, e, et0;
++  double *dp, a, b, e0, bms;
+ 
+-  BornFormFactorTE(&bte);
++  if (e1 < 0) return 0.0;
+   bms = BornMass();
+-  eth = (eth0 + bte*HARTREE_EV)/bms;
+-  e = e1/bms;
+-
++  e0 = e1/bms/HARTREE_EV;
+   dp = (double *) p;
+-
+-  if (np == 0) {
+-    e0 = (e + eth)/HARTREE_EV;
+-    d = 2.0*e0*(1.0+0.5*FINE_STRUCTURE_CONST2*e0);
+-    c = FINE_STRUCTURE_CONST2*d;
+-    b = log(1.05*d*HARTREE_EV/eth0) - c/(1.0+c);
+-    b = Max(0.0, b);
+-    a = dp[1]*b*(1+c);
+-  } else {
+-    if (dp[0] > 0) {
+-      et0 = dp[0];
+-    } else {
+-      et0 = eth;
+-    }
+-    m1 = np + 1;
+-    x0 = log((et0+e)/et0);
+-    y = dp+2;
+-    x = y + m1;
+-
+-    if (x0 <= x[np-1]) {
+-      n = 2;
+-      one = 1;
+-      if (fabs(bms-1.0) < EPS3 || x0 >= x[0]) {
+-	UVIP3P(n, np, x, y, one, &x0, &a);
+-	if (a < 0.0) a = 0.0;
+-      } else {
+-	a = y[0] * pow(exp(x0-x[0]), 2.5);
+-      }
+-    } else {
+-      x0 = e/(et0+e);
+-      y0 = y[np-1]; 
+-      if (dp[1] > -EPS10) {
+-	if (XCEMode() == 1) {
+-	  e0 = (x[np]*et0/(1.0-x[np]) + eth)/HARTREE_EV;
+-	  d = 2.0*e0*(1.0+0.5*FINE_STRUCTURE_CONST2*e0);
+-	  c = FINE_STRUCTURE_CONST2*d;
+-	  b = log(0.5*d*HARTREE_EV/eth0) - c/(1.0+c);
+-	  y0 = y0/(1+c) - dp[1]*b;
+-	  a = y[np] + (x0-1.0)*(y0-y[np])/(x[np]-1.0);
+-	  e0 = (e+eth)/HARTREE_EV;
+-	  d = 2.0*e0*(1.0+0.5*FINE_STRUCTURE_CONST2*e0);
+-	  c = FINE_STRUCTURE_CONST2*d;
+-	  b = log(0.5*d*HARTREE_EV/eth0) - c/(1.0+c);
+-	  a = (a + dp[1]*b)*(1+c);
+-	} else {
+-	  e0 = (x[np]*et0/(1.0-x[np]) + eth);
+-	  b = log(e0/eth0);
+-	  y0 -= dp[1]*b;
+-	  a = y[np] + (x0-1.0)*(y0-y[np])/(x[np]-1.0);
+-	  b = log((e+eth)/eth0);
+-	  a += dp[1]*b;
+-	}
+-	/*
+-	e0 = (x[np]*et0/(1.0-x[np]) + eth)/HARTREE_EV;
+-	b0 = 1.0 + FINE_STRUCTURE_CONST2*e0;
+-	b1 = 1.0 + FINE_STRUCTURE_CONST2*(e0-eth/HARTREE_EV);
+-	y0 /= b0*b1;
+-	d = 2.0*e0*(1.0+0.5*FINE_STRUCTURE_CONST2*e0);
+-	c = FINE_STRUCTURE_CONST2*d;
+-	b = log(0.5*d*HARTREE_EV/eth0) - c/(1.0+c);  
+-	y0 -= dp[1]*b;
+-	a = y[np] + (x0-1.0)*(y0-y[np])/(x[np]-1.0);
+-	e0 = (e + eth)/HARTREE_EV;
+-	d = 2.0*e0*(1.0+0.5*FINE_STRUCTURE_CONST2*e0);
+-	c = FINE_STRUCTURE_CONST2*d;
+-	b = log(0.5*d*HARTREE_EV/eth0) - c/(1.0+c);  
+-	a += dp[1]*b;
+-	b0 = 1.0 + FINE_STRUCTURE_CONST2*e0;
+-	b1 = 1.0 + FINE_STRUCTURE_CONST2*(e0-eth/HARTREE_EV);
+-	a *= b0*b1;
+-      } else if (dp[1] + 1.0 == 1.0) {
+-	e0 = (x[np]*et0/(1.0-x[np]) + eth)/HARTREE_EV;
+-	b0 = 1.0 + FINE_STRUCTURE_CONST2*e0;
+-	b1 = 1.0 + FINE_STRUCTURE_CONST2*(e0-eth/HARTREE_EV);
+-	y0 /= b0*b1;
+-	a = y[np] + (x0-1.0)*(y0-y[np])/(x[np]-1.0);
+-	e0 = (e + eth)/HARTREE_EV;
+-	b0 = 1.0 + FINE_STRUCTURE_CONST2*e0;
+-	b1 = 1.0 + FINE_STRUCTURE_CONST2*(e0-eth/HARTREE_EV);
+-	a *= b0*b1;
+-	*/
+-      } else {
+-	a = y[np] + (x0-1.0)*(y0-y[np])/(x[np]-1.0);
+-      }
+-    }
+-  }
+-  if (a <= 0.0) {
+-    a = 0.0;
+-    return a;
+-  }
+-
+-  e0 = e/HARTREE_EV;
+-  b = 2.0*e0;
+-  if (XCEMode() == 1) {
+-    b *= (1.0+0.5*FINE_STRUCTURE_CONST2*e0);
+-  }
+-  a *= PI*AREA_AU20/b;
++  
++  b = InterpCECrossData(np, dp, e0, &a, NULL);
+   a *= VelocityFromE(e1, bms);
++  
+   return a;
+ }
+   
+diff --git a/faclib/structure.c b/faclib/structure.c
+index 5a428b82..dd480495 100644
+--- a/faclib/structure.c
++++ b/faclib/structure.c
+@@ -460,7 +460,7 @@ int ConstructHamiltonDiagonal(int isym, int k, int *kg, int m) {
+   }
+   if (!(h->basis)) goto ERROR;
+ 
+-  h->msize = h->dim*h->n_basis + h->dim;
++  h->msize = (size_t)h->dim * (size_t)h->n_basis + h->dim;
+   if (h->hamilton == NULL) {
+     h->hsize0 = h->hsize;
+     h->hamilton = (double *) malloc(sizeof(double)*h->hsize);
+@@ -7090,7 +7090,7 @@ int AllocHamMem(HAMILTON *h, int hdim, int nbasis) {
+   h->iham = nhams;
+   h->n_basis = nbasis;
+ 
+-  h->msize = h->dim * h->n_basis + h->dim;
++  h->msize = (size_t)h->dim * (size_t)h->n_basis + (size_t)h->dim;
+   if (h->mixing == NULL) {
+     h->msize0 = h->msize;
+     h->mixing = (double *) malloc(sizeof(double)*(size_t)h->msize);
+@@ -7127,10 +7127,10 @@ int AllocHamMem(HAMILTON *h, int hdim, int nbasis) {
+     return 0;
+   }
+   
+-  t = hdim*(hdim+1)/2;
++  t = (size_t)hdim * (size_t)(hdim+1)/2;
+   h->dsize = t;
+   h->dsize2 = t*2;
+-  h->hsize = t + hdim*jp + jp;
++  h->hsize = t + (size_t)hdim*(size_t)jp + (size_t)jp;
+   if (h->hamilton == NULL) {
+     h->hsize0 = h->hsize;
+     h->hamilton = (double *) malloc(sizeof(double)*(size_t)h->hsize);
+@@ -7147,7 +7147,7 @@ int AllocHamMem(HAMILTON *h, int hdim, int nbasis) {
+   size_t wl = 3*t;
+   size_t wi = 0;
+   if (nbasis > hdim) {
+-    wl += t + hdim*(nbasis-hdim);
++    wl += t + (size_t)hdim*(size_t)(nbasis-hdim);
+     wi += nbasis-hdim;
+   }
+   if (h->work == NULL) {
