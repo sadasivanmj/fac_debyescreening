@@ -1,0 +1,6 @@
+SetAtom('Fe')
+Config('g', '1s1')
+OptimizeRadial(['g'])
+Structure('e.lev.b',['g'])
+MemENTable('e.lev.b')
+PrintTable('e.lev.b','e.lev',1)

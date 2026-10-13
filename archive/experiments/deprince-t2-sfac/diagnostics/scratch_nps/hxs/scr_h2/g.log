@@ -1,0 +1,4 @@
+optimize loop:    0   -1 1   1.00000E+00   1.00000E+01   0.00000E+00   3.00000E-04   3.00000E-08   3.00000E-05   2.23130E-01  0.000E+00  0.000E+00  1.000E+00  2.885E-01
+optimize loop:    1   -1 1   9.68934E-01   3.70576E+01   3.22262E-01   3.00000E-04   3.00000E-08   3.00000E-05   1.05399E-01  3.223E-01  0.000E+00  2.885E-01  2.885E-01
+Orbital unbound in Debye potential in RadialBound: 0 0 3 2 -1e-06
+Error occured in RadialSolver: -6 3 2   0.0000000000E+00

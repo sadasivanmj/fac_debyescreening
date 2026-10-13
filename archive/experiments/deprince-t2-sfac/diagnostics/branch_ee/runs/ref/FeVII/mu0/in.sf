@@ -1,0 +1,7 @@
+SetAtom('Fe')
+Config('ref', '1s2 2s2 2p6 3s2 3p6 3d2', '1s2 2s2 2p6 3s2 3p5 3d3', '1s2 2s2 2p5 3s2 3p6 3d3', '1s1 2s2 2p6 3s2 3p6 3d3')
+OptimizeRadial(['ref'])
+GetPotential('final.pot')
+Structure('e.lev.b', ['ref'])
+MemENTable('e.lev.b')
+PrintTable('e.lev.b', 'e.lev', 1)

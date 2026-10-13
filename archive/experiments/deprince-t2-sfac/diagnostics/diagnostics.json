@@ -1,0 +1,630 @@
+[
+ {
+  "case": "A1_orig_refs_mu0.1",
+  "binary": "installed",
+  "sfac": "/home/sadasivanmj/facinst/bin/sfac",
+  "sfac_sha256": "2789ca41138defd1e5060c231bda6f76afe3b931ef219c6f42229e17e69c0a0c",
+  "returncode": 1,
+  "note": "original driver input (nps=0.01 A^-3, cold start)",
+  "log_tail": [
+   "Max iteration before finding correct nodes in RadialBound a: 0 0 279 3 2 -8.12838e-154",
+   "Error occured in RadialSolver: -2 3 2   0.0000000000E+00"
+  ],
+  "error.pot": {
+   "rV_at_r>50_max": 14.51466,
+   "V_positive_from_r": 5.90655197,
+   "ips": "278",
+   "rps": "5.44129991E+00",
+   "dps": "1.00000000E+01",
+   "HXS": "7.76869840E-01",
+   "orb_3d3/2_Ha": -1e+30,
+   "orb_4s_Ha": -1e+30
+  },
+  "status": "FAILED"
+ },
+ {
+  "case": "A2_ground_mu0.1",
+  "binary": "installed",
+  "sfac": "/home/sadasivanmj/facinst/bin/sfac",
+  "sfac_sha256": "2789ca41138defd1e5060c231bda6f76afe3b931ef219c6f42229e17e69c0a0c",
+  "returncode": 1,
+  "note": "ground configuration only",
+  "log_tail": [
+   "Max iteration before finding correct nodes in RadialBound a: 0 0 279 3 2 -8.12838e-154",
+   "Error occured in RadialSolver: -2 3 2   0.0000000000E+00"
+  ],
+  "error.pot": {
+   "rV_at_r>50_max": 14.5135,
+   "V_positive_from_r": 5.90655197,
+   "ips": "278",
+   "rps": "5.44129991E+00",
+   "dps": "1.00000000E+01",
+   "HXS": "7.76869840E-01",
+   "orb_3d3/2_Ha": -1e+30,
+   "orb_4s_Ha": -1e+30
+  },
+  "status": "FAILED"
+ },
+ {
+  "case": "A3_refs1-2_mu0.1",
+  "binary": "installed",
+  "sfac": "/home/sadasivanmj/facinst/bin/sfac",
+  "sfac_sha256": "2789ca41138defd1e5060c231bda6f76afe3b931ef219c6f42229e17e69c0a0c",
+  "returncode": 1,
+  "note": "first 2 Table 1 references",
+  "log_tail": [
+   "Max iteration before finding correct nodes in RadialBound a: 0 0 279 3 2 -8.12838e-154",
+   "Error occured in RadialSolver: -2 3 2   0.0000000000E+00"
+  ],
+  "error.pot": {
+   "rV_at_r>50_max": 14.51423,
+   "V_positive_from_r": 5.90655197,
+   "ips": "278",
+   "rps": "5.44129991E+00",
+   "dps": "1.00000000E+01",
+   "HXS": "7.76869840E-01",
+   "orb_3d3/2_Ha": -1e+30,
+   "orb_4s_Ha": -1e+30
+  },
+  "status": "FAILED"
+ },
+ {
+  "case": "A3_refs1-3_mu0.1",
+  "binary": "installed",
+  "sfac": "/home/sadasivanmj/facinst/bin/sfac",
+  "sfac_sha256": "2789ca41138defd1e5060c231bda6f76afe3b931ef219c6f42229e17e69c0a0c",
+  "returncode": 1,
+  "note": "first 3 Table 1 references",
+  "log_tail": [
+   "Max iteration before finding correct nodes in RadialBound a: 0 0 279 3 2 -8.12838e-154",
+   "Error occured in RadialSolver: -2 3 2   0.0000000000E+00"
+  ],
+  "error.pot": {
+   "rV_at_r>50_max": 14.51431,
+   "V_positive_from_r": 5.90655197,
+   "ips": "278",
+   "rps": "5.44129991E+00",
+   "dps": "1.00000000E+01",
+   "HXS": "7.76869840E-01",
+   "orb_3d3/2_Ha": -1e+30,
+   "orb_4s_Ha": -1e+30
+  },
+  "status": "FAILED"
+ },
+ {
+  "case": "A3_refs1-4_mu0.1",
+  "binary": "installed",
+  "sfac": "/home/sadasivanmj/facinst/bin/sfac",
+  "sfac_sha256": "2789ca41138defd1e5060c231bda6f76afe3b931ef219c6f42229e17e69c0a0c",
+  "returncode": 1,
+  "note": "first 4 Table 1 references",
+  "log_tail": [
+   "Max iteration before finding correct nodes in RadialBound a: 0 0 279 3 2 -8.12838e-154",
+   "Error occured in RadialSolver: -2 3 2   0.0000000000E+00"
+  ],
+  "error.pot": {
+   "rV_at_r>50_max": 14.51452,
+   "V_positive_from_r": 5.90655197,
+   "ips": "278",
+   "rps": "5.44129991E+00",
+   "dps": "1.00000000E+01",
+   "HXS": "7.76869840E-01",
+   "orb_3d3/2_Ha": -1e+30,
+   "orb_4s_Ha": -1e+30
+  },
+  "status": "FAILED"
+ },
+ {
+  "case": "A3_refs1-5_mu0.1",
+  "binary": "installed",
+  "sfac": "/home/sadasivanmj/facinst/bin/sfac",
+  "sfac_sha256": "2789ca41138defd1e5060c231bda6f76afe3b931ef219c6f42229e17e69c0a0c",
+  "returncode": 1,
+  "note": "first 5 Table 1 references",
+  "log_tail": [
+   "Max iteration before finding correct nodes in RadialBound a: 0 0 279 3 2 -8.12838e-154",
+   "Error occured in RadialSolver: -2 3 2   0.0000000000E+00"
+  ],
+  "error.pot": {
+   "rV_at_r>50_max": 14.51463,
+   "V_positive_from_r": 5.90655197,
+   "ips": "278",
+   "rps": "5.44129991E+00",
+   "dps": "1.00000000E+01",
+   "HXS": "7.76869840E-01",
+   "orb_3d3/2_Ha": -1e+30,
+   "orb_4s_Ha": -1e+30
+  },
+  "status": "FAILED"
+ },
+ {
+  "case": "A3_refs1-6_mu0.1",
+  "binary": "installed",
+  "sfac": "/home/sadasivanmj/facinst/bin/sfac",
+  "sfac_sha256": "2789ca41138defd1e5060c231bda6f76afe3b931ef219c6f42229e17e69c0a0c",
+  "returncode": 1,
+  "note": "first 6 Table 1 references",
+  "log_tail": [
+   "Max iteration before finding correct nodes in RadialBound a: 0 0 279 3 2 -8.12838e-154",
+   "Error occured in RadialSolver: -2 3 2   0.0000000000E+00"
+  ],
+  "error.pot": {
+   "rV_at_r>50_max": 14.51465,
+   "V_positive_from_r": 5.90655197,
+   "ips": "278",
+   "rps": "5.44129991E+00",
+   "dps": "1.00000000E+01",
+   "HXS": "7.76869840E-01",
+   "orb_3d3/2_Ha": -1e+30,
+   "orb_4s_Ha": -1e+30
+  },
+  "status": "FAILED"
+ },
+ {
+  "case": "A3_refs1-7_mu0.1",
+  "binary": "installed",
+  "sfac": "/home/sadasivanmj/facinst/bin/sfac",
+  "sfac_sha256": "2789ca41138defd1e5060c231bda6f76afe3b931ef219c6f42229e17e69c0a0c",
+  "returncode": 1,
+  "note": "first 7 Table 1 references",
+  "log_tail": [
+   "Max iteration before finding correct nodes in RadialBound a: 0 0 279 3 2 -8.12838e-154",
+   "Error occured in RadialSolver: -2 3 2   0.0000000000E+00"
+  ],
+  "error.pot": {
+   "rV_at_r>50_max": 14.51466,
+   "V_positive_from_r": 5.90655197,
+   "ips": "278",
+   "rps": "5.44129991E+00",
+   "dps": "1.00000000E+01",
+   "HXS": "7.76869840E-01",
+   "orb_3d3/2_Ha": -1e+30,
+   "orb_4s_Ha": -1e+30
+  },
+  "status": "FAILED"
+ },
+ {
+  "case": "B1_en_only_mu0.1",
+  "binary": "installed",
+  "sfac": "/home/sadasivanmj/facinst/bin/sfac",
+  "sfac_sha256": "2789ca41138defd1e5060c231bda6f76afe3b931ef219c6f42229e17e69c0a0c",
+  "returncode": 1,
+  "note": "e-n screening only (radial:ee_screen 0)",
+  "log_tail": [
+   "Max iteration before finding correct nodes in RadialBound a: 2 2 216 3 -1 -8.1426e-154",
+   "Error occured in RadialSolver: -2 3 -1   0.0000000000E+00"
+  ],
+  "error.pot": {
+   "rV_at_r>50_max": 24.0,
+   "V_positive_from_r": 0.992972588,
+   "ips": "278",
+   "rps": "5.44129991E+00",
+   "dps": "1.00000000E+01",
+   "HXS": "7.76869840E-01",
+   "orb_3d3/2_Ha": -1e+30,
+   "orb_4s_Ha": -1e+30
+  },
+  "status": "FAILED"
+ },
+ {
+  "case": "B2_en_ee_mu0.1",
+  "binary": "installed",
+  "sfac": "/home/sadasivanmj/facinst/bin/sfac",
+  "sfac_sha256": "2789ca41138defd1e5060c231bda6f76afe3b931ef219c6f42229e17e69c0a0c",
+  "returncode": 1,
+  "note": "e-n and e-e screening",
+  "log_tail": [
+   "Max iteration before finding correct nodes in RadialBound a: 0 0 279 3 2 -8.12838e-154",
+   "Error occured in RadialSolver: -2 3 2   0.0000000000E+00"
+  ],
+  "error.pot": {
+   "rV_at_r>50_max": 14.5135,
+   "V_positive_from_r": 5.90655197,
+   "ips": "278",
+   "rps": "5.44129991E+00",
+   "dps": "1.00000000E+01",
+   "HXS": "7.76869840E-01",
+   "orb_3d3/2_Ha": -1e+30,
+   "orb_4s_Ha": -1e+30
+  },
+  "status": "FAILED"
+ },
+ {
+  "case": "C1_nps1e-2",
+  "binary": "installed",
+  "sfac": "/home/sadasivanmj/facinst/bin/sfac",
+  "sfac_sha256": "2789ca41138defd1e5060c231bda6f76afe3b931ef219c6f42229e17e69c0a0c",
+  "returncode": 1,
+  "note": "rps=5.44 a0: screened u(r) frozen beyond rps",
+  "log_tail": [
+   "Max iteration before finding correct nodes in RadialBound a: 0 0 279 3 2 -8.12838e-154",
+   "Error occured in RadialSolver: -2 3 2   0.0000000000E+00"
+  ],
+  "error.pot": {
+   "rV_at_r>50_max": 14.5135,
+   "V_positive_from_r": 5.90655197,
+   "ips": "278",
+   "rps": "5.44129991E+00",
+   "dps": "1.00000000E+01",
+   "HXS": "7.76869840E-01",
+   "orb_3d3/2_Ha": -1e+30,
+   "orb_4s_Ha": -1e+30
+  },
+  "status": "FAILED"
+ },
+ {
+  "case": "C2_nps1e-6",
+  "binary": "installed",
+  "sfac": "/home/sadasivanmj/facinst/bin/sfac",
+  "sfac_sha256": "2789ca41138defd1e5060c231bda6f76afe3b931ef219c6f42229e17e69c0a0c",
+  "returncode": 1,
+  "note": "rps=117 a0: potential decays correctly, still fails",
+  "log_tail": [
+   "Max iteration before finding correct nodes in RadialBound a: 0 0 345 3 2 -8.12838e-154",
+   "Error occured in RadialSolver: -2 3 2   0.0000000000E+00"
+  ],
+  "error.pot": {
+   "rV_at_r>50_max": 0.00019999999999953388,
+   "V_positive_from_r": 105.401198,
+   "ips": "581",
+   "rps": "1.17229253E+02",
+   "dps": "1.00000000E+01",
+   "HXS": "7.76869840E-01",
+   "orb_3d3/2_Ha": -1e+30,
+   "orb_4s_Ha": -1e+30
+  },
+  "status": "FAILED"
+ },
+ {
+  "case": "D1_fix_cold_mu0.1",
+  "binary": "scf_fix",
+  "sfac": "/data/project/fac_worktrees/scf/inst/bin/sfac",
+  "sfac_sha256": "3a77793e4b5e6f2c42efe2c358cfca09c911fd629895ccde48c15eac1894e229",
+  "returncode": 1,
+  "note": "patched solver, cold start: genuine unbound transient at SCF iter 2",
+  "log_tail": [
+   "No Debye bracket in RadialBound (unbound): 0 0 3 2 -1e-06",
+   "Error occured in RadialSolver: -6 3 2   0.0000000000E+00"
+  ],
+  "error.pot": {
+   "rV_at_r>50_max": 0.00019999999999953388,
+   "V_positive_from_r": 105.401198,
+   "ips": "581",
+   "rps": "1.17229253E+02",
+   "dps": "1.00000000E+01",
+   "HXS": "7.76869840E-01",
+   "orb_3d3/2_Ha": -1e+30,
+   "orb_4s_Ha": -1e+30
+  },
+  "status": "FAILED"
+ },
+ {
+  "case": "D2_fix_ladder_mu0.1",
+  "binary": "scf_fix",
+  "sfac": "/data/project/fac_worktrees/scf/inst/bin/sfac",
+  "sfac_sha256": "3a77793e4b5e6f2c42efe2c358cfca09c911fd629895ccde48c15eac1894e229",
+  "returncode": 0,
+  "note": "patched solver, free start + warm ladder",
+  "log_tail": [],
+  "E0_eV": -33635.8239,
+  "nele": 25,
+  "nlev": 63,
+  "ground_rel_eV": 0.0,
+  "ground_parity": 0,
+  "ground_2j": 9,
+  "final.pot": {
+   "rV_at_r>50_max": 4.7899999998435305e-05,
+   "V_positive_from_r": 100.731623,
+   "ips": "0",
+   "rps": "1.17229253E+02",
+   "dps": "1.00000000E+01",
+   "HXS": "1.00000000E+00",
+   "orb_3d3/2_Ha": -0.505708232,
+   "orb_4s_Ha": -0.354345316
+  },
+  "status": "ok"
+ },
+ {
+  "case": "D3_fix_ladder_mu0.25",
+  "binary": "scf_fix",
+  "sfac": "/data/project/fac_worktrees/scf/inst/bin/sfac",
+  "sfac_sha256": "3a77793e4b5e6f2c42efe2c358cfca09c911fd629895ccde48c15eac1894e229",
+  "returncode": 0,
+  "note": "patched solver, ladder to 0.25",
+  "log_tail": [],
+  "E0_eV": -32293.7705,
+  "nele": 25,
+  "nlev": 63,
+  "ground_rel_eV": 0.0,
+  "ground_parity": 0,
+  "ground_2j": 9,
+  "final.pot": {
+   "rV_at_r>50_max": 4.76999999996508e-05,
+   "V_positive_from_r": 41.1518697,
+   "ips": "0",
+   "rps": "1.17229253E+02",
+   "dps": "4.00000000E+00",
+   "HXS": "1.00000000E+00",
+   "orb_3d3/2_Ha": -0.330006095,
+   "orb_4s_Ha": -0.233154805
+  },
+  "status": "ok"
+ },
+ {
+  "case": "D4_fix_ladder_refs_mu0.25",
+  "binary": "scf_fix",
+  "sfac": "/data/project/fac_worktrees/scf/inst/bin/sfac",
+  "sfac_sha256": "3a77793e4b5e6f2c42efe2c358cfca09c911fd629895ccde48c15eac1894e229",
+  "returncode": 0,
+  "note": "patched solver, all Table 1 refs, ladder to 0.25",
+  "log_tail": [],
+  "E0_eV": -32282.818,
+  "nele": 25,
+  "nlev": 986,
+  "ground_rel_eV": 0.0,
+  "ground_parity": 0,
+  "ground_2j": 9,
+  "final.pot": {
+   "rV_at_r>50_max": 4.76999999996508e-05,
+   "V_positive_from_r": 39.3523989,
+   "ips": "0",
+   "rps": "1.17229253E+02",
+   "dps": "4.00000000E+00",
+   "HXS": "1.00000000E+00",
+   "orb_3d3/2_Ha": -0.466353059,
+   "orb_4s_Ha": -0.261401898
+  },
+  "status": "ok"
+ },
+ {
+  "case": "D5_unpatched_ladder_mu0.1",
+  "binary": "scf",
+  "sfac": "/data/project/fac_worktrees/scf/inst_unpatched/bin/sfac",
+  "sfac_sha256": "2789ca41138defd1e5060c231bda6f76afe3b931ef219c6f42229e17e69c0a0c",
+  "returncode": 1,
+  "note": "unpatched solver, ladder: hxs_iter0 unknown option, iteration-0 exchange-free potential",
+  "log_tail": [
+   "Max iteration before finding correct nodes in RadialBound a: 0 0 343 3 2 -8.12838e-154",
+   "Error occured in RadialSolver: -2 3 2   0.0000000000E+00"
+  ],
+  "error.pot": {
+   "rV_at_r>50_max": 4.7899999998435305e-05,
+   "V_positive_from_r": 100.731623,
+   "ips": "0",
+   "rps": "1.17229253E+02",
+   "dps": "1.00000000E+01",
+   "HXS": "0.00000000E+00",
+   "orb_3d3/2_Ha": -1e+30,
+   "orb_4s_Ha": -1e+30
+  },
+  "status": "FAILED"
+ },
+ {
+  "case": "D6_fix_ladder_hxs0_mu0.1",
+  "binary": "scf_fix",
+  "sfac": "/data/project/fac_worktrees/scf/inst/bin/sfac",
+  "sfac_sha256": "3a77793e4b5e6f2c42efe2c358cfca09c911fd629895ccde48c15eac1894e229",
+  "returncode": 1,
+  "note": "patched, ladder without ramp offset",
+  "log_tail": [
+   "No Debye bracket in RadialBound (unbound): 0 0 3 2 -1e-06",
+   "Error occured in RadialSolver: -6 3 2   0.0000000000E+00"
+  ],
+  "error.pot": {
+   "rV_at_r>50_max": 4.7899999998435305e-05,
+   "V_positive_from_r": 100.731623,
+   "ips": "0",
+   "rps": "1.17229253E+02",
+   "dps": "1.00000000E+01",
+   "HXS": "0.00000000E+00",
+   "orb_3d3/2_Ha": -1e+30,
+   "orb_4s_Ha": -1e+30
+  },
+  "status": "FAILED"
+ },
+ {
+  "case": "E1_free_unpatched",
+  "binary": "scf",
+  "sfac": "/data/project/fac_worktrees/scf/inst_unpatched/bin/sfac",
+  "sfac_sha256": "2789ca41138defd1e5060c231bda6f76afe3b931ef219c6f42229e17e69c0a0c",
+  "returncode": 0,
+  "note": "free ion, unpatched",
+  "log_tail": [],
+  "E0_eV": -34561.2842,
+  "nele": 25,
+  "nlev": 986,
+  "ground_rel_eV": 0.0,
+  "ground_parity": 0,
+  "ground_2j": 9,
+  "final.pot": {
+   "rV_at_r>50_max": -2.0,
+   "V_positive_from_r": null,
+   "ips": "0",
+   "rps": "0.00000000E+00",
+   "dps": "0.00000000E+00",
+   "HXS": "1.00000000E+00",
+   "orb_3d3/2_Ha": -0.81323386,
+   "orb_4s_Ha": -0.574738512
+  },
+  "status": "ok"
+ },
+ {
+  "case": "E2_free_patched",
+  "binary": "scf_fix",
+  "sfac": "/data/project/fac_worktrees/scf/inst/bin/sfac",
+  "sfac_sha256": "3a77793e4b5e6f2c42efe2c358cfca09c911fd629895ccde48c15eac1894e229",
+  "returncode": 0,
+  "note": "free ion, patched",
+  "log_tail": [],
+  "E0_eV": -34561.2842,
+  "nele": 25,
+  "nlev": 986,
+  "ground_rel_eV": 0.0,
+  "ground_parity": 0,
+  "ground_2j": 9,
+  "final.pot": {
+   "rV_at_r>50_max": -2.0,
+   "V_positive_from_r": null,
+   "ips": "0",
+   "rps": "0.00000000E+00",
+   "dps": "0.00000000E+00",
+   "HXS": "1.00000000E+00",
+   "orb_3d3/2_Ha": -0.81323386,
+   "orb_4s_Ha": -0.574738512
+  },
+  "status": "ok"
+ },
+ {
+  "case": "E3_free_installed_CE",
+  "binary": "installed",
+  "sfac": "/home/sadasivanmj/facinst/bin/sfac",
+  "sfac_sha256": "2789ca41138defd1e5060c231bda6f76afe3b931ef219c6f42229e17e69c0a0c",
+  "returncode": 0,
+  "note": "original baseline with ConfigEnergy (expect -34561.2841 eV)",
+  "log_tail": [],
+  "E0_eV": -34561.2841,
+  "nele": 25,
+  "nlev": 986,
+  "ground_rel_eV": 0.0,
+  "ground_parity": 0,
+  "ground_2j": 9,
+  "final.pot": {
+   "rV_at_r>50_max": -2.0,
+   "V_positive_from_r": null,
+   "ips": "0",
+   "rps": "0.00000000E+00",
+   "dps": "0.00000000E+00",
+   "HXS": "1.00000000E+00",
+   "orb_3d3/2_Ha": -0.81323386,
+   "orb_4s_Ha": -0.574738512
+  },
+  "status": "ok"
+ },
+ {
+  "case": "E4_zps3_mu0.1",
+  "binary": "scf_fix",
+  "sfac": "/data/project/fac_worktrees/scf/inst/bin/sfac",
+  "sfac_sha256": "3a77793e4b5e6f2c42efe2c358cfca09c911fd629895ccde48c15eac1894e229",
+  "returncode": 0,
+  "note": "zps=3 instead of 1: must not change Debye-mode results",
+  "log_tail": [],
+  "E0_eV": -33635.8239,
+  "nele": 25,
+  "nlev": 63,
+  "ground_rel_eV": 0.0,
+  "ground_parity": 0,
+  "ground_2j": 9,
+  "final.pot": {
+   "rV_at_r>50_max": 4.7899999998435305e-05,
+   "V_positive_from_r": 100.731623,
+   "ips": "0",
+   "rps": "1.69073840E+02",
+   "dps": "1.00000000E+01",
+   "HXS": "1.00000000E+00",
+   "orb_3d3/2_Ha": -0.505708232,
+   "orb_4s_Ha": -0.354345316
+  },
+  "status": "ok"
+ },
+ {
+  "case": "E5_nps1e-4_mu0.1",
+  "binary": "scf_fix",
+  "sfac": "/data/project/fac_worktrees/scf/inst/bin/sfac",
+  "sfac_sha256": "3a77793e4b5e6f2c42efe2c358cfca09c911fd629895ccde48c15eac1894e229",
+  "returncode": 0,
+  "note": "nps=1e-4 (T scaled): lambda_D unchanged",
+  "log_tail": [],
+  "E0_eV": -33635.8239,
+  "nele": 25,
+  "nlev": 63,
+  "ground_rel_eV": 0.0,
+  "ground_parity": 0,
+  "ground_2j": 9,
+  "final.pot": {
+   "rV_at_r>50_max": 4.7899999998435305e-05,
+   "V_positive_from_r": 100.731623,
+   "ips": "0",
+   "rps": "2.52562769E+01",
+   "dps": "1.00000000E+01",
+   "HXS": "1.00000000E+00",
+   "orb_3d3/2_Ha": -0.505708232,
+   "orb_4s_Ha": -0.354345316
+  },
+  "status": "ok"
+ },
+ {
+  "case": "E6_mu1e-4_ladder",
+  "binary": "scf_fix",
+  "sfac": "/data/project/fac_worktrees/scf/inst/bin/sfac",
+  "sfac_sha256": "3a77793e4b5e6f2c42efe2c358cfca09c911fd629895ccde48c15eac1894e229",
+  "returncode": 0,
+  "note": "large but finite lambda_D = 1e4 a0",
+  "log_tail": [],
+  "E0_eV": -34570.3335,
+  "nele": 25,
+  "nlev": 63,
+  "ground_rel_eV": 0.0,
+  "ground_parity": 0,
+  "ground_2j": 9,
+  "final.pot": {
+   "rV_at_r>50_max": -1.6895466600000004,
+   "V_positive_from_r": null,
+   "ips": "0",
+   "rps": "1.17229253E+02",
+   "dps": "1.00000000E+04",
+   "HXS": "1.00000000E+00",
+   "orb_3d3/2_Ha": -0.668607529,
+   "orb_4s_Ha": -0.551018582
+  },
+  "status": "ok"
+ },
+ {
+  "case": "F1_ee_branch_ladder_mu0.1",
+  "binary": "ee_fix",
+  "sfac": "/data/project/fac_worktrees/ee/inst/bin/sfac",
+  "sfac_sha256": "23b5644a22fbb653910258fcbfb6a45749529d70016bfed9b09bb1c3b32a54fc",
+  "returncode": 1,
+  "note": "fix-debye-ee-screening + patch: DensityToSZ unscreened",
+  "log_tail": [
+   "No Debye bracket in RadialBound (unbound): 0 0 3 2 -1e-06",
+   "Error occured in RadialSolver: -6 3 2   0.0000000000E+00"
+  ],
+  "error.pot": {
+   "rV_at_r>50_max": 24.0,
+   "V_positive_from_r": 1.82688185,
+   "ips": "0",
+   "rps": "1.17229253E+02",
+   "dps": "2.00000000E+01",
+   "HXS": "9.97521248E-01",
+   "orb_3d3/2_Ha": -1e+30,
+   "orb_4s_Ha": -1e+30
+  },
+  "status": "FAILED"
+ },
+ {
+  "case": "F2_ee_branch_free",
+  "binary": "ee_fix",
+  "sfac": "/data/project/fac_worktrees/ee/inst/bin/sfac",
+  "sfac_sha256": "23b5644a22fbb653910258fcbfb6a45749529d70016bfed9b09bb1c3b32a54fc",
+  "returncode": 0,
+  "note": "fix-debye-ee-screening free",
+  "log_tail": [],
+  "E0_eV": -34561.2842,
+  "nele": 25,
+  "nlev": 986,
+  "ground_rel_eV": 0.0,
+  "ground_parity": 0,
+  "ground_2j": 9,
+  "final.pot": {
+   "rV_at_r>50_max": -2.0,
+   "V_positive_from_r": null,
+   "ips": "0",
+   "rps": "0.00000000E+00",
+   "dps": "0.00000000E+00",
+   "HXS": "1.00000000E+00",
+   "orb_3d3/2_Ha": -0.81323386,
+   "orb_4s_Ha": -0.574738512
+  },
+  "status": "ok"
+ }
+]

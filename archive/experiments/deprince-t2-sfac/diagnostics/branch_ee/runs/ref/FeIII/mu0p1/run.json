@@ -1,0 +1,55 @@
+{
+ "model": "ref",
+ "ion": "FeIII",
+ "mu": 0.1,
+ "workdir": "/data/project/fac/fe_calc/deprince_t2/diagnostics/branch_ee/runs/ref/FeIII/mu0p1",
+ "sf_sha256": "1afebc49b035e8c7fb7241c9a19804e0353c88e3e75a4e4e4fca11f88a7a9bc2",
+ "n_config": 10,
+ "configs": {
+  "ref": [
+   "1s2 2s2 2p6 3s2 3p6 3d6",
+   "1s2 2s2 2p6 3s2 3p5 3d7",
+   "1s2 2s2 2p6 3s2 3p5 3d6 4s1",
+   "1s2 2s2 2p6 3s2 3p5 3d5 4s2",
+   "1s2 2s2 2p5 3s2 3p6 3d7",
+   "1s2 2s2 2p5 3s2 3p6 3d6 4s1",
+   "1s2 2s2 2p5 3s2 3p6 3d5 4s2",
+   "1s1 2s2 2p6 3s2 3p6 3d7",
+   "1s1 2s2 2p6 3s2 3p6 3d6 4s1",
+   "1s1 2s2 2p6 3s2 3p6 3d5 4s2"
+  ]
+ },
+ "nps_A3": 1e-06,
+ "ups": 0.0,
+ "zps": 2,
+ "ladder": [
+  0.05,
+  0.1
+ ],
+ "tps_eV": 0.0050671519239969594,
+ "lambda_target_a0": 10.0,
+ "debye_mode": 1,
+ "ee_screen": 1,
+ "hxs_iter0": 8,
+ "sfac": "/data/project/fac_worktrees/ee/inst/bin/sfac",
+ "sfac_sha256": "23b5644a22fbb653910258fcbfb6a45749529d70016bfed9b09bb1c3b32a54fc",
+ "source_tree": "/data/project/fac_worktrees/ee",
+ "git_commit": "c4a016ad8cf0458366714b013727d915e1fdec80",
+ "git_describe": "c4a016a fe_ip",
+ "source_diff_sha256": "ef42820fe2b4a556cdeb2726b7334a36fe673bc80e5a2e5184c3ad7af1bc4b61",
+ "source_diff_files": "faclib/orbital.c | 32 ++++++++++++++++++++++++++++++++\n faclib/radial.c  |  9 ++++++++-\n 2 files changed, 40 insertions(+), 1 deletion(-)",
+ "sources_newer_than_binary": [],
+ "t_start": 1791793998.3679512,
+ "reused": false,
+ "returncode": 1,
+ "t_end": 1791794000.3405025,
+ "runtime_s": 2.0,
+ "status": "failed",
+ "problems": [
+  "sfac exit 1"
+ ],
+ "log_tail": [
+  "No Debye bracket in RadialBound (unbound): 0 0 3 2 -1e-06",
+  "Error occured in RadialSolver: -6 3 2   0.0000000000E+00"
+ ]
+}

@@ -7,8 +7,11 @@
   - Source of the reference configurations (Table 1) and the ionization
     potentials (Table 2).
   - A local copy of the PDF is kept here as
-    `Fe2_Fe8 in plasma environment_Deprince et al.pdf`. It is git-ignored,
-    because I have not checked whether it may be redistributed.
+    `Fe2_Fe8 in plasma environment_Deprince et al.pdf`. Another copy is in
+    the original checkout, `/data/project/fac`.
+  - The PDF is **not committed**: the article is marked "© ESO 2020" with no
+    open-access licence stated, and the GitHub repository is public. Use the
+    DOI to get it.
 - **Chen, Ma, Hu & Wang**, Phys. Plasmas 25, 072120 (2018) (as cited in
   `chen2018_reproduce.py`). He-like ions in a
   Debye plasma, reproduced in `../results/chen2018/`.

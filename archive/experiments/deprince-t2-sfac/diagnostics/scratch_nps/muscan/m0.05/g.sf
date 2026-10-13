@@ -1,0 +1,8 @@
+SetAtom('Fe')
+SetOption('orbital:debye_mode', 1)
+SetOption('radial:ee_screen', 1)
+Config('g1', '1s2 2s2 2p6 3s2 3p6 3d6 4s1')
+PlasmaScreen(1.0, 1e-06, 0.020268607695987838, 1, 0.0, 1)
+ConfigEnergy(0)
+OptimizeRadial(['g1'])
+GetPotential('g.pot')

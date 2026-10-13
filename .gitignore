@@ -92,13 +92,11 @@ _noinstall/
 research/debye-screening/results/reference-configurations/reference_runs/**/levels.b
 research/debye-screening/results/reference-configurations/reference_runs/**/levels.txt
 research/debye-screening/results/reference-configurations/reference_runs/**/final.pot
-research/debye-screening/results/c4/c4_ground_results/*.lev.b
 research/full-active-space/results/**/*.b
 research/full-active-space/results/**/*.pot
 research/full-active-space/results/**/*.bpt
 research/full-active-space/results/**/*.wav
 research/full-active-space/results/**/e.lev
-archive/experiments/early-fe-calculations/fe_ip_sfac_runs/**/*.b
 
 # Publisher PDF of the reference paper: kept locally, see references/README.md
 research/debye-screening/references/*.pdf
@@ -107,3 +105,9 @@ research/**/error.bpt
 research/**/error.wav
 archive/**/error.bpt
 archive/**/error.wav
+# ... except these two small failure dumps, which are tracked: error.bpt can be
+# reloaded with fac.RestorePotential to reproduce the failing potential
+!research/debye-screening/results/c4/c4_ground_results/error.bpt
+!research/debye-screening/results/c4/c4_ground_results/error.wav
+!archive/experiments/early-fe-calculations/fe_ip_sfac_runs/FeII_mu0p1/error.bpt
+!archive/experiments/early-fe-calculations/fe_ip_sfac_runs/FeII_mu0p1/error.wav
