@@ -120,6 +120,8 @@ static double _kwork[MAXNKF];
 
 static double _enerelerr = ENERELERR;
 static double _eneabserr = ENEABSERR;
+/* upper-bracket energy (Hartree) for bound orbitals in a Debye potential */
+static double _debye_emax_eps = 1e-6;
 static double _enerelerr1 = ENERELERR1;
 
 static double _wk_q[16] = {2.09400223235,
@@ -1561,6 +1563,7 @@ int RadialBound(ORBITAL *orb, POTENTIAL *pot) {
   double qoa[5], qia[5];
   int i, kl, nr, nodes, niter;
   int i2, i2o, i2m1, i2m2, i2p1, i2p2;
+  int debye_emax = 0;
   
   int kv = 0;
   if (pot->pse) kv = IdxVT(orb->kappa);
@@ -1605,6 +1608,29 @@ int RadialBound(ORBITAL *orb, POTENTIAL *pot) {
     e += de;
     delta = 0.5*fabs(e);
     de = Min(de, delta);
+    /* A Debye (Yukawa) potential supports only finitely many bound states,
+    ** so the next state of this kappa used for the upper bracket may not
+    ** exist and e would creep towards 0- forever.  Use e = -eps as the
+    ** upper bracket instead.  The outermost node of a weakly bound state may
+    ** lie beyond the classical turning point, so the regular solution is
+    ** counted over the whole grid (Sturm): exactly nr+1 nodes means this
+    ** state, and no higher one of the same kappa, is bound below -eps. */
+    if (pot->mps == 1 && e > -_debye_emax_eps) {
+      e = -_debye_emax_eps;
+      SetPotentialW(pot, e, orb->kappa, kv);
+      SetVEffective(kl, kv, e, pot);
+      nodes = IntegrateRadial(p, e, pot, 0, 0.0, pot->maxrp-1, 1.0, 0);
+      if (nodes == nr+1) {
+	debye_emax = 1;
+	break;
+      }
+      if (_on_error >= 0) {
+	printf("No Debye bracket in RadialBound (%s): %d %d %d %d %g\n",
+	       nodes <= nr ? "unbound" : "higher state bound",
+	       nodes, nr, orb->n, orb->kappa, e);
+      }
+      return -6;
+    }
   }
   if (niter == max_iteration) {
     if (_on_error >= 0) {
@@ -1672,6 +1698,7 @@ int RadialBound(ORBITAL *orb, POTENTIAL *pot) {
     return -4;
   }
   
+  if (!debye_emax) {
   de = emax-emin;
   ep = _eneabserr;
   niter = 0;
@@ -1700,6 +1727,7 @@ int RadialBound(ORBITAL *orb, POTENTIAL *pot) {
     return -5;
   }
   emax = e;
+  }
   
   if (nr > 0) {
     e -= de;
@@ -6488,6 +6516,10 @@ void SetOptionOrbital(char *s, char *sp, int ip, double dp) {
   }
   if (0 == strcmp(s, "orbital:debye_mode")) {
     _debye_mode = ip;
+    return;
+  }
+  if (0 == strcmp(s, "orbital:debye_emax_eps")) {
+    _debye_emax_eps = dp;
     return;
   }
   if (0 == strcmp(s, "orbital:sp_print")) {
