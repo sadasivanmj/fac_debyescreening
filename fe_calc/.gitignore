@@ -1,0 +1,10 @@
+__pycache__/
+*.pyc
+
+# Bulky, regenerable per-run outputs stay on disk but out of Git.
+**/results/runs/**/run.log
+**/results/runs/**/levels.b
+**/results/runs/**/levels.txt
+**/results/runs/**/final.pot
+# Failure diagnostics of failed runs ARE tracked (the repository ignores *.log by default).
+!**/results/runs/**/run.FAILED.log
