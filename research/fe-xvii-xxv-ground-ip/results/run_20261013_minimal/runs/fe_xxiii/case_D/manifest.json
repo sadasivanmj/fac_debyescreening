@@ -1,0 +1,39 @@
+{
+  "ion": "Fe XXIII",
+  "Z": 26,
+  "electrons": 4,
+  "config": "1s2 2s2",
+  "mu_ne_requested": 0.25,
+  "mu_ee_requested": 0.25,
+  "mu_ne_used": 0.25,
+  "ee_screen_option": 1,
+  "debye_mode_option": 1,
+  "hxs_iter0": 8,
+  "plasma_model_mps": 1,
+  "debye_length_dps": 4.0,
+  "ion_sphere_ips": 0,
+  "asymptotic_charge": 0.0,
+  "density_A3": 1e-06,
+  "temperature_eV": 0.0008107443078395135,
+  "mu_steps": [
+    0.05,
+    0.1,
+    0.15,
+    0.2,
+    0.25
+  ],
+  "ground_level": {
+    "ilev": 0,
+    "parity": 0,
+    "vnl": 200,
+    "two_j": 0
+  },
+  "n_levels": 1,
+  "E0_eV": -21438.5155,
+  "energy_unit": "eV (total energy, negative)",
+  "hartree_eV": 27.211386018,
+  "commit": "8f58b37985953d19d6ec181a1cb9626ccb29cae8",
+  "fac_extension": "/private/tmp/claude-502/-Users-sadasivanmj-Documents-projects-fac-debyescreening/d1c8baa1-8ae1-4433-ba17-8a136fe9fbff/scratchpad/fac-fe-xvii-xxv-ground-ip/build/lib.macosx-11.0-arm64-cpython-310/pfac/fac.cpython-310-darwin.so",
+  "outdir": "/private/tmp/claude-502/-Users-sadasivanmj-Documents-projects-fac-debyescreening/d1c8baa1-8ae1-4433-ba17-8a136fe9fbff/scratchpad/fac-fe-xvii-xxv-ground-ip/research/fe-xvii-xxv-ground-ip/results/run_20261013_minimal/runs/fe_xxiii/case_D",
+  "status": "ok"
+}
