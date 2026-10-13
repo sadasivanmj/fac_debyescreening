@@ -1,0 +1,13 @@
+{
+ "extension": "/tmp/fac-debye-radialbound-worktree/build/lib.linux-x86_64-cpython-310/pfac/fac.cpython-310-x86_64-linux-gnu.so",
+ "python": "3.10.14 (main, Mar 21 2024, 16:24:04) [GCC 11.2.0]",
+ "git_head": "f12e3bfef9aef7b91c4dda49525e8844dde949cf",
+ "nps_A3": 1e-06,
+ "ups": 0.0,
+ "ladder_step": 0.05,
+ "models": [
+  "ref",
+  "gref"
+ ],
+ "hxs_iter0": 8.0
+}

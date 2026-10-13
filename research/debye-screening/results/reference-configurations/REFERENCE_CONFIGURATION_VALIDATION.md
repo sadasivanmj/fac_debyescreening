@@ -143,7 +143,8 @@ These runs reproduce the earlier validated reference-space results:
 
 - **Energies:** all 18 E0 values are identical to every printed digit to
   `verify_ip_deprince_out_hxs8_rb/energies.csv` (branch
-  `fix/debye-radialbound`, same C code).
+  `fix/debye-radialbound`, same C code). A copy is kept in
+  `archive/scripts/verify_ip_deprince_outputs/hxs8_rb_fix-debye-radialbound_REGRESSION-REFERENCE/`.
 - **IPs:** all 12 IPs agree with the regression table (18.87, 14.18, 8.718 /
   15.520, 10.226, 4.687 / 19.652, 11.157, 0.025 / 28.094, 20.134, 9.270 eV)
   to the quoted precision.

@@ -1,0 +1,4 @@
+ion,n_ref_configs,ref_csfs_allJ_bothP,sd_configs,sd_csfs_allJ_bothP,sd_csfs_allJ_groundP,published_csfs,ground_block,sd_csfs_ground_block,fac_nlev_ref
+Fe II,7,986,120,15147,7603,12268,P=0 2J=9,927,986
+Fe III,10,1640,153,40189,20305,31501,P=0 2J=8,3363,1640
+Fe IV,4,460,153,75309,38157,57189,P=0 2J=5,8239,460

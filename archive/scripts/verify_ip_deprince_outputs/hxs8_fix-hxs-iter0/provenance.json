@@ -1,0 +1,13 @@
+{
+ "extension": "/tmp/fac-hxs-iter0-worktree/build/lib.linux-x86_64-cpython-310/pfac/fac.cpython-310-x86_64-linux-gnu.so",
+ "python": "3.10.14 (main, Mar 21 2024, 16:24:04) [GCC 11.2.0]",
+ "git_head": "0650edb13709eb8bdaa3d50037d0b4e40e73ef7d",
+ "nps_A3": 1e-06,
+ "ups": 0.0,
+ "ladder_step": 0.05,
+ "models": [
+  "ref",
+  "gref"
+ ],
+ "hxs_iter0": 8.0
+}

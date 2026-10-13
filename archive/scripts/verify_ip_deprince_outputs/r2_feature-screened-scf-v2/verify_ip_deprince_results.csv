@@ -1,0 +1,13 @@
+model,ip,mu,deprince_eV,status,fac_eV,fac_Ha,diff_eV,dIP_eV,deprince_dIP_eV,note
+ref,Fe II -> Fe III,0.0,18.89,ok,18.8717,0.6935221891130401,-0.0183,0.0,0.0,
+ref,Fe II -> Fe III,0.1,14.2,NOT COMPUTED,,,,,,"Fe II: FAILED rc=1; last stage: STAGE ladder mu=0.1 PlasmaScreen(1.0, 1e-06, 0.0050671519239969594, 1, 0.0, 1); Fe III: ok "
+ref,Fe II -> Fe III,0.25,7.78,NOT COMPUTED,,,,,,"Fe II: FAILED rc=1; last stage: STAGE ladder mu=0.1 PlasmaScreen(1.0, 1e-06, 0.0050671519239969594, 1, 0.0, 1); Fe III: FAILED rc=1; last stage: STAGE ladder mu=0.2 PlasmaScreen(2.0, 1e-06, 0.0012667879809992399, 1, 0.0, 1)"
+ref,Fe III -> Fe IV,0.0,32.93,ok,19.6518,0.7221903355823263,-13.2782,0.0,0.0,
+ref,Fe III -> Fe IV,0.1,25.6,ok,11.1573,0.41002321574573686,-14.4427,-8.4945,-7.33,
+ref,Fe III -> Fe IV,0.25,16.42,NOT COMPUTED,,,,,,"Fe III: FAILED rc=1; last stage: STAGE ladder mu=0.2 PlasmaScreen(2.0, 1e-06, 0.0012667879809992399, 1, 0.0, 1); Fe IV: ok "
+gref,Fe II -> Fe III,0.0,18.89,ok,15.5203,0.5703605097416679,-3.3697,0.0,0.0,
+gref,Fe II -> Fe III,0.1,14.2,NOT COMPUTED,,,,,,"Fe II: FAILED rc=1; last stage: STAGE ladder mu=0.1 PlasmaScreen(1.0, 1e-06, 0.0050671519239969594, 1, 0.0, 1); Fe III: ok "
+gref,Fe II -> Fe III,0.25,7.78,NOT COMPUTED,,,,,,"Fe II: FAILED rc=1; last stage: STAGE ladder mu=0.1 PlasmaScreen(1.0, 1e-06, 0.0050671519239969594, 1, 0.0, 1); Fe III: FAILED rc=1; last stage: STAGE ladder mu=0.2 PlasmaScreen(2.0, 1e-06, 0.0012667879809992399, 1, 0.0, 1)"
+gref,Fe III -> Fe IV,0.0,32.93,ok,28.0942,1.0324428157174932,-4.8358,0.0,0.0,
+gref,Fe III -> Fe IV,0.1,25.6,ok,20.1336,0.7398961591549542,-5.4664,-7.9606,-7.33,
+gref,Fe III -> Fe IV,0.25,16.42,NOT COMPUTED,,,,,,"Fe III: FAILED rc=1; last stage: STAGE ladder mu=0.2 PlasmaScreen(2.0, 1e-06, 0.0012667879809992399, 1, 0.0, 1); Fe IV: ok "

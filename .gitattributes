@@ -5,3 +5,4 @@
 *.diff -whitespace
 research/*/results/** -whitespace
 archive/experiments/** -whitespace
+archive/scripts/verify_ip_deprince_outputs/** -whitespace
