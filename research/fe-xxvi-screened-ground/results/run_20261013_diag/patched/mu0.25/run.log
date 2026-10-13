@@ -1,0 +1,43 @@
+FAC extension: /private/tmp/claude-502/-Users-sadasivanmj-Documents-projects-fac-debyescreening/d1c8baa1-8ae1-4433-ba17-8a136fe9fbff/scratchpad/fac-fe-xxvi-screened/build/lib.macosx-11.0-arm64-cpython-310/pfac/fac.cpython-310-darwin.so
+screening step mu = 0.05
+screening step mu = 0.1
+screening step mu = 0.15
+screening step mu = 0.2
+screening step mu = 0.25
+{
+  "ion": "Fe XXVI",
+  "config": "1s1",
+  "electrons": 1,
+  "mu_requested": 0.25,
+  "mu_used": 0.25,
+  "mps": 1,
+  "ee_screen_option": 0,
+  "hxs_iter0": 8.0,
+  "asymptotic_charge": 0.0,
+  "ZPS_checks": [
+    {
+      "r": 0.000308108793,
+      "ZPS": 0.00200263002,
+      "expected_Z(1-exp(-mu r))": 0.002002630025019103
+    },
+    {
+      "r": 6.53501502,
+      "ZPS": 20.9249175,
+      "expected_Z(1-exp(-mu r))": 20.924917489504093
+    },
+    {
+      "r": 34.6128911,
+      "ZPS": 25.9954614,
+      "expected_Z(1-exp(-mu r))": 25.9954613525825
+    },
+    {
+      "r": 86.1540295,
+      "ZPS": 26.0,
+      "expected_Z(1-exp(-mu r))": 25.999999988494157
+    }
+  ],
+  "E0_eV": -9102.07055,
+  "n_levels": 1,
+  "commit": "31fa9738d81093367a35bf9399de94808f71a2cd",
+  "fac_extension": "/private/tmp/claude-502/-Users-sadasivanmj-Documents-projects-fac-debyescreening/d1c8baa1-8ae1-4433-ba17-8a136fe9fbff/scratchpad/fac-fe-xxvi-screened/build/lib.macosx-11.0-arm64-cpython-310/pfac/fac.cpython-310-darwin.so"
+}

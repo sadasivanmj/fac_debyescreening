@@ -95,3 +95,17 @@ Same limits as before: a minimal ground-configuration benchmark, not a RAS/MCDF 
 Extension used: `build/lib.macosx-11.0-arm64-cpython-310/pfac/fac.cpython-310-darwin.so`
 inside this worktree (built with `make pfac` at `-O0`; nothing installed); the scripts
 refuse any other `pfac`. Commit, imports and options are in each `diag.json`/`manifest.json`.
+
+## Logs and provenance
+
+* The run logs (`*.log`, normally git-ignored) are committed with `git add -f`:
+  `../fe-xvii-xxv-ground-ip/results/run_20261013_minimal/logs/`,
+  `../fe-xvii-xxv-ground-ip/results/run_20261013_patched_rerun/logs/` and
+  `results/run_20261013_diag/*/mu*/run.log`.
+* They were written while the worktree was under Claude's temporary session
+  directory, so the extension paths inside them point there. The worktree now lives
+  at `~/Documents/projects/fac_fe_xxvi_screened_ground`. The code and manifests are unchanged.
+* Not in Git: `final.pot` and `levels.b` of every run (large, regenerable by
+  `run_fe_ground_configs.sh`) and the `build/` folder; both stay in the worktree on disk.
+* Commit order: `fbc69734` (the one-line C fix, only `faclib/radial.c`), then
+  `4cfae69a` (scripts, manifests, tables), then the commit that adds these logs.
