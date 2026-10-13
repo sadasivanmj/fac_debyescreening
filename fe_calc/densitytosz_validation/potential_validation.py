@@ -48,7 +48,7 @@ TOL_COULOMB_IDENTICAL = 0.0    # bit-identity of the Coulomb path with the prist
 TOL_SLOPE = 2e-3               # |d ln(rV)/dr + mu| in the far region
 MIN_REFINE_FACTOR = 4.0        # residual must drop by at least this when the grid is doubled (3000 points)
 # ---- REVISIONS made after the first run (first-run results are kept in potential_validation_*_first_run.*) ----
-# The first run failed 17 checks.  Inspection showed that most were flaws in the TESTS, not in DensityToSZ:
+# The first run failed 20 checks.  Inspection showed that most were flaws in the TESTS, not in DensityToSZ:
 #  R1 convention check used 1e-9; FAC's own quadrature floor is ~1e-7 (same in the pristine Coulomb path) -> use TOL_ABS_OVER_SCALE.
 #  R2 continuity compared sup-norms over the whole grid; that cannot be linear in mu once mu*r_max >> 1 -> use r <= R_CONT.
 #  R3 "residual drops 4x when the grid is doubled" fails for the pristine Coulomb path as well (grid-independent floor
