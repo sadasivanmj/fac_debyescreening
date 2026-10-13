@@ -137,6 +137,7 @@ static int _refine_pj = -1;
 static int _refine_em = 0;
 static int _print_spm = 0;
 static int _ipp = -1;
+static double _hxs_iter0 = 0.0;
 static int _znbaa = 0;
 static double _psedn = 5.0;
 static double _pseot = 0.0;
@@ -3703,7 +3704,9 @@ int OptimizeILoop(AVERAGE_CONFIG *acfg, int iter, int miter,
     }
     if ((_scpot.md < 0 || _scpot.md > 1) &&
 	(fabs(hxs0) > 1e-5 || fabs(ihx0) > 1e-5))  {
-      ahx = exp(-iter*0.75);
+      /* _hxs_iter0 > 0 starts the exchange ramp as if that many
+      ** iterations had passed, for warm-started optimizations. */
+      ahx = exp(-(iter+_hxs_iter0)*0.75);
       if (ahx < 1e-4) ahx = 0.0;
       potential->hxs = hxs0*(1-ahx);
     }
@@ -14387,6 +14390,10 @@ void SetOptionRadial(char *s, char *sp, int ip, double dp) {
   }
   if (0 == strcmp(s, "radial:zorb")) {
     _zorb = ip;
+    return;
+  }
+  if (0 == strcmp(s, "radial:hxs_iter0")) {
+    _hxs_iter0 = dp;
     return;
   }
   if (0 == strcmp(s, "radial:ipp")) {
