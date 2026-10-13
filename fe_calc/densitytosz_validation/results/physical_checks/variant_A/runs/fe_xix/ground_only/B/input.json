@@ -1,0 +1,12 @@
+{
+  "ion": "Fe XIX",
+  "configuration_model": "ground_only",
+  "case": "B",
+  "mu_ne": 0.1,
+  "mu_ee": 0.1,
+  "electron_count": 8,
+  "configurations": [
+    "1s2 2s2 2p4"
+  ],
+  "direct_potential": "coulomb"
+}

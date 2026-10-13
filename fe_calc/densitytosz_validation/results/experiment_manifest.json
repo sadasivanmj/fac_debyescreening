@@ -1,0 +1,202 @@
+{
+  "experiment": "DensityToSZ A/B: Coulomb (A) versus screened Yukawa (B) SCF direct potential, Fe II - Fe IV, gref",
+  "upstream_jmaxk_fix": {
+    "hash": "fb32c16a304a089522ce6ba67ca199527b27519c",
+    "author": "Ming Feng Gu <mingfenggu2003@gmail.com>",
+    "parent": "5f8c8d23e876935b24d13d8914d9d3a5a11665c6",
+    "subject": "jmaxk fix (#851)",
+    "date": "Tue Oct 13 08:06:49 2026 -0500",
+    "diff": "diff --git a/faclib/radial.c b/faclib/radial.c\nindex d563aa41..52f17771 100644\n--- a/faclib/radial.c\n+++ b/faclib/radial.c\n@@ -2386,6 +2386,7 @@ int PotentialHX1(AVERAGE_CONFIG *acfg, int iter, int md) {\n     SetPotentialPS(potential, iter);\n   }\n \n+  jmaxk = 0;\n   if (!(potential->mps == 1 ||\n \t(potential->mps == 0 && potential->tps <= 0))) {\n     if (_scpot.md != 1 && _scpot.md != 3) {",
+    "official_repository": "https://github.com/flexible-atomic-code/fac",
+    "is_ancestor_of_B_head": false,
+    "local_cherry_pick": {
+      "hash": "603c0e53583f57a88993540c567e867e85327ff5",
+      "author": "Ming Feng Gu",
+      "changed_lines_identical_to_upstream": true,
+      "note": "cherry-picked (new hash, upstream author and message preserved); the upstream hash is not an ancestor"
+    }
+  },
+  "variant_B": {
+    "repository": "/Users/sadasivanmj/Documents/projects/fac_densitytosz_experiment",
+    "head": "38a0f45eae375167115e2106a83800f61dbe353d",
+    "branch": "experiment/densitytosz-validation",
+    "fac_source_commit": "603c0e53583f57a88993540c567e867e85327ff5",
+    "build_info": {
+      "built_utc": "2026-10-13T14:58:03Z",
+      "git_commit": "65e97a904d84bb815bce61ddafcb4b71d0b4f113",
+      "git_dirty": true,
+      "cflags": "-O2 -fPIC",
+      "cc": "/Library/Developer/CommandLineTools/usr/bin/clang",
+      "cc_version": "Apple clang version 21.0.0 (clang-2100.3.34.2)",
+      "platform": "macOS-27.0.1-arm64-arm-64bit",
+      "python": "3.10.20",
+      "extension": "build/lib.macosx-11.0-arm64-cpython-310/pfac/fac.cpython-310-darwin.so",
+      "extension_sha256": "20cf06f7e2a368d87907cf83b8f59c2b322b5384c13325b72d24b6896e3df447",
+      "workaround_jmaxk_zero_init": false
+    },
+    "extension": "/Users/sadasivanmj/Documents/projects/fac_densitytosz_experiment/build/lib.macosx-11.0-arm64-cpython-310/pfac/fac.cpython-310-darwin.so",
+    "extension_sha256": "20cf06f7e2a368d87907cf83b8f59c2b322b5384c13325b72d24b6896e3df447",
+    "libfac_a_sha256": "8a49e4ba44b0ebace7f6ce1413c312bff423611bca4c2df3ba5b17115811a572",
+    "workaround_flag_in_build": false,
+    "radial_c_has_jmaxk_fix": true,
+    "description": "production screened DensityToSZ (v2); jmaxk fix cherry-picked; no workaround flag"
+  },
+  "variant_A": {
+    "repository": "/Users/sadasivanmj/Documents/projects/fac_densitytosz_variant_a",
+    "head": "54f043349cc05c92acebf78853a2ab9d7a04bf4e",
+    "branch": "experiment/densitytosz-variant-a",
+    "fac_source_commit": "54f043349cc05c92acebf78853a2ab9d7a04bf4e",
+    "build_info": {
+      "built_utc": "2026-10-13T14:58:52Z",
+      "git_commit": "54f043349cc05c92acebf78853a2ab9d7a04bf4e",
+      "git_dirty": true,
+      "cflags": "-O2 -fPIC",
+      "cc": "/Library/Developer/CommandLineTools/usr/bin/clang",
+      "cc_version": "Apple clang version 21.0.0 (clang-2100.3.34.2)",
+      "platform": "macOS-27.0.1-arm64-arm-64bit",
+      "python": "3.10.20",
+      "extension": "build/lib.macosx-11.0-arm64-cpython-310/pfac/fac.cpython-310-darwin.so",
+      "extension_sha256": "d1da36f2122e4cadb3ea50183fbb7e3bd5059dcd1194826e8069f297505b231d",
+      "workaround_jmaxk_zero_init": false
+    },
+    "extension": "/Users/sadasivanmj/Documents/projects/fac_densitytosz_variant_a/build/lib.macosx-11.0-arm64-cpython-310/pfac/fac.cpython-310-darwin.so",
+    "extension_sha256": "d1da36f2122e4cadb3ea50183fbb7e3bd5059dcd1194826e8069f297505b231d",
+    "libfac_a_sha256": "a9bf287aa7466d8f7a91a48f3f8156f7f89bf4f1d89e6013d07763d670846053",
+    "workaround_flag_in_build": false,
+    "radial_c_has_jmaxk_fix": true,
+    "description": "B + one line: double mu = 0.0 in DensityToSZ (Coulomb direct potential); screened Slater integrals and nuclear screening unchanged"
+  },
+  "pristine_upstream_reference": {
+    "repository": "/Users/sadasivanmj/Documents/projects/fac_upstream_reference",
+    "head": "fb32c16a304a089522ce6ba67ca199527b27519c",
+    "branch": "HEAD",
+    "fac_source_commit": "fb32c16a304a089522ce6ba67ca199527b27519c",
+    "build_info": {},
+    "extension": "/Users/sadasivanmj/Documents/projects/fac_upstream_reference/build/lib.macosx-11.0-arm64-cpython-310/pfac/fac.cpython-310-darwin.so",
+    "extension_sha256": "318c2a35d9c4f71d7fe4bf6eb3e5b83e1e6ca3e4960ae96da633a8938ce5783b",
+    "libfac_a_sha256": "d0dbcbec22e8449a9f44f0991fa114a2dee883f83783f34dc76ef334af31eb3f",
+    "workaround_flag_in_build": false,
+    "radial_c_has_jmaxk_fix": true
+  },
+  "negative_control_prefix_source": {
+    "repository": "/Users/sadasivanmj/Documents/projects/fac_negative_control",
+    "head": "bbbed5dad7b65bac74b97b2f69e373c8a70cc009",
+    "branch": "HEAD",
+    "fac_source_commit": "7f05cb9db6f8c4570c5034bd751a219bdd81b93d",
+    "build_info": {
+      "built_utc": "2026-10-13T15:27:57Z",
+      "git_commit": "bbbed5dad7b65bac74b97b2f69e373c8a70cc009",
+      "git_dirty": true,
+      "cflags": "-O2 -fPIC",
+      "cc": "/Library/Developer/CommandLineTools/usr/bin/clang",
+      "cc_version": "Apple clang version 21.0.0 (clang-2100.3.34.2)",
+      "platform": "macOS-27.0.1-arm64-arm-64bit",
+      "python": "3.10.20",
+      "extension": "build/lib.macosx-11.0-arm64-cpython-310/pfac/fac.cpython-310-darwin.so",
+      "extension_sha256": "c9afe68137bdb9e2a42677551435b6317fa3d46c4c5cdde480253610676b50ca",
+      "workaround_jmaxk_zero_init": false
+    },
+    "extension": "/Users/sadasivanmj/Documents/projects/fac_negative_control/build/lib.macosx-11.0-arm64-cpython-310/pfac/fac.cpython-310-darwin.so",
+    "extension_sha256": "c9afe68137bdb9e2a42677551435b6317fa3d46c4c5cdde480253610676b50ca",
+    "libfac_a_sha256": "b86c1f925b35faa1305c883ab435b34d9166da5cb1648f85406b35a3167038d4",
+    "workaround_flag_in_build": false,
+    "radial_c_has_jmaxk_fix": false
+  },
+  "source_difference_A_vs_B": {
+    "files": [
+      "faclib/orbital.c"
+    ],
+    "diff": "diff --git a/faclib/orbital.c b/faclib/orbital.c\nindex 8df20421..e2190c73 100644\n--- a/faclib/orbital.c\n+++ b/faclib/orbital.c\n@@ -4851,7 +4851,7 @@ int DensityToSZ(POTENTIAL *pot, double *d, double *z,\n \t\tdouble *zx, double *jps, int md) {\n   int i, im, maxrp, k;\n   double nx, rx, a, vxs;\n-  double mu = EEScreenMu(); /* DEBYE_SCF_V2 */\n+  double mu = 0.0; /* EXPERIMENT variant A: Coulomb direct potential; was EEScreenMu() */\n \n   if (!(mu >= 0.0) || isinf(mu)) { /* DEBYE_SCF_V2: NaN, negative or inf */\n     printf(\"invalid Debye screening parameter in DensityToSZ: %g %g\\n\","
+  },
+  "inputs": {
+    "ions": [
+      "Fe II",
+      "Fe III",
+      "Fe IV"
+    ],
+    "configurations": {
+      "Fe II": [
+        "1s2 2s2 2p6 3s2 3p6 3d6 4s1",
+        "1s2 2s2 2p6 3s2 3p5 3d7 4s1",
+        "1s2 2s2 2p6 3s2 3p5 3d6 4s2",
+        "1s2 2s2 2p5 3s2 3p6 3d7 4s1",
+        "1s2 2s2 2p5 3s2 3p6 3d6 4s2",
+        "1s1 2s2 2p6 3s2 3p6 3d7 4s1",
+        "1s1 2s2 2p6 3s2 3p6 3d6 4s2"
+      ],
+      "Fe III": [
+        "1s2 2s2 2p6 3s2 3p6 3d6",
+        "1s2 2s2 2p6 3s2 3p5 3d7",
+        "1s2 2s2 2p6 3s2 3p5 3d6 4s1",
+        "1s2 2s2 2p6 3s2 3p5 3d5 4s2",
+        "1s2 2s2 2p5 3s2 3p6 3d7",
+        "1s2 2s2 2p5 3s2 3p6 3d6 4s1",
+        "1s2 2s2 2p5 3s2 3p6 3d5 4s2",
+        "1s1 2s2 2p6 3s2 3p6 3d7",
+        "1s1 2s2 2p6 3s2 3p6 3d6 4s1",
+        "1s1 2s2 2p6 3s2 3p6 3d5 4s2"
+      ],
+      "Fe IV": [
+        "1s2 2s2 2p6 3s2 3p6 3d5",
+        "1s2 2s2 2p6 3s2 3p5 3d6",
+        "1s2 2s2 2p5 3s2 3p6 3d6",
+        "1s1 2s2 2p6 3s2 3p6 3d6"
+      ]
+    },
+    "orbital_model": "gref (OptimizeRadial on the ground configuration only; references added in Structure)",
+    "mu_values": [
+      0.0,
+      0.1,
+      0.25
+    ],
+    "plasma": {
+      "density_A3": 1e-06,
+      "ups": 0.0,
+      "mu_step": 0.05,
+      "hxs_iter0": 8,
+      "debye_mode": 1,
+      "ee_screen": 1
+    },
+    "calculator": "fe_calc/deprince_2020_fe_ii_viii/calculate_energies.py (unchanged physics; --direct-potential coulomb only changes the expected asymptotic charge)"
+  },
+  "potential_validation": {
+    "all_passed": false,
+    "failures": [
+      "B: diffuse mu=0.25: {'scale': 0.034581676885127866, 'max_abs': 3.810027224271373e-10, 'max_abs_over_scale': 1.1017473897889279e-08, 'rms_over_scale': 2.8837027491423327e-09, 'max_rel_bulk': 3.371175524603594e-07, 'max_rel_tail_resolved': 1.0047295364948639e-05, 'n_tail_resolved': 501, 'max_rel_tail_unresolved': nan, 'max_rel_deep_tail_below_eps_x_peak': 0.2619855560578356, 'ref_self_consistency_over_scale': 4.0130465199571375e-16, 'jps_fac': 0.006311176040750521, 'jps_ref': 0.006311176040905769, 'jps_rel_err': 2.459893514529907e-11, 'mu_used_by_fac': 0.25000000000000827, 'gated': True, 'pass': False}"
+    ],
+    "tolerances": {
+      "TOL_ABS_OVER_SCALE": 1e-06,
+      "TOL_REL_BULK": 1e-05,
+      "TOL_TAIL_REL": 1e-05,
+      "TOL_REF_SELF": 1e-10,
+      "TOL_COULOMB_IDENTICAL": 0.0,
+      "TOL_SLOPE": 0.002,
+      "MIN_REFINE_FACTOR": 4.0
+    },
+    "grid": {
+      "maxrp": 1500,
+      "r_min": 3.846153846153846e-08,
+      "r_max": 1008.9289844483365,
+      "ips": 0
+    }
+  },
+  "harness_executables_sha256": {
+    "harness_A": "9181d14b1370f22f26501efa881bad85580c8f334aaef37a386dd8e238017f14",
+    "harness_B": "d41dfbd5f7b96f78e242e6196d358780e0959cd58f50c53b791c1c15edcc62e4",
+    "harness_ref": "41304159c5c914b610eef5d597bc6ebb51518279c847718600b92d7014fd1089"
+  },
+  "host": {
+    "platform": "macOS-27.0.1-arm64-arm-64bit",
+    "python": "3.10.20",
+    "numpy": "2.2.6"
+  },
+  "result_files_sha256": {
+    "energies.csv": "47346bd52d7097ad0f8852504a6f384e6e6d3a205319eac5541e5d7f1e2f11ba",
+    "ip_comparison.csv": "55c695173b96a4f4a6c2fb57ef8ef172363a75c01cc1a3447180e7e372fa6e82",
+    "potential_validation.csv": "bce4b55fd3949b02ac3b49439d76b2d994c2ae02ac4bc0b5657e0264509a42d3",
+    "analysis_numbers.json": "5902dd8596e72479ebfd0574e3deaf6bf5cefbd9bae84c08c56bfdeb8d48001a",
+    "jmaxk_negative_control.json": "fe83f3d047f70a090d8d1065ed6b431aa9aab92d8197f389590337d7c39b4606",
+    "potential_validation_summary.json": "ef937a751362f372136520def8f744282470218cb980105aeca714681b2b7231",
+    "potential_validation_summary_first_run.json": "ff0c1a0a4ea2dec12a9a3393c7bcfaf83a9b92b4178b0aaf164b9dd50e4399d7"
+  }
+}
