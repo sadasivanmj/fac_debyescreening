@@ -1,0 +1,95 @@
+{
+ "sfac": "/data/project/fac_worktrees/scf/inst/bin/sfac",
+ "sfac_sha256": "3b88ec91c37577877aa683f4c502d52783b68313fd9669ae2eda49e219cf4cdc",
+ "source_tree": "/data/project/fac_worktrees/scf",
+ "git_commit": "ff9a5c9cc6623e3f6adb8062ba23a52e9aace582",
+ "git_describe": "ff9a5c9 analysis files",
+ "source_diff_sha256": "0bae9c163fda7c70a285b530b946e9a9f8f05ec9887647c6c98b5d5ceaa73ba6",
+ "source_diff_files": "faclib/orbital.c | 32 ++++++++++++++++++++++++++++++++\n faclib/radial.c  |  9 ++++++++-\n 2 files changed, 40 insertions(+), 1 deletion(-)",
+ "sources_newer_than_binary": []
+}
+[ok    ] ref  FeII    mu=0     E0=-34561.2842 t=3.7s 
+[ok    ] ref  FeII    mu=0.1   E0=-33625.2303 t=5.0s 
+[ok    ] ref  FeII    mu=0.25  E0=-32282.8180 t=6.3s 
+[ok    ] ref  FeIII   mu=0     E0=-34542.4125 t=5.4s 
+[ok    ] ref  FeIII   mu=0.1   E0=-33611.0422 t=5.7s 
+[ok    ] ref  FeIII   mu=0.25  E0=-32274.1005 t=7.8s 
+[ok    ] ref  FeIV    mu=0     E0=-34522.7607 t=2.7s 
+[ok    ] ref  FeIV    mu=0.1   E0=-33599.8850 t=3.6s 
+[ok    ] ref  FeIV    mu=0.25  E0=-32274.0752 t=5.4s 
+[ok    ] ref  FeV     mu=0     E0=-34469.8762 t=2.7s 
+[ok    ] ref  FeV     mu=0.1   E0=-33557.4292 t=4.6s 
+[ok    ] ref  FeV     mu=0.25  E0=-32246.4036 t=5.1s 
+[ok    ] ref  FeVI    mu=0     E0=-34396.1570 t=1.9s 
+[ok    ] ref  FeVI    mu=0.1   E0=-33496.7988 t=3.0s 
+[ok    ] ref  FeVI    mu=0.25  E0=-32204.1556 t=4.2s 
+[ok    ] ref  FeVII   mu=0     E0=-34298.5258 t=1.8s 
+[ok    ] ref  FeVII   mu=0.1   E0=-33414.9389 t=2.7s 
+[ok    ] ref  FeVII   mu=0.25  E0=-32144.3481 t=3.7s 
+[ok    ] ref  FeVIII  mu=0     E0=-34174.8058 t=1.6s 
+[ok    ] ref  FeVIII  mu=0.1   E0=-33309.6538 t=2.3s 
+[ok    ] ref  FeVIII  mu=0.25  E0=-32064.8020 t=3.5s 
+[ok    ] ref  FeIX    mu=0     E0=-34025.0667 t=1.4s 
+[ok    ] ref  FeIX    mu=0.1   E0=-33181.0112 t=2.1s 
+[ok    ] ref  FeIX    mu=0.25  E0=-31965.5683 t=3.3s 
+
+runs: 24 ok, 0 failed, 24 of the standard grid not yet run
+# Deprince et al. Table 2 with native SFAC
+Generated 2026-10-12T08:08:17.
+FAC values are computed here; NIST and published values are quoted from Deprince et al. (2020), Table 2.
+
+## Model `ref`
+
+### Table A: reproduction of Table 2
+
+| Ion | NIST | Pub μ=0 | FAC μ=0 | δ% | ε% | Pub μ=0.1 | FAC μ=0.1 | δ% | ε% | Pub μ=0.25 | FAC μ=0.25 | δ% | ε% |
+|---|---:|---:|---:|---:|---:|---:|---:|---:|---:|---:|---:|---:|---:|
+| Fe II | 16.19920 | 18.89 | 18.872 | -0.10 | 0.10 | 14.20 | 14.188 | -0.08 | 0.08 | 7.78 | 8.717 | 12.05 | 12.05 |
+| Fe III | 30.651 | 32.93 | 19.652 | -40.32 | 40.32 | 25.60 | 11.157 | -56.42 | 56.42 | 16.42 | 0.025 | -99.85 | 99.85 |
+| Fe IV | 54.91 | 55.37 | 52.885 | -4.49 | 4.49 | 44.65 | 42.456 | -4.91 | 4.91 | 29.64 | 27.672 | -6.64 | 6.64 |
+| Fe V | 75.0 | 74.92 | 73.719 | -1.60 | 1.60 | 61.56 | 60.630 | -1.51 | 1.51 | 42.83 | 42.248 | -1.36 | 1.36 |
+| Fe VI | 98.985 | 98.20 | 97.631 | -0.58 | 0.58 | 82.20 | 81.860 | -0.41 | 0.41 | 59.79 | 59.807 | 0.03 | 0.03 |
+| Fe VII | 124.98 | 123.60 | 123.720 | 0.10 | 0.10 | 104.96 | 105.285 | 0.31 | 0.31 | 78.86 | 79.546 | 0.87 | 0.87 |
+| Fe VIII | 151.060 | 151.14 | 149.739 | -0.93 | 0.93 | 129.85 | 128.643 | -0.93 | 0.93 | 99.98 | 99.234 | -0.75 | 0.75 |
+
+### Table B: free-ion IP vs NIST
+
+| Ion | NIST (eV) | FAC μ=0 (eV) | FAC−NIST (eV) | δ% | ε% |
+|---|---:|---:|---:|---:|---:|
+| Fe II | 16.19920 | 18.872 | 2.673 | 16.50 | 16.50 |
+| Fe III | 30.651 | 19.652 | -10.999 | -35.89 | 35.89 |
+| Fe IV | 54.91 | 52.885 | -2.025 | -3.69 | 3.69 |
+| Fe V | 75.0 | 73.719 | -1.281 | -1.71 | 1.71 |
+| Fe VI | 98.985 | 97.631 | -1.354 | -1.37 | 1.37 |
+| Fe VII | 124.98 | 123.720 | -1.260 | -1.01 | 1.01 |
+| Fe VIII | 151.060 | 149.739 | -1.321 | -0.87 | 0.87 |
+
+## Run status
+
+| model | ion | μ | status | E0 (eV) | NLEV | ground 2J | runtime (s) | notes |
+|---|---|---:|---|---:|---:|---:|---:|---|
+| ref | Fe II | 0 | ok | -34561.2842 | 986 | 9 | 3.7 |  |
+| ref | Fe II | 0.1 | ok | -33625.2303 | 986 | 9 | 5.0 |  |
+| ref | Fe II | 0.25 | ok | -32282.8180 | 986 | 9 | 6.3 |  |
+| ref | Fe III | 0 | ok | -34542.4125 | 1640 | 8 | 5.4 |  |
+| ref | Fe III | 0.1 | ok | -33611.0422 | 1640 | 8 | 5.7 |  |
+| ref | Fe III | 0.25 | ok | -32274.1005 | 1640 | 8 | 7.8 |  |
+| ref | Fe IV | 0 | ok | -34522.7607 | 460 | 5 | 2.7 |  |
+| ref | Fe IV | 0.1 | ok | -33599.8850 | 460 | 5 | 3.6 |  |
+| ref | Fe IV | 0.25 | ok | -32274.0752 | 460 | 5 | 5.4 |  |
+| ref | Fe V | 0 | ok | -34469.8762 | 536 | 0 | 2.7 |  |
+| ref | Fe V | 0.1 | ok | -33557.4292 | 536 | 0 | 4.6 |  |
+| ref | Fe V | 0.25 | ok | -32246.4036 | 536 | 0 | 5.1 |  |
+| ref | Fe VI | 0 | ok | -34396.1570 | 442 | 3 | 1.9 |  |
+| ref | Fe VI | 0.1 | ok | -33496.7988 | 442 | 3 | 3.0 |  |
+| ref | Fe VI | 0.25 | ok | -32204.1556 | 442 | 3 | 4.2 |  |
+| ref | Fe VII | 0 | ok | -34298.5258 | 267 | 4 | 1.8 |  |
+| ref | Fe VII | 0.1 | ok | -33414.9389 | 267 | 4 | 2.7 |  |
+| ref | Fe VII | 0.25 | ok | -32144.3481 | 267 | 4 | 3.7 |  |
+| ref | Fe VIII | 0 | ok | -34174.8058 | 108 | 3 | 1.6 |  |
+| ref | Fe VIII | 0.1 | ok | -33309.6538 | 108 | 3 | 2.3 |  |
+| ref | Fe VIII | 0.25 | ok | -32064.8020 | 108 | 3 | 3.5 |  |
+| ref | Fe IX | 0 | ok | -34025.0667 | 29 | 0 | 1.4 |  |
+| ref | Fe IX | 0.1 | ok | -33181.0112 | 29 | 0 | 2.1 |  |
+| ref | Fe IX | 0.25 | ok | -31965.5683 | 29 | 0 | 3.3 |  |
+

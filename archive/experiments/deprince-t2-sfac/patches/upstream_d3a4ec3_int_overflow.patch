@@ -1,0 +1,92 @@
+commit d3a4ec3bbd928f709a4bb549a2fd1f733bde0e21
+Author: Mingyu Zhu <105955974+TheStarAlight@users.noreply.github.com>
+Date:   Mon Sep 14 20:10:06 2026 +0800
+
+    fix int overflow in large-size calculation (int→size_t) (#842)
+    
+    * enhance efficiency of `rfac.read_xx` for large files
+    
+    * fixed `rfac.read_ce` function when handling `MSUB=1`.
+    
+    * fix faclib/makefile in f2c compilation flag.
+    
+    * fix int overflow in large-size calculation (int→size_t)
+    
+    ---------
+    
+    Co-authored-by: Ming Feng Gu <mingfenggu2003@gmail.com>
+
+diff --git a/faclib/mmalloc.c b/faclib/mmalloc.c
+index 0d0a2e6..bff6de5 100644
+--- a/faclib/mmalloc.c
++++ b/faclib/mmalloc.c
+@@ -29,12 +29,12 @@ double dmsize() {
+ 
+ void *mmalloc(size_t size) {
+   size_t *p = NULL;
+-  int ns = size + sizeof(size_t);
++  size_t ns = size + sizeof(size_t);
+   p = (size_t *) malloc(ns);
+   if (p == NULL) {
+-    printf("malloc error: %zu %zu\n", size, _tsize);
+-    int *ix = 0;
+-    *ix = 0;
++    printf("malloc error: requested %zu bytes, current total %zu\n", size, _tsize);
++    fflush(stdout);
++    exit(1);
+   }
+   *p = ns;
+ #pragma omp atomic
+@@ -50,6 +50,7 @@ void *mcalloc(size_t n, size_t size) {
+   p = (size_t *) calloc(ns, 1);
+   if (p == NULL) {
+     printf("calloc error: %zu %zu %zu\n", n, size, _tsize);
++    fflush(stdout);
+     exit(1);
+   }
+   *p = ns;
+@@ -61,8 +62,8 @@ void *mcalloc(size_t n, size_t size) {
+ 
+ void *mrealloc(void *p, size_t size) {
+   size_t *ps;
+-  int ns = size+sizeof(size_t);
+-  int ns0 = 0;
++  size_t ns = size+sizeof(size_t);
++  size_t ns0 = 0;
+   
+   if (p) {
+     ps = (size_t *) p;
+@@ -72,13 +73,18 @@ void *mrealloc(void *p, size_t size) {
+   ps = (size_t *) realloc(ps, ns);
+   if (ps == NULL) {
+     printf("realloc error: %zu %zu\n", size, _tsize);
++    fflush(stdout);
+     exit(1);
+   }
+   *ps = ns;
+ 
+-  ns -= ns0;
++  if (ns >= ns0) {
+ #pragma omp atomic
+-  _tsize += ns;
++    _tsize += (ns - ns0);
++  } else {
++#pragma omp atomic
++    _tsize -= (ns0 - ns);
++  }
+ 
+   return &ps[1];
+ }
+diff --git a/faclib/structure.c b/faclib/structure.c
+index c87e725..dd48049 100644
+--- a/faclib/structure.c
++++ b/faclib/structure.c
+@@ -7130,7 +7130,7 @@ int AllocHamMem(HAMILTON *h, int hdim, int nbasis) {
+   t = (size_t)hdim * (size_t)(hdim+1)/2;
+   h->dsize = t;
+   h->dsize2 = t*2;
+-  h->hsize = t + (size_t)hdim*(size_t)jp + jp;
++  h->hsize = t + (size_t)hdim*(size_t)jp + (size_t)jp;
+   if (h->hamilton == NULL) {
+     h->hsize0 = h->hsize;
+     h->hamilton = (double *) malloc(sizeof(double)*(size_t)h->hsize);

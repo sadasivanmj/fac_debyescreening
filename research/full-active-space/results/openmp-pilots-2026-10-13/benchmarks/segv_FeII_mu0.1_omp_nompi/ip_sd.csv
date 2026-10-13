@@ -1,0 +1,13 @@
+model,ip,mu,space,deprince_eV,status
+ref,Fe II -> Fe III,0.0,sd,18.89,UNAVAILABLE
+ref,Fe II -> Fe III,0.1,sd,14.2,UNAVAILABLE
+ref,Fe II -> Fe III,0.25,sd,7.78,UNAVAILABLE
+ref,Fe III -> Fe IV,0.0,sd,32.93,UNAVAILABLE
+ref,Fe III -> Fe IV,0.1,sd,25.6,UNAVAILABLE
+ref,Fe III -> Fe IV,0.25,sd,16.42,UNAVAILABLE
+gref,Fe II -> Fe III,0.0,sd,18.89,UNAVAILABLE
+gref,Fe II -> Fe III,0.1,sd,14.2,UNAVAILABLE
+gref,Fe II -> Fe III,0.25,sd,7.78,UNAVAILABLE
+gref,Fe III -> Fe IV,0.0,sd,32.93,UNAVAILABLE
+gref,Fe III -> Fe IV,0.1,sd,25.6,UNAVAILABLE
+gref,Fe III -> Fe IV,0.25,sd,16.42,UNAVAILABLE

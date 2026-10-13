@@ -1,0 +1,2 @@
+model,ion,mu,status,E0_eV,ground_p,ground_2j,ground_label,nlev,n_ci_configs,fac_block_dims,dps,q_inf,HXS,hxs_iter0,wall_s,cpu_s,peak_rss_MB,omp_num_threads,reused,input_hash,workdir
+ref,Fe II,0.0,ok,-34564.7462,0,5,1*2.2*8.3*13.4*2 3d5 3d-2(4)4.3d+3(9)5,7603,68,"{'1': 1056, '3': 1736, '5': 1854, '7': 1465, '9': 927, '11': 410, '13': 135, '15': 19, '17': 1}",0.0,-2.0,1.0,,41.8,41.7,1498.1,4,,d1d597f11c0d959913078b14491cd259f9986062dc6574fe92280ab856864c91,/tmp/fac-full-as-worktree/_bench/FeII_mu0_omp4/runs/sd/ref/FeII/mu0

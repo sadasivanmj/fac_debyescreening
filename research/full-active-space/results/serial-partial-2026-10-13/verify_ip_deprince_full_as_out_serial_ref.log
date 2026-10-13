@@ -1,0 +1,37 @@
+IMPORTED /tmp/fac-full-as-worktree/build/lib.linux-x86_64-cpython-310/pfac/fac.cpython-310-x86_64-linux-gnu.so 68de00ee7e60984a HEAD 7ba19fd08878aca162fa5199854b59de5dde21fc
+SPACE {"ion": "Fe II", "space": "ref", "n_configs": 7, "n_configs_even": 3, "csf_all": 986, "csf_even": 200, "largest_even_block": 46, "even_dims": {"1": 27, "3": 41, "5": 46, "7": 40, "9": 28, "11": 13, "13": 5}, "published_csf": 12268}
+SPACE {"ion": "Fe III", "space": "ref", "n_configs": 10, "n_configs_even": 4, "csf_all": 1640, "csf_even": 272, "largest_even_block": 61, "even_dims": {"0": 20, "2": 43, "4": 61, "6": 58, "8": 47, "10": 27, "12": 13, "14": 3}, "published_csf": 31501}
+SPACE {"ion": "Fe IV", "space": "ref", "n_configs": 4, "n_configs_even": 2, "csf_all": 460, "csf_even": 100, "largest_even_block": 24, "even_dims": {"1": 13, "3": 19, "5": 24, "7": 20, "9": 14, "11": 7, "13": 3}, "published_csf": 57189}
+SCHEDULE jobs=6 mem_budget_GB=11.0 est={'Fe II': 2.0, 'Fe III': 4.0, 'Fe IV': 9.5} OMP_NUM_THREADS=1 InitializeMPI=0
+[2026-10-13T06:58:13] Fe II mu=0.0 gref: ok E0=-34571.2747 wall=1.2s rss=801.9MB 
+[2026-10-13T06:58:13] Fe II mu=0.0 ref: ok E0=-34561.2842 wall=1.2s rss=801.9MB 
+[2026-10-13T06:58:13] Fe III mu=0.0 ref: ok E0=-34542.4125 wall=1.2s rss=802.2MB 
+[2026-10-13T06:58:16] Fe II mu=0.1 ref: ok E0=-33625.2303 wall=2.1s rss=801.9MB 
+[2026-10-13T06:58:16] Fe II mu=0.1 gref: ok E0=-33635.8239 wall=2.1s rss=802.1MB 
+[2026-10-13T06:58:16] Fe III mu=0.1 ref: ok E0=-33611.0422 wall=2.1s rss=802.4MB 
+[2026-10-13T06:58:17] Fe III mu=0.0 gref: ok E0=-34555.7544 wall=1.2s rss=802.4MB 
+[2026-10-13T06:58:17] Fe III mu=0.1 gref: ok E0=-33625.5981 wall=1.9s rss=802.4MB 
+[2026-10-13T06:58:20] Fe II mu=0.25 ref: ok E0=-32282.818 wall=3.4s rss=802.0MB 
+[2026-10-13T06:58:21] Fe II mu=0.25 gref: ok E0=-32293.7705 wall=3.5s rss=802.0MB 
+[2026-10-13T06:58:24] Fe III mu=0.25 ref: ok E0=-32274.1005 wall=3.4s rss=802.1MB 
+[2026-10-13T06:58:24] Fe III mu=0.25 gref: ok E0=-32289.0833 wall=3.2s rss=802.4MB 
+[2026-10-13T06:58:27] Fe IV mu=0.25 gref: ok E0=-32279.8135 wall=2.9s rss=801.0MB 
+[2026-10-13T06:58:30] Fe IV mu=0.25 ref: ok E0=-32274.0752 wall=3.0s rss=801.2MB 
+[2026-10-13T06:58:32] Fe IV mu=0.1 gref: ok E0=-33605.4643 wall=1.8s rss=801.1MB 
+[2026-10-13T06:58:33] Fe IV mu=0.0 gref: ok E0=-34527.6602 wall=1.0s rss=801.2MB 
+[2026-10-13T06:58:34] Fe IV mu=0.0 ref: ok E0=-34522.7607 wall=1.0s rss=801.4MB 
+[2026-10-13T06:58:36] Fe IV mu=0.1 ref: ok E0=-33599.885 wall=1.7s rss=801.0MB 
+IP {"model": "ref", "ip": "Fe II -> Fe III", "mu": 0.0, "space": "ref", "deprince_eV": 18.89, "status": "ok", "fac_eV": 18.8717, "diff_eV": -0.0183, "diff_pct": -0.1, "nist_eV": 16.1992, "diff_nist_eV": 2.6725, "dIP_eV": 0.0, "deprince_dIP_eV": 0.0}
+IP {"model": "ref", "ip": "Fe II -> Fe III", "mu": 0.1, "space": "ref", "deprince_eV": 14.2, "status": "ok", "fac_eV": 14.1881, "diff_eV": -0.0119, "diff_pct": -0.08, "dIP_eV": -4.6836, "deprince_dIP_eV": -4.69}
+IP {"model": "ref", "ip": "Fe II -> Fe III", "mu": 0.25, "space": "ref", "deprince_eV": 7.78, "status": "ok", "fac_eV": 8.7175, "diff_eV": 0.9375, "diff_pct": 12.05, "dIP_eV": -10.1542, "deprince_dIP_eV": -11.11}
+IP {"model": "ref", "ip": "Fe III -> Fe IV", "mu": 0.0, "space": "ref", "deprince_eV": 32.93, "status": "ok", "fac_eV": 19.6518, "diff_eV": -13.2782, "diff_pct": -40.32, "nist_eV": 30.651, "diff_nist_eV": -10.9992, "dIP_eV": 0.0, "deprince_dIP_eV": 0.0}
+IP {"model": "ref", "ip": "Fe III -> Fe IV", "mu": 0.1, "space": "ref", "deprince_eV": 25.6, "status": "ok", "fac_eV": 11.1572, "diff_eV": -14.4428, "diff_pct": -56.42, "dIP_eV": -8.4946, "deprince_dIP_eV": -7.33}
+IP {"model": "ref", "ip": "Fe III -> Fe IV", "mu": 0.25, "space": "ref", "deprince_eV": 16.42, "status": "ok", "fac_eV": 0.0253, "diff_eV": -16.3947, "diff_pct": -99.85, "dIP_eV": -19.6265, "deprince_dIP_eV": -16.51}
+IP {"model": "gref", "ip": "Fe II -> Fe III", "mu": 0.0, "space": "ref", "deprince_eV": 18.89, "status": "ok", "fac_eV": 15.5203, "diff_eV": -3.3697, "diff_pct": -17.84, "nist_eV": 16.1992, "diff_nist_eV": -0.6789, "dIP_eV": 0.0, "deprince_dIP_eV": 0.0}
+IP {"model": "gref", "ip": "Fe II -> Fe III", "mu": 0.1, "space": "ref", "deprince_eV": 14.2, "status": "ok", "fac_eV": 10.2258, "diff_eV": -3.9742, "diff_pct": -27.99, "dIP_eV": -5.2945, "deprince_dIP_eV": -4.69}
+IP {"model": "gref", "ip": "Fe II -> Fe III", "mu": 0.25, "space": "ref", "deprince_eV": 7.78, "status": "ok", "fac_eV": 4.6872, "diff_eV": -3.0928, "diff_pct": -39.75, "dIP_eV": -10.8331, "deprince_dIP_eV": -11.11}
+IP {"model": "gref", "ip": "Fe III -> Fe IV", "mu": 0.0, "space": "ref", "deprince_eV": 32.93, "status": "ok", "fac_eV": 28.0942, "diff_eV": -4.8358, "diff_pct": -14.69, "nist_eV": 30.651, "diff_nist_eV": -2.5568, "dIP_eV": 0.0, "deprince_dIP_eV": 0.0}
+IP {"model": "gref", "ip": "Fe III -> Fe IV", "mu": 0.1, "space": "ref", "deprince_eV": 25.6, "status": "ok", "fac_eV": 20.1338, "diff_eV": -5.4662, "diff_pct": -21.35, "dIP_eV": -7.9604, "deprince_dIP_eV": -7.33}
+IP {"model": "gref", "ip": "Fe III -> Fe IV", "mu": 0.25, "space": "ref", "deprince_eV": 16.42, "status": "ok", "fac_eV": 9.2698, "diff_eV": -7.1502, "diff_pct": -43.55, "dIP_eV": -18.8244, "deprince_dIP_eV": -16.51}
+18/18 jobs ok this invocation
+ref driver rc=0

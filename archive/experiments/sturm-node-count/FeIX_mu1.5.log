@@ -1,0 +1,39 @@
+IMPORTED /tmp/fac-sturm-node-count-worktree/build/lib.linux-x86_64-cpython-310/pfac/fac.cpython-310-x86_64-linux-gnu.so
+PLASMA zps=8.0 nps=1e-09 tps=2.2520675217764265e-08 lambda=0.6666666666666666
+CHECK 2: OptimizeRadial
+optimize loop:    0   -1 1   1.00000E+00   1.00000E+01   0.00000E+00   3.00000E-04   3.00000E-08   3.00000E-05   1.00000E+00  0.000E+00  0.000E+00  1.000E+00  4.231E-01
+Max iteration before finding correct nodes in RadialBound a: 1 1 277 3 1 -1.27417e-153
+[STURM DIAGNOSTIC]
+Ion: Z=26 residual_Z=9 (Fe IX for this test input)
+mu: 1.5 (EEScreenMu)  dps=0.6666666667 mps=1 zps=8 nps=1.48185e-10 tps=8.2762e-10 ups=0
+Orbital: n=3, kappa=1, l=1, kv=0
+Required nodes: 1 (FAC: nr = n - l - 1, large component, kl from kappa)
+Grid: maxrp=1500 r0=3.846154e-08 rmax=3.429243e+02 rms0=7.115882e-05 ib=0 nb=0 ips=0
+Original final trial energy: -1.274168e-153
+Original final node count: 1 (on [0, i2=277], r(i2)=1.637510e+00)
+Original bracket-a start energy (EnergyH): -1.7083798529e+01  emin0=-3.7520762095e+02
+#    E(Ha)             i2     r(i2)       FACnodes  Sturm_full r_lastnode  bad  nonfin istop  r(istop)    veff(rmax)  
+0    -3.752076210e+02  -1     0.0000e+00  -1        0          0.0000e+00  0    0      528    2.1037e+01  -3.74838e+00
+1    -6.833519411e+01  -1     0.0000e+00  -1        0          0.0000e+00  0    0      933    1.0658e+02  -1.24333e-01
+2    -3.416759706e+01  199    2.0800e-01  0         0          0.0000e+00  0    0      1220   2.0926e+02  -3.10827e-02
+3    -1.708379853e+01  212    3.2998e-01  0         1          5.8388e-01  0    0      1499   3.4292e+02  -7.77005e-03
+4    -5.402371444e+00  230    5.6809e-01  1         1          3.6382e-01  0    0      1499   3.4292e+02  -7.76272e-04
+5    -1.708379853e+00  245    8.3525e-01  1         1          3.4101e-01  0    0      1499   3.4292e+02  -7.68936e-05
+6    -5.402371444e-01  258    1.1216e+00  1         1          3.2998e-01  0    0      1499   3.4292e+02  -6.95575e-06
+7    -1.708379853e-01  268    1.3784e+00  1         1          3.2998e-01  0    0      1499   3.4292e+02  3.80277e-08 
+8    -5.402371444e-02  274    1.5481e+00  1         2          5.5554e+00  0    0      1499   3.4292e+02  7.37406e-07 
+9    -1.708379853e-02  276    1.6074e+00  1         2          3.5398e+00  0    0      1499   3.4292e+02  8.07344e-07 
+10   -5.402371444e-03  277    1.6375e+00  1         2          3.3524e+00  0    0      1499   3.4292e+02  8.14337e-07 
+11   -1.708379853e-03  277    1.6375e+00  1         2          3.2608e+00  0    0      1499   3.4292e+02  8.15037e-07 
+12   -5.402371444e-04  277    1.6375e+00  1         2          3.2608e+00  0    0      1499   3.4292e+02  8.15107e-07 
+13   -1.708379853e-04  277    1.6375e+00  1         2          3.2608e+00  0    0      1499   3.4292e+02  8.15114e-07 
+14   -5.402371444e-05  277    1.6375e+00  1         2          3.2608e+00  0    0      1499   3.4292e+02  8.15114e-07 
+15   -1.708379853e-05  277    1.6375e+00  1         2          3.2608e+00  0    0      1499   3.4292e+02  8.15114e-07 
+16   -5.402371444e-06  277    1.6375e+00  1         2          3.2608e+00  0    0      1499   3.4292e+02  8.15114e-07 
+17   -1.708379853e-06  277    1.6375e+00  1         2          3.2608e+00  0    0      1499   3.4292e+02  8.15114e-07 
+18   -1.000000000e-06  277    1.6375e+00  1         2          3.2608e+00  0    0      1499   3.4292e+02  8.15114e-07   <- near-threshold trial
+19   -1.274167904e-153 277    1.6375e+00  1         2          3.2608e+00  0    0      1499   3.4292e+02  8.15114e-07 
+Sturm eigenvalue (count 1->2) bracketed in [-5.916723424472e-02, -5.916723424471e-02] after 56 steps; at upper end FACnodes=1 (i2=273)
+Bracket status: bound state with 1 nodes EXISTS below -1e-6; FAC loop a needs a trial E < 0 with >1 nodes inside the turning point (next state)
+[STURM DIAGNOSTIC END] (energy-dependent state restored)
+Error occured in RadialSolver: -2 3 1   0.0000000000E+00

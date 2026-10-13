@@ -1,0 +1,26 @@
+{
+ "ion": "Fe III",
+ "mu": 0.0,
+ "model": "gref",
+ "space": "sd",
+ "hxs_iter0": null,
+ "input_hash": "059619ab98c2ae28413a6691d076a752e2b6c341521bc2c26a83b022b0be643c",
+ "n_ci_configs": 87,
+ "counted_even_dims": {
+  "0": 1305,
+  "2": 3362,
+  "4": 4489,
+  "6": 4299,
+  "8": 3363,
+  "10": 2064,
+  "12": 1001,
+  "14": 344,
+  "16": 72,
+  "18": 6
+ },
+ "extension_sha256": "916a228035983a2de3e97278fd50dd9c759bb3b7f73737afda76faf968d43e81",
+ "git_head": "7bf979a0a985ad0e174020a78069d3bb6ab7f990",
+ "status": "running",
+ "start": "2026-10-13T06:54:46",
+ "workdir": "/tmp/fac-full-as-worktree/verify_ip_deprince_full_as_out/runs/sd/gref/FeIII/mu0"
+}

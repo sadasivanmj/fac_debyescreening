@@ -1,0 +1,49 @@
+{
+ "ion": "Fe II",
+ "mu": 0.25,
+ "model": "gref",
+ "space": "ref",
+ "hxs_iter0": 8.0,
+ "ref_configs": [
+  "1s2 2s2 2p6 3s2 3p6 3d6 4s1",
+  "1s2 2s2 2p6 3s2 3p5 3d7 4s1",
+  "1s2 2s2 2p6 3s2 3p5 3d6 4s2",
+  "1s2 2s2 2p5 3s2 3p6 3d7 4s1",
+  "1s2 2s2 2p5 3s2 3p6 3d6 4s2",
+  "1s1 2s2 2p6 3s2 3p6 3d7 4s1",
+  "1s1 2s2 2p6 3s2 3p6 3d6 4s2"
+ ],
+ "ci_configs": [
+  "1s2 2s2 2p6 3s2 3p6 3d6 4s1",
+  "1s2 2s2 2p6 3s2 3p5 3d7 4s1",
+  "1s2 2s2 2p6 3s2 3p5 3d6 4s2",
+  "1s2 2s2 2p5 3s2 3p6 3d7 4s1",
+  "1s2 2s2 2p5 3s2 3p6 3d6 4s2",
+  "1s1 2s2 2p6 3s2 3p6 3d7 4s1",
+  "1s1 2s2 2p6 3s2 3p6 3d6 4s2"
+ ],
+ "n_ci_configs": 7,
+ "counted_even_dims": {
+  "1": 27,
+  "3": 41,
+  "5": 46,
+  "7": 40,
+  "9": 28,
+  "11": 13,
+  "13": 5
+ },
+ "nps_A3": 1e-06,
+ "ups": 0.0,
+ "ladder": [
+  0.05,
+  0.1,
+  0.15,
+  0.2,
+  0.25
+ ],
+ "extension": "/tmp/fac-full-as-worktree/build/lib.linux-x86_64-cpython-310/pfac/fac.cpython-310-x86_64-linux-gnu.so",
+ "extension_sha256": "68de00ee7e60984afc01ad04f8952b83c40f1a267a6558d1188b157a0bf43018",
+ "git_head": "8c8b1bfb9943d71fa9c1513bb6a3b82d6f55817d",
+ "input_hash": "420beb3cecb49ae63cfcc029f2059dcf75e016b64128caa39d59f719f7502b0a",
+ "workdir": "/tmp/fac-full-as-worktree/verify_ip_deprince_full_as_out/runs/ref/gref/FeII/mu0.25"
+}

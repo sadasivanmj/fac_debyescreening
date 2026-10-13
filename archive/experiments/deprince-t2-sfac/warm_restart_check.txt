@@ -1,0 +1,31 @@
+Free-ion E0 after 0/1/3 extra warm OptimizeRadial calls (eV), and resulting IP changes
+ref  FeII    cold=-34561.2842  warm1-cold=-0.0107  warm3-cold=-0.0109
+ref  FeIII   cold=-34542.4125  warm1-cold=+0.0005  warm3-cold=+0.0005
+ref  FeIV    cold=-34522.7607  warm1-cold=+0.0018  warm3-cold=+0.0018
+ref  FeV     cold=-34469.8762  warm1-cold=-0.0008  warm3-cold=-0.0007
+ref  FeVI    cold=-34396.1570  warm1-cold=-0.0005  warm3-cold=-0.0005
+ref  FeVII   cold=-34298.5258  warm1-cold=-0.0006  warm3-cold=-0.0005
+ref  FeVIII  cold=-34174.8058  warm1-cold=-0.0002  warm3-cold=-0.0002
+ref  FeIX    cold=-34025.0667  warm1-cold=-0.0004  warm3-cold=-0.0004
+   IP FeII    cold=18.8717 warm1=18.8829 warm3=18.8831
+   IP FeIII   cold=19.6518 warm1=19.6531 warm3=19.6531
+   IP FeIV    cold=52.8845 warm1=52.8819 warm3=52.8820
+   IP FeV     cold=73.7192 warm1=73.7195 warm3=73.7194
+   IP FeVI    cold=97.6312 warm1=97.6311 warm3=97.6312
+   IP FeVII   cold=123.7200 warm1=123.7204 warm3=123.7203
+   IP FeVIII  cold=149.7391 warm1=149.7389 warm3=149.7389
+gref FeII    cold=-34571.2747  warm1-cold=-0.0025  warm3-cold=-0.0025
+gref FeIII   cold=-34555.7544  warm1-cold=-0.0026  warm3-cold=-0.0027
+gref FeIV    cold=-34527.6602  warm1-cold=-0.0004  warm3-cold=-0.0005
+gref FeV     cold=-34474.3260  warm1-cold=+0.0003  warm3-cold=+0.0003
+gref FeVI    cold=-34400.3706  warm1-cold=+0.0001  warm3-cold=+0.0001
+gref FeVII   cold=-34302.3757  warm1-cold=+0.0002  warm3-cold=+0.0002
+gref FeVIII  cold=-34178.3917  warm1-cold=-0.0001  warm3-cold=-0.0001
+gref FeIX    cold=-34028.4567  warm1-cold=-0.0001  warm3-cold=-0.0001
+   IP FeII    cold=15.5203 warm1=15.5202 warm3=15.5201
+   IP FeIII   cold=28.0942 warm1=28.0964 warm3=28.0964
+   IP FeIV    cold=53.3342 warm1=53.3349 warm3=53.3350
+   IP FeV     cold=73.9554 warm1=73.9552 warm3=73.9552
+   IP FeVI    cold=97.9949 warm1=97.9950 warm3=97.9950
+   IP FeVII   cold=123.9840 warm1=123.9837 warm3=123.9837
+   IP FeVIII  cold=149.9350 warm1=149.9350 warm3=149.9350

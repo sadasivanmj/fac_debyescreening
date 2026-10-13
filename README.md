@@ -4,6 +4,38 @@
 
 A software packge for the calculation of various atomic processes.
 
+## This fork: Debye-Hückel screening research
+
+This repository is FAC plus a student research project on atoms in a
+Debye-Hückel plasma: the electron-nucleus *and* electron-electron
+interactions are screened as e^(−μr)/r. The FAC source layout (`faclib/`,
+`python/`, `configure`, `setup.py`, …) is unchanged; all research files are
+under `research/`, `docs/` and `archive/`.
+
+| What | Where |
+|---|---|
+| Current status of the project | [`PROJECT_STATUS.md`](PROJECT_STATUS.md) |
+| Screened-potential implementation (C) | `faclib/orbital.c` (`DensityToSZ`, `RadialBound`), `faclib/radial.c` (`EEScreenMu`, `GetYkDebye`, `radial:hxs_iter0`); the changes as patch files are in [`research/debye-screening/patches/`](research/debye-screening/patches/) |
+| How the code changes work | [`docs/architecture.md`](docs/architecture.md) |
+| Validation tests and regression numbers | [`research/debye-screening/tests/`](research/debye-screening/tests/), [`docs/numerical-validation.md`](docs/numerical-validation.md) |
+| Fe II–IV reference-configuration calculations (completed) | scripts in `research/debye-screening/cases/fe/`, results in `research/debye-screening/results/reference-configurations/` |
+| Chen et al. (2018) and C4+ checks | `research/debye-screening/scripts/`, `research/debye-screening/results/` |
+| Full single/double active space (unfinished) | [`research/full-active-space/`](research/full-active-space/) |
+| Old experiments, superseded scripts and patches | [`archive/`](archive/README.md) |
+
+Quick start (nothing is installed globally):
+
+```bash
+./configure --prefix=$PWD/_noinstall
+make pfac                                   # builds build/lib.*/pfac only
+research/debye-screening/cases/fe/run_reference_suite.sh
+```
+
+Never run `make install`, `make install-pfac` or `pip install` for this
+work: they would overwrite the FAC installed in the Python environment.
+
+The original FAC documentation continues below.
+
 # Installation
 
 There are two interfaces available to the FAC numerical lib. One makes use

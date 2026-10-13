@@ -1,0 +1,1 @@
+model,ion,mu,status,E0_eV,ground_p,ground_2j,ground_label,nlev,n_ci_configs,fac_block_dims,dps,q_inf,HXS,hxs_iter0,wall_s,cpu_s,peak_rss_MB,omp_num_threads,reused,input_hash,workdir

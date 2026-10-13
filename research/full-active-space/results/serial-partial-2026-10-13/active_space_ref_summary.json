@@ -1,0 +1,60 @@
+[
+ {
+  "ion": "Fe II",
+  "space": "ref",
+  "n_configs": 7,
+  "n_configs_even": 3,
+  "csf_all": 986,
+  "csf_even": 200,
+  "largest_even_block": 46,
+  "even_dims": {
+   "1": 27,
+   "3": 41,
+   "5": 46,
+   "7": 40,
+   "9": 28,
+   "11": 13,
+   "13": 5
+  },
+  "published_csf": 12268
+ },
+ {
+  "ion": "Fe III",
+  "space": "ref",
+  "n_configs": 10,
+  "n_configs_even": 4,
+  "csf_all": 1640,
+  "csf_even": 272,
+  "largest_even_block": 61,
+  "even_dims": {
+   "0": 20,
+   "2": 43,
+   "4": 61,
+   "6": 58,
+   "8": 47,
+   "10": 27,
+   "12": 13,
+   "14": 3
+  },
+  "published_csf": 31501
+ },
+ {
+  "ion": "Fe IV",
+  "space": "ref",
+  "n_configs": 4,
+  "n_configs_even": 2,
+  "csf_all": 460,
+  "csf_even": 100,
+  "largest_even_block": 24,
+  "even_dims": {
+   "1": 13,
+   "3": 19,
+   "5": 24,
+   "7": 20,
+   "9": 14,
+   "11": 7,
+   "13": 3
+  },
+  "published_csf": 57189
+ }
+]

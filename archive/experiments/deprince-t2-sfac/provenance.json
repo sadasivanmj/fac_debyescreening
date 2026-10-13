@@ -1,0 +1,34 @@
+{
+ "repo": "/data/project/fac",
+ "repo_branch": "fix-debye-ee-screening",
+ "repo_head": "c4a016ad8cf0458366714b013727d915e1fdec80",
+ "ee-screening-scf": "ff9a5c9cc6623e3f6adb8062ba23a52e9aace582",
+ "binaries": {
+  "installed (~/facinst/bin/sfac, used by the original fe_ip_sfac.py)": {
+   "path": "/home/sadasivanmj/facinst/bin/sfac",
+   "sha256": "2789ca41138defd1e5060c231bda6f76afe3b931ef219c6f42229e17e69c0a0c",
+   "mtime": "2026-09-14 04:43:37.789923944 +0000"
+  },
+  "scf unpatched (ee-screening-scf ff9a5c9, clean build)": {
+   "path": "/data/project/fac_worktrees/scf/inst_unpatched/bin/sfac",
+   "sha256": "2789ca41138defd1e5060c231bda6f76afe3b931ef219c6f42229e17e69c0a0c",
+   "mtime": "2026-10-12 07:46:18.312054613 +0000"
+  },
+  "scf FINAL (ff9a5c9 + debye_sfac_fixes.patch + upstream d3a4ec3 int-overflow fix)": {
+   "path": "/data/project/fac_worktrees/scf/inst/bin/sfac",
+   "sha256": "3a77793e4b5e6f2c42efe2c358cfca09c911fd629895ccde48c15eac1894e229",
+   "mtime": "2026-10-12 08:21:26.912004422 +0000"
+  },
+  "ee unpatched (fix-debye-ee-screening c4a016a, clean build)": {
+   "path": "/data/project/fac_worktrees/ee/inst_unpatched/bin/sfac",
+   "sha256": "279d393eb715085436d886cb9660a6e5720fca96c2efadf1b54757aaf866fa60",
+   "mtime": "2026-10-12 07:46:18.219049443 +0000"
+  },
+  "ee patched (c4a016a + debye_sfac_fixes.patch)": {
+   "path": "/data/project/fac_worktrees/ee/inst/bin/sfac",
+   "sha256": "23b5644a22fbb653910258fcbfb6a45749529d70016bfed9b09bb1c3b32a54fc",
+   "mtime": "2026-10-12 08:02:18.523623593 +0000"
+  }
+ },
+ "note": "installed sfac sha256 equals the clean ee-screening-scf build: it was built from ee-screening-scf, not from fix-debye-ee-screening."
+}

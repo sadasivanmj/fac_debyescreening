@@ -1,0 +1,37 @@
+{
+ "ion": "Fe III",
+ "mu": 0.0,
+ "model": "gref",
+ "space": "ref",
+ "hxs_iter0": null,
+ "input_hash": "71dd893b09b6de5a714bbd5dd6e44919b6e1d1e3a68158e7bf9ef87565afc169",
+ "n_ci_configs": 10,
+ "counted_even_dims": {
+  "0": 20,
+  "2": 43,
+  "4": 61,
+  "6": 58,
+  "8": 47,
+  "10": 27,
+  "12": 13,
+  "14": 3
+ },
+ "extension_sha256": "68de00ee7e60984afc01ad04f8952b83c40f1a267a6558d1188b157a0bf43018",
+ "git_head": "8c8b1bfb9943d71fa9c1513bb6a3b82d6f55817d",
+ "status": "FAILED",
+ "start": "2026-10-13T05:57:43",
+ "workdir": "/tmp/fac-full-as-worktree/verify_ip_deprince_full_as_out/runs/ref/gref/FeIII/mu0",
+ "end": "2026-10-13T05:57:48",
+ "wall_s": 4.2,
+ "rc": -6,
+ "omp_num_threads": "1",
+ "imported": "/tmp/fac-full-as-worktree/build/lib.linux-x86_64-cpython-310/pfac/fac.cpython-310-x86_64-linux-gnu.so",
+ "peak_rss_MB": null,
+ "cpu_s": null,
+ "stages": [
+  "2026-10-13T05:57:44 configs ref=10 extra=0 groups=['g0', 'ref']",
+  "2026-10-13T05:57:44 free-ion SCF done"
+ ],
+ "messages": [],
+ "problem": "rc=-6; last stage: 2026-10-13T05:57:44 free-ion SCF done"
+}

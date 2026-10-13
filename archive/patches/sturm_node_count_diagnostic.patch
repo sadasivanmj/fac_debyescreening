@@ -1,0 +1,182 @@
+diff --git a/faclib/orbital.c b/faclib/orbital.c
+index 69cc042..fd048bf 100644
+--- a/faclib/orbital.c
++++ b/faclib/orbital.c
+@@ -1555,6 +1555,169 @@ int RadialSturm(ORBITAL *orb, POTENTIAL *pot) {
+   return 0;
+ }
+ 
++/* STURM_DIAG: diagnostic only (branch diagnostic/sturm-node-count).
++** Called at the RadialBound "a" (-2) exit.  For a set of trial energies it
++** reports (i) FAC's own node count, exactly as bracket loop a computes it
++** (TurningPoints + Dirichlet IntegrateRadial on [0, i2], CountNodes), and
++** (ii) a full-grid discrete Sturm count: the regular solution of the SAME
++** Numerov rows used by IntegrateRadial (p_0 = 0, p_1 = 1), continued
++** outward to the last grid point, counting every sign change for
++** r >= rms0 (CountNodes' inner limit) with no wave_zero amplitude cut.
++** (ii) equals the number of Dirichlet-box eigenvalues (r_max box) below E.
++** All energy-dependent state that SetPotentialW/SetVEffective overwrite
++** (pot->W, dW, dW2, _veff, _veff0) is saved and restored bitwise, and a
++** private wavefunction buffer is used, so the failed solve is unchanged. */
++extern double EEScreenMu(void);
++
++/* The recurrence is only a valid discretisation while 1 - x > 0 (x = 2(V-E)h^2/12);
++** beyond that it flips sign every step.  Counting stops at the first such point
++** (*istop); *closed = 1 if from there on V > E everywhere and |p| is growing away
++** from zero (p and p - p_prev same sign), so no further node can occur. */
++static int _sturm_full(double e, POTENTIAL *pot, double *rlast, int *bad,
++		       int *istop, int *closed) {
++  int i, j, n = 0, m = pot->maxrp;
++  double xm, x0, xp, pm, p0, pp, y, s, sl = 0;
++  *bad = 0;
++  *rlast = 0;
++  *istop = m-1;
++  *closed = 1;
++  pm = 0.0;
++  p0 = 1.0;
++  y = pot->dr_drho[0]*pot->dr_drho[0];
++  xm = 2.0*(_veff[0]-e)*y/12.0;
++  y = pot->dr_drho[1]*pot->dr_drho[1];
++  x0 = 2.0*(_veff[1]-e)*y/12.0;
++  for (i = 1; i < m-1; i++) {
++    y = pot->dr_drho[i+1]*pot->dr_drho[i+1];
++    xp = 2.0*(_veff[i+1]-e)*y/12.0;
++    if (!isfinite(xp)) { *bad = i+1; return n; }
++    if (1.0-xp <= 0.0) {
++      *istop = i;
++      for (j = i; j < m; j++) if (_veff[j] <= e) break;
++      *closed = (j == m && p0 != 0.0 && ((p0 > 0) == (p0-pm > 0)));
++      return n;
++    }
++    pp = (2.0*(1.0+5.0*x0)*p0 - (1.0-xm)*pm)/(1.0-xp);
++    if (!isfinite(pp)) { *bad = i+1; return n; }
++    s = fabs(pp);
++    if (s > 1e150) { pp /= s; p0 /= s; }
++    if (pot->rad[i+1] >= pot->atom->rms0 && pp != 0.0) {
++      if (sl != 0.0 && ((sl > 0) != (pp > 0))) { n++; *rlast = pot->rad[i+1]; }
++      sl = pp;
++    }
++    pm = p0; p0 = pp; xm = x0; x0 = xp;
++  }
++  return n;
++}
++
++static void _sturm_point(ORBITAL *orb, POTENTIAL *pot, int kl, int kv,
++			 double e, double *p, int *nfac, int *i2, int *nfull,
++			 double *rlast, int *bad, int *nonfin, int *istop,
++			 int *closed) {
++  int i;
++  SetPotentialW(pot, e, orb->kappa, kv);
++  SetVEffective(kl, kv, e, pot);
++  *nonfin = 0;
++  for (i = 0; i < pot->maxrp; i++) {
++    if (!isfinite(_veff[i])) (*nonfin)++;
++  }
++  *i2 = TurningPoints(orb->n, e, orb->kappa, pot, 0);
++  *nfac = -1;
++  if (*i2 > 0 && *nonfin == 0) {
++    *nfac = IntegrateRadial(p, e, pot, 0, 0.0, *i2, 1.0, 0);
++  }
++  *nfull = _sturm_full(e, pot, rlast, bad, istop, closed);
++}
++
++static void SturmDiagnostic(ORBITAL *orb, POTENTIAL *pot, int kl, int kv,
++			    int nr, double ep, double emin0, double efin,
++			    int nfin, int i2fin) {
++  int m = pot->maxrp, i, k, ne = 0, nfac, i2, nfull, bad, nonfin, ist, cl;
++  int nz = sizeof(double)*m;
++  double *sv = malloc(5*nz), *p = malloc(nz), el[64], rl, a, b, c;
++  int na, nb;
++  if (!sv || !p) { printf("[STURM DIAGNOSTIC] allocation failed\n"); return; }
++  memcpy(sv, pot->W, nz); memcpy(sv+m, pot->dW, nz); memcpy(sv+2*m, pot->dW2, nz);
++  memcpy(sv+3*m, _veff, nz); memcpy(sv+4*m, _veff0, nz);
++
++  printf("[STURM DIAGNOSTIC]\n");
++  printf("Ion: Z=%g residual_Z=%g (Fe IX for this test input)\n",
++	 pot->atom->atomic_number, GetResidualZ());
++  printf("mu: %.10g (EEScreenMu)  dps=%.10g mps=%d zps=%g nps=%g tps=%g ups=%g\n",
++	 EEScreenMu(), pot->dps, pot->mps, pot->zps, pot->nps, pot->tps, pot->ups);
++  printf("Orbital: n=%d, kappa=%d, l=%d, kv=%d\n", orb->n, orb->kappa, kl, kv);
++  printf("Required nodes: %d (FAC: nr = n - l - 1, large component, kl from kappa)\n", nr);
++  printf("Grid: maxrp=%d r0=%.6e rmax=%.6e rms0=%.6e ib=%d nb=%d ips=%d\n",
++	 m, pot->rad[0], pot->rad[m-1], pot->atom->rms0, pot->ib, pot->nb, pot->ips);
++  printf("Original final trial energy: %.6e\n", efin);
++  printf("Original final node count: %d (on [0, i2=%d], r(i2)=%.6e)\n",
++	 nfin, i2fin, i2fin > 0 ? pot->rad[i2fin] : 0.0);
++  printf("Original bracket-a start energy (EnergyH): %.10e  emin0=%.10e\n", ep, emin0);
++
++  el[ne++] = emin0; el[ne++] = 4*ep; el[ne++] = 2*ep;
++  for (k = 0; ne < 60; k++) {
++    a = -fabs(ep)*pow(10.0, -0.5*k);
++    if (a > -1e-6) break;
++    el[ne++] = a;
++  }
++  el[ne++] = -1e-6;
++  el[ne++] = efin;
++  printf("%-4s %-17s %-6s %-11s %-9s %-10s %-11s %-4s %-6s %-6s %-11s %-12s\n", "#", "E(Ha)",
++	 "i2", "r(i2)", "FACnodes", "Sturm_full", "r_lastnode", "bad", "nonfin",
++	 "istop", "r(istop)", "veff(rmax)");
++  for (k = 0; k < ne; k++) {
++    _sturm_point(orb, pot, kl, kv, el[k], p, &nfac, &i2, &nfull, &rl, &bad, &nonfin,
++		 &ist, &cl);
++    printf("%-4d %-17.9e %-6d %-11.4e %-9d %-10d %-11.4e %-4d %-6d %-6d %-11.4e %-12.5e%s%s\n",
++	   k, el[k], i2, i2 > 0 ? pot->rad[i2] : 0.0, nfac, nfull, rl, bad, nonfin,
++	   ist, pot->rad[ist], _veff[m-1], (bad || !cl) ? "  INVALID" : "",
++	   el[k] == -1e-6 ? "  <- near-threshold trial" : "");
++  }
++  /* bisection on the full-grid Sturm count for the nr -> nr+1 crossing (the
++  ** box eigenvalue of the requested orbital), between the deepest table energy
++  ** with a valid count and -1e-6; aborted if any count on the way is invalid */
++  double elo = 0;
++  int nbv;
++  na = -1;
++  for (k = 0; k < ne && na < 0; k++) {
++    _sturm_point(orb, pot, kl, kv, el[k], p, &nfac, &i2, &nfull, &rl, &bad, &nonfin, &ist, &cl);
++    if (!bad && cl && !nonfin) { na = nfull; elo = el[k]; }
++  }
++  _sturm_point(orb, pot, kl, kv, -1e-6, p, &nfac, &i2, &nb, &rl, &bad, &nonfin, &ist, &cl);
++  nbv = (!bad && cl && !nonfin);
++  if (na < 0 || !nbv) {
++    printf("Bracket status: INCONCLUSIVE (no valid lower count or invalid count at -1e-6)\n");
++  } else if (na <= nr && nb > nr) {
++    a = elo; b = -1e-6;
++    for (i = 0; i < 200 && (b-a) > 1e-13*fabs(b); i++) {
++      c = 0.5*(a+b);
++      _sturm_point(orb, pot, kl, kv, c, p, &nfac, &i2, &nfull, &rl, &bad, &nonfin, &ist, &cl);
++      if (bad || !cl || nonfin) break;
++      if (nfull > nr) b = c; else a = c;
++    }
++    if (bad || !cl || nonfin) {
++      printf("Bracket status: INCONCLUSIVE (invalid count at E=%.12e during bisection)\n", c);
++    } else {
++      _sturm_point(orb, pot, kl, kv, b, p, &nfac, &i2, &nfull, &rl, &bad, &nonfin, &ist, &cl);
++      printf("Sturm eigenvalue (count %d->%d) bracketed in [%.12e, %.12e] after %d steps;"
++	     " at upper end FACnodes=%d (i2=%d)\n", nr, nr+1, a, b, i, nfac, i2);
++      printf("Bracket status: bound state with %d nodes EXISTS below -1e-6; FAC loop a "
++	     "needs a trial E < 0 with >%d nodes inside the turning point (next state)\n",
++	     nr, nr);
++    }
++  } else {
++    printf("Bracket status: no nr->nr+1 Sturm crossing in [%.9e, -1e-6]"
++	   " (valid counts %d and %d): no %d-node state bound below -1e-6 in this box\n",
++	   elo, na, nb, nr);
++  }
++  memcpy(pot->W, sv, nz); memcpy(pot->dW, sv+m, nz); memcpy(pot->dW2, sv+2*m, nz);
++  memcpy(_veff, sv+3*m, nz); memcpy(_veff0, sv+4*m, nz);
++  free(sv);
++  free(p);
++  printf("[STURM DIAGNOSTIC END] (energy-dependent state restored)\n");
++}
++/* STURM_DIAG_END */
++
+ int RadialBound(ORBITAL *orb, POTENTIAL *pot) {
+   double z, z0, e, de, ep, delta, emin, emax;
+   double *p, norm2, fact, p0, p1, p2, qo, qi, bqp;
+@@ -1610,6 +1773,7 @@ int RadialBound(ORBITAL *orb, POTENTIAL *pot) {
+     if (_on_error >= 0) {
+       printf("Max iteration before finding correct nodes in RadialBound a: %d %d %d %d %d %g\n",
+ 	     nodes, nr, i2, orb->n, orb->kappa, e);
++      SturmDiagnostic(orb, pot, kl, kv, nr, ep, emin0, e, nodes, i2); /* STURM_DIAG */
+     }
+     //free(p);
+     return -2;

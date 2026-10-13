@@ -1,0 +1,84 @@
+[
+ {
+  "config": "1s2 2s2 2p6 3s2 3p6 3d5",
+  "parity": 0,
+  "is_reference": true,
+  "generated_by": [
+   {
+    "ref": 0,
+    "order": 0
+   }
+  ],
+  "csf_by_2j": {
+   "1": 4,
+   "3": 7,
+   "5": 10,
+   "7": 7,
+   "9": 5,
+   "11": 3,
+   "13": 1
+  }
+ },
+ {
+  "config": "1s2 2s2 2p6 3s2 3p5 3d6",
+  "parity": 1,
+  "is_reference": true,
+  "generated_by": [
+   {
+    "ref": 1,
+    "order": 0
+   }
+  ],
+  "csf_by_2j": {
+   "1": 21,
+   "3": 35,
+   "5": 39,
+   "7": 36,
+   "9": 26,
+   "11": 15,
+   "13": 6,
+   "15": 2
+  }
+ },
+ {
+  "config": "1s2 2s2 2p5 3s2 3p6 3d6",
+  "parity": 1,
+  "is_reference": true,
+  "generated_by": [
+   {
+    "ref": 2,
+    "order": 0
+   }
+  ],
+  "csf_by_2j": {
+   "1": 21,
+   "3": 35,
+   "5": 39,
+   "7": 36,
+   "9": 26,
+   "11": 15,
+   "13": 6,
+   "15": 2
+  }
+ },
+ {
+  "config": "1s1 2s2 2p6 3s2 3p6 3d6",
+  "parity": 0,
+  "is_reference": true,
+  "generated_by": [
+   {
+    "ref": 3,
+    "order": 0
+   }
+  ],
+  "csf_by_2j": {
+   "1": 9,
+   "3": 12,
+   "5": 14,
+   "7": 13,
+   "9": 9,
+   "11": 4,
+   "13": 2
+  }
+ }
+]

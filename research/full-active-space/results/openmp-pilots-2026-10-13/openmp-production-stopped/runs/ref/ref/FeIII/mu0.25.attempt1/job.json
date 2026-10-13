@@ -1,0 +1,56 @@
+{
+ "ion": "Fe III",
+ "mu": 0.25,
+ "model": "ref",
+ "space": "ref",
+ "hxs_iter0": 8.0,
+ "ref_configs": [
+  "1s2 2s2 2p6 3s2 3p6 3d6",
+  "1s2 2s2 2p6 3s2 3p5 3d7",
+  "1s2 2s2 2p6 3s2 3p5 3d6 4s1",
+  "1s2 2s2 2p6 3s2 3p5 3d5 4s2",
+  "1s2 2s2 2p5 3s2 3p6 3d7",
+  "1s2 2s2 2p5 3s2 3p6 3d6 4s1",
+  "1s2 2s2 2p5 3s2 3p6 3d5 4s2",
+  "1s1 2s2 2p6 3s2 3p6 3d7",
+  "1s1 2s2 2p6 3s2 3p6 3d6 4s1",
+  "1s1 2s2 2p6 3s2 3p6 3d5 4s2"
+ ],
+ "ci_configs": [
+  "1s2 2s2 2p6 3s2 3p6 3d6",
+  "1s2 2s2 2p6 3s2 3p5 3d7",
+  "1s2 2s2 2p6 3s2 3p5 3d6 4s1",
+  "1s2 2s2 2p6 3s2 3p5 3d5 4s2",
+  "1s2 2s2 2p5 3s2 3p6 3d7",
+  "1s2 2s2 2p5 3s2 3p6 3d6 4s1",
+  "1s2 2s2 2p5 3s2 3p6 3d5 4s2",
+  "1s1 2s2 2p6 3s2 3p6 3d7",
+  "1s1 2s2 2p6 3s2 3p6 3d6 4s1",
+  "1s1 2s2 2p6 3s2 3p6 3d5 4s2"
+ ],
+ "n_ci_configs": 10,
+ "counted_even_dims": {
+  "0": 20,
+  "2": 43,
+  "4": 61,
+  "6": 58,
+  "8": 47,
+  "10": 27,
+  "12": 13,
+  "14": 3
+ },
+ "nps_A3": 1e-06,
+ "ups": 0.0,
+ "ladder": [
+  0.05,
+  0.1,
+  0.15,
+  0.2,
+  0.25
+ ],
+ "extension": "/tmp/fac-full-as-worktree/build/lib.linux-x86_64-cpython-310/pfac/fac.cpython-310-x86_64-linux-gnu.so",
+ "extension_sha256": "68de00ee7e60984afc01ad04f8952b83c40f1a267a6558d1188b157a0bf43018",
+ "git_head": "8c8b1bfb9943d71fa9c1513bb6a3b82d6f55817d",
+ "input_hash": "b416acd28c9eea684091374803efaf00eb4da69ad32e04cd15440a6c5bae4bd0",
+ "workdir": "/tmp/fac-full-as-worktree/verify_ip_deprince_full_as_out/runs/ref/ref/FeIII/mu0.25"
+}

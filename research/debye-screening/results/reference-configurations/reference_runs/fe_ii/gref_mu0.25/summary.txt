@@ -1,0 +1,9 @@
+ion = Fe II
+electrons = 25
+model = gref
+mu_requested = 0.25
+mu_used = 0.25
+plasma_model_mps = 1
+hxs_iter0 = 8
+E0_eV = -32293.7705
+status = ok

@@ -1,0 +1,10 @@
+IMPORTED /tmp/fac-full-as-worktree/build/lib.linux-x86_64-cpython-310/pfac/fac.cpython-310-x86_64-linux-gnu.so 68de00ee7e60984a HEAD 7ba19fd08878aca162fa5199854b59de5dde21fc
+SPACE {"ion": "Fe II", "space": "sd", "n_configs": 120, "n_configs_even": 64, "csf_all": 15147, "csf_even": 7603, "largest_even_block": 1854, "even_dims": {"1": 1056, "3": 1736, "5": 1854, "7": 1465, "9": 927, "11": 410, "13": 135, "15": 19, "17": 1}, "published_csf": 12268}
+SPACE {"ion": "Fe III", "space": "sd", "n_configs": 153, "n_configs_even": 81, "csf_all": 40189, "csf_even": 20305, "largest_even_block": 4489, "even_dims": {"0": 1305, "2": 3362, "4": 4489, "6": 4299, "8": 3363, "10": 2064, "12": 1001, "14": 344, "16": 72, "18": 6}, "published_csf": 31501}
+SPACE {"ion": "Fe IV", "space": "sd", "n_configs": 153, "n_configs_even": 81, "csf_all": 75309, "csf_even": 38157, "largest_even_block": 8239, "even_dims": {"1": 4224, "3": 7159, "5": 8239, "7": 7422, "9": 5529, "11": 3307, "13": 1591, "15": 543, "17": 131, "19": 12}, "published_csf": 57189}
+SCHEDULE jobs=3 mem_budget_GB=11.0 est={'Fe II': 2.0, 'Fe III': 4.0, 'Fe IV': 9.5} OMP_NUM_THREADS=1 InitializeMPI=0
+[2026-10-13T06:59:23] Fe II mu=0.0 ref: ok E0=-34564.7462 wall=47.4s rss=1189.9MB 
+[2026-10-13T06:59:24] Fe II mu=0.0 gref: ok E0=-34571.6567 wall=48.3s rss=1186.2MB 
+[2026-10-13T07:07:31] Fe III mu=0.0 ref: ok E0=-34548.1596 wall=535.2s rss=3100.4MB 
+[2026-10-13T07:08:19] Fe III mu=0.0 gref: ok E0=-34556.1514 wall=535.6s rss=3071.4MB 
+[2026-10-13T07:09:02] Fe II mu=0.1 ref: ok E0=-33629.6069 wall=42.6s rss=1190.1MB 

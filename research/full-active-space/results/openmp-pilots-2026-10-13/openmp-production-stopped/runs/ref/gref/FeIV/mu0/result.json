@@ -1,0 +1,73 @@
+{
+ "ion": "Fe IV",
+ "mu": 0.0,
+ "model": "gref",
+ "space": "ref",
+ "hxs_iter0": null,
+ "input_hash": "99149b01bb79f5eb4bb141a282d67817007bbf02f973792762a69851550406a7",
+ "n_ci_configs": 4,
+ "counted_even_dims": {
+  "1": 13,
+  "3": 19,
+  "5": 24,
+  "7": 20,
+  "9": 14,
+  "11": 7,
+  "13": 3
+ },
+ "extension_sha256": "68de00ee7e60984afc01ad04f8952b83c40f1a267a6558d1188b157a0bf43018",
+ "git_head": "8c8b1bfb9943d71fa9c1513bb6a3b82d6f55817d",
+ "status": "ok",
+ "start": "2026-10-13T05:58:19",
+ "workdir": "/tmp/fac-full-as-worktree/verify_ip_deprince_full_as_out/runs/ref/gref/FeIV/mu0",
+ "end": "2026-10-13T05:58:20",
+ "wall_s": 1.1,
+ "rc": 0,
+ "omp_num_threads": "1",
+ "imported": "/tmp/fac-full-as-worktree/build/lib.linux-x86_64-cpython-310/pfac/fac.cpython-310-x86_64-linux-gnu.so",
+ "peak_rss_MB": 801.1,
+ "cpu_s": 1.0,
+ "stages": [
+  "2026-10-13T05:58:20 configs ref=4 extra=0 groups=['g0', 'ref']",
+  "2026-10-13T05:58:20 free-ion SCF done",
+  "2026-10-13T05:58:20 Structure start",
+  "2026-10-13T05:58:20 Structure done"
+ ],
+ "messages": [],
+ "E0_eV": -34527.6602,
+ "nele": 23,
+ "nlev": 100,
+ "ground_2j": 5,
+ "ground_p": 0,
+ "ground_label": "1*2.2*8.3*13 3d5 3d-2(4)4.3d+3(9)5",
+ "fac_block_dims": {
+  "1": 13,
+  "3": 19,
+  "5": 24,
+  "7": 20,
+  "9": 14,
+  "11": 7,
+  "13": 3
+ },
+ "fac_parities": [
+  0
+ ],
+ "lowest_per_2j_eV": {
+  "5": 0.0,
+  "11": 4.40146237,
+  "9": 4.40622435,
+  "7": 4.40772137,
+  "3": 5.0836052,
+  "1": 5.09227939,
+  "13": 6.26902643
+ },
+ "mps": -1,
+ "dps": 0.0,
+ "ips": 0,
+ "HXS": 1.0,
+ "maxrp": 1500,
+ "rmax": 760.330033,
+ "q_inf": -4.0,
+ "e_lev_sha256": "d77bdc1a9a7959c6c04b7b984f00cd567121d86103328c7b2f1e1a57ee532c35",
+ "problem": ""
+}

@@ -1,0 +1,39 @@
+{
+ "ion": "Fe II",
+ "mu": 0.1,
+ "model": "ref",
+ "space": "sd",
+ "hxs_iter0": 8.0,
+ "input_hash": "2048237977c87e48d483261f052527756bb85b182edc4feae3c0f016905e8c35",
+ "n_ci_configs": 68,
+ "counted_even_dims": {
+  "1": 1056,
+  "3": 1736,
+  "5": 1854,
+  "7": 1465,
+  "9": 927,
+  "11": 410,
+  "13": 135,
+  "15": 19,
+  "17": 1
+ },
+ "extension_sha256": "916a228035983a2de3e97278fd50dd9c759bb3b7f73737afda76faf968d43e81",
+ "git_head": "7bf979a0a985ad0e174020a78069d3bb6ab7f990",
+ "status": "FAILED",
+ "start": "2026-10-13T06:55:14",
+ "workdir": "/tmp/fac-full-as-worktree/_bench/segv_FeII_mu0.1_omp_nompi/runs/sd/ref/FeII/mu0.1",
+ "end": "2026-10-13T06:55:17",
+ "wall_s": 3.0,
+ "rc": -11,
+ "omp_num_threads": "4",
+ "imported": "/tmp/fac-full-as-omp-build/build/lib.linux-x86_64-cpython-310/pfac/fac.cpython-310-x86_64-linux-gnu.so",
+ "peak_rss_MB": null,
+ "cpu_s": null,
+ "stages": [
+  "2026-10-13T06:55:14 configs ref=7 extra=61 groups=['ref', 'sd']",
+  "2026-10-13T06:55:15 free-ion SCF done",
+  "2026-10-13T06:55:15 ladder mu=0.05 T=0.020268607695987838"
+ ],
+ "messages": [],
+ "problem": "rc=-11; last stage: 2026-10-13T06:55:15 ladder mu=0.05 T=0.020268607695987838"
+}

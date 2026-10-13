@@ -79,3 +79,31 @@ doc/*/*.log
 
 # manual (it should be pushed in release-pdf branch by circle-ci)
 doc/manual.pdf
+
+# ---- research repository additions ----
+# macOS Finder metadata and generated Python packaging info
+.DS_Store
+PFAC.egg-info/
+# local install prefix used with ./configure --prefix=$PWD/_noinstall (never installed)
+_noinstall/
+
+# Large FAC outputs inside copied result folders.  Summaries, manifests (json),
+# CSV tables and logs (*.log is ignored above; add them with git add -f) are kept.
+research/debye-screening/results/reference-configurations/reference_runs/**/levels.b
+research/debye-screening/results/reference-configurations/reference_runs/**/levels.txt
+research/debye-screening/results/reference-configurations/reference_runs/**/final.pot
+research/debye-screening/results/c4/c4_ground_results/*.lev.b
+research/full-active-space/results/**/*.b
+research/full-active-space/results/**/*.pot
+research/full-active-space/results/**/*.bpt
+research/full-active-space/results/**/*.wav
+research/full-active-space/results/**/e.lev
+archive/experiments/early-fe-calculations/fe_ip_sfac_runs/**/*.b
+
+# Publisher PDF of the reference paper: kept locally, see references/README.md
+research/debye-screening/references/*.pdf
+# binary FAC failure dumps (the text error.pot next to them is kept)
+research/**/error.bpt
+research/**/error.wav
+archive/**/error.bpt
+archive/**/error.wav

@@ -1,0 +1,7 @@
+# Verbatim research data: patches keep the exact whitespace of the source lines
+# they change, and FAC logs / generated CSV files are stored as produced.
+# Only git's whitespace check is switched off here; nothing is converted.
+*.patch -whitespace
+*.diff -whitespace
+research/*/results/** -whitespace
+archive/experiments/** -whitespace

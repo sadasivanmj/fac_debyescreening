@@ -1,0 +1,18 @@
+IMPORTED /tmp/fac-full-as-omp-build/build/lib.linux-x86_64-cpython-310/pfac/fac.cpython-310-x86_64-linux-gnu.so 916a228035983a2d HEAD 8c8b1bfb9943d71fa9c1513bb6a3b82d6f55817d
+SPACE {"ion": "Fe II", "space": "sd", "n_configs": 120, "n_configs_even": 64, "csf_all": 15147, "csf_even": 7603, "largest_even_block": 1854, "even_dims": {"1": 1056, "3": 1736, "5": 1854, "7": 1465, "9": 927, "11": 410, "13": 135, "15": 19, "17": 1}, "published_csf": 12268}
+SPACE {"ion": "Fe III", "space": "sd", "n_configs": 153, "n_configs_even": 81, "csf_all": 40189, "csf_even": 20305, "largest_even_block": 4489, "even_dims": {"0": 1305, "2": 3362, "4": 4489, "6": 4299, "8": 3363, "10": 2064, "12": 1001, "14": 344, "16": 72, "18": 6}, "published_csf": 31501}
+SPACE {"ion": "Fe IV", "space": "sd", "n_configs": 153, "n_configs_even": 81, "csf_all": 75309, "csf_even": 38157, "largest_even_block": 8239, "even_dims": {"1": 4224, "3": 7159, "5": 8239, "7": 7422, "9": 5529, "11": 3307, "13": 1591, "15": 543, "17": 131, "19": 12}, "published_csf": 57189}
+[2026-10-13T05:59:59] Fe II mu=0.0 ref: ok E0=-34564.7462 wall=41.8s rss=1498.0MB 
+IP {"model": "ref", "ip": "Fe II -> Fe III", "mu": 0.0, "space": "sd", "deprince_eV": 18.89, "status": "UNAVAILABLE"}
+IP {"model": "ref", "ip": "Fe II -> Fe III", "mu": 0.1, "space": "sd", "deprince_eV": 14.2, "status": "UNAVAILABLE"}
+IP {"model": "ref", "ip": "Fe II -> Fe III", "mu": 0.25, "space": "sd", "deprince_eV": 7.78, "status": "UNAVAILABLE"}
+IP {"model": "ref", "ip": "Fe III -> Fe IV", "mu": 0.0, "space": "sd", "deprince_eV": 32.93, "status": "UNAVAILABLE"}
+IP {"model": "ref", "ip": "Fe III -> Fe IV", "mu": 0.1, "space": "sd", "deprince_eV": 25.6, "status": "UNAVAILABLE"}
+IP {"model": "ref", "ip": "Fe III -> Fe IV", "mu": 0.25, "space": "sd", "deprince_eV": 16.42, "status": "UNAVAILABLE"}
+IP {"model": "gref", "ip": "Fe II -> Fe III", "mu": 0.0, "space": "sd", "deprince_eV": 18.89, "status": "UNAVAILABLE"}
+IP {"model": "gref", "ip": "Fe II -> Fe III", "mu": 0.1, "space": "sd", "deprince_eV": 14.2, "status": "UNAVAILABLE"}
+IP {"model": "gref", "ip": "Fe II -> Fe III", "mu": 0.25, "space": "sd", "deprince_eV": 7.78, "status": "UNAVAILABLE"}
+IP {"model": "gref", "ip": "Fe III -> Fe IV", "mu": 0.0, "space": "sd", "deprince_eV": 32.93, "status": "UNAVAILABLE"}
+IP {"model": "gref", "ip": "Fe III -> Fe IV", "mu": 0.1, "space": "sd", "deprince_eV": 25.6, "status": "UNAVAILABLE"}
+IP {"model": "gref", "ip": "Fe III -> Fe IV", "mu": 0.25, "space": "sd", "deprince_eV": 16.42, "status": "UNAVAILABLE"}
+1/1 jobs ok this invocation

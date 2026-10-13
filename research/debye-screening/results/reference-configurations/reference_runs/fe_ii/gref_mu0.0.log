@@ -1,0 +1,12 @@
+FAC extension: /tmp/fac-deprince-reference-validation-worktree/build/lib.linux-x86_64-cpython-310/pfac/fac.cpython-310-x86_64-linux-gnu.so
+ion = Fe II
+electrons = 25
+model = gref
+mu_requested = 0.0
+mu_used = 0.0
+plasma_model_mps = -1
+hxs_iter0 = 0
+E0_eV = -34571.2747
+status = ok
+
+exit code 0

@@ -1,0 +1,9 @@
+ion = Fe IV
+electrons = 23
+model = ref
+mu_requested = 0.0
+mu_used = 0.0
+plasma_model_mps = -1
+hxs_iter0 = 0
+E0_eV = -34522.7607
+status = ok

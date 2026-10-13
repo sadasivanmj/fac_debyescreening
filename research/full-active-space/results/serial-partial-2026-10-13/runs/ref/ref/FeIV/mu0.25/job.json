@@ -1,0 +1,45 @@
+{
+ "ion": "Fe IV",
+ "mu": 0.25,
+ "model": "ref",
+ "space": "ref",
+ "hxs_iter0": 8.0,
+ "ref_configs": [
+  "1s2 2s2 2p6 3s2 3p6 3d5",
+  "1s2 2s2 2p6 3s2 3p5 3d6",
+  "1s2 2s2 2p5 3s2 3p6 3d6",
+  "1s1 2s2 2p6 3s2 3p6 3d6"
+ ],
+ "ci_configs": [
+  "1s2 2s2 2p6 3s2 3p6 3d5",
+  "1s2 2s2 2p6 3s2 3p5 3d6",
+  "1s2 2s2 2p5 3s2 3p6 3d6",
+  "1s1 2s2 2p6 3s2 3p6 3d6"
+ ],
+ "n_ci_configs": 4,
+ "counted_even_dims": {
+  "1": 13,
+  "3": 19,
+  "5": 24,
+  "7": 20,
+  "9": 14,
+  "11": 7,
+  "13": 3
+ },
+ "mpi": 0,
+ "script_sha256": "d3030ee7e4f7d1c64e500ffb7c4b15c05750e0eb890b170d1e3d85deb4df3617",
+ "nps_A3": 1e-06,
+ "ups": 0.0,
+ "ladder": [
+  0.05,
+  0.1,
+  0.15,
+  0.2,
+  0.25
+ ],
+ "extension": "/tmp/fac-full-as-worktree/build/lib.linux-x86_64-cpython-310/pfac/fac.cpython-310-x86_64-linux-gnu.so",
+ "extension_sha256": "68de00ee7e60984afc01ad04f8952b83c40f1a267a6558d1188b157a0bf43018",
+ "git_head": "7ba19fd08878aca162fa5199854b59de5dde21fc",
+ "input_hash": "5285f35b4866dc0ed580507a36e475d39c14176a5d712c283aa2b5384c58e930",
+ "workdir": "/tmp/fac-full-as-worktree/verify_ip_deprince_full_as_out_serial/runs/ref/ref/FeIV/mu0.25"
+}
