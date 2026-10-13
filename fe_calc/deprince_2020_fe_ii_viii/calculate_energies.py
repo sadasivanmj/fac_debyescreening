@@ -72,6 +72,8 @@ def worker(run_dir: Path) -> int:
     print("FAC extension:", fac.__file__, flush=True)
 
     fac.SetAtom("Fe")
+    for name, value in spec.get("extra_options", []):    # diagnostic hook (--extra-option); empty in production runs
+        fac.SetOption(name, value)
     if model == "ref":
         fac.Config(*configs, group="ref")
         optimize_groups, structure_groups = ["ref"], ["ref"]
@@ -147,7 +149,8 @@ def worker(run_dir: Path) -> int:
 
 # --------------------------------------------------------------------- the orchestrator
 
-def plan_runs(ions: list[str], models: list[str], mus: list[float], direct_potential: str = "screened") -> list[dict]:
+def plan_runs(ions: list[str], models: list[str], mus: list[float], direct_potential: str = "screened",
+              extra_options: list | None = None) -> list[dict]:
     runs = []
     for ion in ions:
         for model in models:
@@ -156,7 +159,7 @@ def plan_runs(ions: list[str], models: list[str], mus: list[float], direct_poten
                 runs.append({"ion": ion, "orbital_optimization_model": model, "mu": mu,
                              "case": cfg.case_name(mu), "electron_count": electrons,
                              "configurations": configs, "configuration_source": source,
-                             "direct_potential": direct_potential})
+                             "direct_potential": direct_potential, "extra_options": extra_options or []})
     return runs
 
 
@@ -199,7 +202,7 @@ def build_manifest(run: dict, rel_dir: str, exit_code: int, elapsed: float, time
         "configuration_model": cfg.CONFIGURATION_MODEL,
         "orbital_optimization_model": run["orbital_optimization_model"],
         "case": run["case"], "case_order": list(cfg.CASES).index(run["case"]),
-        "mu_ne": run["mu"], "mu_ee": run["mu"], "direct_potential": run["direct_potential"],
+        "mu_ne": run["mu"], "mu_ee": run["mu"], "direct_potential": run["direct_potential"], "extra_options": run["extra_options"],
         "total_energy": energy, "energy_unit": "eV",
         "total_energy_hartree_converted": energy / sup.HARTREE_EV if energy is not None else None,
         "ground_level_identifier": ground_id,
@@ -235,7 +238,7 @@ def run_one(run: dict, results_dir: Path, timeout_s: float, overwrite: bool) -> 
     if run_dir.exists():
         sup.archive_previous(run_dir, "superseded" if existing and existing.get("status") == "ok" else "failed-attempt")
     run_dir.mkdir(parents=True)
-    spec = {k: run[k] for k in ("ion", "orbital_optimization_model", "mu", "electron_count", "configurations", "direct_potential")}
+    spec = {k: run[k] for k in ("ion", "orbital_optimization_model", "mu", "electron_count", "configurations", "direct_potential", "extra_options")}
     (run_dir / "input.json").write_text(json.dumps(spec, indent=2))
     cmd = [sup.python_executable(), str(Path(__file__).resolve()), "--worker", str(run_dir)]
     exit_code, elapsed, timed_out = sup.execute_worker(cmd, run_dir, timeout_s)
@@ -254,6 +257,8 @@ def main() -> int:
     ap.add_argument("--direct-potential", choices=("screened", "coulomb"), default="screened",
                     help="what the build's DensityToSZ is expected to do (default: screened). 'coulomb' is only for the "
                          "DensityToSZ A/B experiment, variant A, and only changes the expected asymptotic charge")
+    ap.add_argument("--extra-option", nargs=2, action="append", default=[], metavar=("NAME", "VALUE"),
+                    help="DIAGNOSTIC ONLY: FAC option set before the SCF (value parsed as a number), recorded in the manifest")
     ap.add_argument("--overwrite", action="store_true", help="re-run completed runs (the old directory is moved aside, not deleted)")
     ap.add_argument("--check-only", action="store_true", help="validate the configuration data and stop")
     ap.add_argument("--preflight", action="store_true", help="check build, options, provenance, output directory and stop")
@@ -288,7 +293,7 @@ def main() -> int:
             return 0
 
     ions = [cfg.normalize_ion(i) for i in args.ions]
-    plan = plan_runs(ions, args.models, args.mu, args.direct_potential)
+    plan = plan_runs(ions, args.models, args.mu, args.direct_potential, [[n, float(v)] for n, v in args.extra_option])
     unknown = [m for m in args.mu if m not in cfg.CASES.values()]
     if unknown:
         print("unsupported mu values:", unknown, "(use 0, 0.1, 0.25)")
