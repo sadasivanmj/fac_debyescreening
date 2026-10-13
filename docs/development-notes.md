@@ -11,11 +11,13 @@ its own branch in a separate git worktree. The main working tree
 | `fix/hxs-iter0` | f12e3bf | 0650edb: `radial:hxs_iter0`; f12e3bf: `--hxs-iter0` flag for the validation script |
 | `fix/debye-radialbound` | 8c8b1bf | Debye upper bracket in `RadialBound` — **validated solver state** |
 | `feature/deprince-reference-validation` | 3ae5c5b | Fe II–IV reference-configuration suite (student-style scripts) |
-| `chore/repository-organization` | this branch | research files moved into `research/`, `docs/`, `archive/` (no code or result changes) |
-| `feature/full-active-space-deprince` | 7ba19fd | full single/double active-space driver (copied to `research/full-active-space/scripts/`) |
+| `chore/repository-organization` | 0f8bb81 | research files moved into `research/`, `docs/`, `archive/` (no code or result changes) |
+| `integration/debye-screening-complete` | this branch | `chore/repository-organization` + merges of `feature/full-active-space-deprince` and `ee-screening-scf` (history only; C code = validated chain) |
+| `feature/full-active-space-deprince` | 7ba19fd | full single/double active-space driver (`research/full-active-space/scripts/`; merged into the integration branch) |
 | `diagnostic/sturm-node-count` | 0bdc147 | Sturm node-count instrumentation (archived as a patch) |
 | `experiment/warm-start-continuation` | c5f3d1d | warm-start experiments (archived) |
-| `ee-screening-scf`, `fix-debye-nuclear-screening` | — | older screening attempts; not used |
+| `ee-screening-scf` | ff9a5c9 | earlier screened `DensityToSZ` + Xie/Fritzsche/Chen-Kr analysis; merged into the integration branch with v2 kept, analysis in `archive/experiments/ee-screening-scf/` |
+| `fix-debye-nuclear-screening` | d40ba31 | no commits of its own (= upstream master); nuclear screening is in c768c24 on `fix-debye-ee-screening` |
 
 Rules followed throughout:
 

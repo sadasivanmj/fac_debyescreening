@@ -1,0 +1,8 @@
+EE ISOLATION VALIDATION REPORT
+==============================
+Source gate: PASS
+Case A (Vacuum, no e-e):    -32.370122 a.u.
+Case B (Vacuum, e-e only):  -32.370122 a.u.
+Case C (Full Debye):        -31.284068 a.u.
+E-E isolated effect (B-A):  0.000000 a.u.
+Full Debye effect (C-A):    1.086054 a.u.

@@ -1,0 +1,13 @@
+FAC 1.1.5
+Endian	= 0
+TSess	= 1789320608
+Type	= 1
+Verbose	= 1
+C Z	=   6.0
+NBlocks	= 1
+E0	= 0, -8.80837101E+02
+
+NELE	= 2
+NLEV	= 1
+  ILEV  IBASE    ENERGY       P   VNL         2J
+     0     -1  0.00000000E+00 0   100          0 1*2                              1s2                                              1s+2(0)0

@@ -1,0 +1,15 @@
+FAST VERIFICATION
+Large-Debye limit: PASS
+E-E isolation:      FAIL
+
+Overall: PRELIMINARY FAIL
+
+Preliminary verification only.
+
+TEST 2 note: OBSERVATION: mps=0 and mps=1 give different energies (-30.9049936833 vs -31.1859909833 a.u., both nominally unscreened)
+LIKELY CAUSE: the mps=0 and mps=1 code paths use a different
+  zeroth-order Hamiltonian convention (same class of issue as the
+  documented off-vs-mps=1 offset), so case B below would not be a
+  clean isolation even with EEScreenMu patched.
+NEXT CHECK: compare pot->zps and the asymptotic VT*r values FAC
+  actually uses for mps=0 vs mps=1 at the same nominal conditions.
