@@ -1,0 +1,12 @@
+{
+  "ion": "Fe XVIII",
+  "configuration_model": "reference_only",
+  "case": "unscreened",
+  "mu_ne": 0.0,
+  "mu_ee": 0.0,
+  "electron_count": 9,
+  "configurations": [
+    "1s2 2s2 2p5",
+    "1s1 2s2 2p6"
+  ]
+}

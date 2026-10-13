@@ -1,0 +1,59 @@
+{
+  "paper": "deprince_2019_fe_xvii_xxv",
+  "ion": "Fe XXV",
+  "ion_order": 8,
+  "charge_state": 24,
+  "electron_count": 2,
+  "configuration_model": "ground_only",
+  "orbital_optimization_model": "ground",
+  "case": "unscreened",
+  "case_order": 0,
+  "mu_ne": 0.0,
+  "mu_ee": 0.0,
+  "total_energy": -18104.3397,
+  "energy_unit": "eV",
+  "total_energy_hartree_converted": -665.3222184272422,
+  "ground_level_identifier": "ILEV=0;2J=0;parity=0;VNL=100;1*2 1s2 1s+2(0)0",
+  "convergence_status": "converged",
+  "status": "ok",
+  "exit_code": 0,
+  "elapsed_time": 0.342,
+  "fac_executable_or_module": "build/lib.macosx-11.0-arm64-cpython-310/pfac/fac.cpython-310-darwin.so",
+  "fac_source_commit": "7f05cb9db6f8c4570c5034bd751a219bdd81b93d",
+  "repo_head_commit": "7f05cb9db6f8c4570c5034bd751a219bdd81b93d",
+  "build_provenance": "cflags=[-O0 -g -fPIC -ftrivial-auto-var-init=zero]; cc=Apple clang version 21.0.0 (clang-2100.3.34.2); ext_sha256=343d48204704ad1e; BUILD_INFO-matches",
+  "run_directory": "runs/fe_xxv/ground_only/unscreened",
+  "log_path": "runs/fe_xxv/ground_only/unscreened/run.log",
+  "git_branch": "feature/fe-calc-deprince-framework",
+  "git_modified_tracked_files": [],
+  "configurations": [
+    "1s2"
+  ],
+  "options": {
+    "debye_mode": 0,
+    "ee_screen": 0,
+    "hxs_iter0": 0,
+    "density_A3": 1e-06,
+    "temperature_eV": null
+  },
+  "mu_ne_used": 0.0,
+  "mu_steps": [],
+  "n_levels": 1,
+  "blocks_seen_parity_2J": [
+    [
+      0,
+      0
+    ]
+  ],
+  "asymptotic_charge": -25.0,
+  "checks": {
+    "electron_count_in_level_table": true,
+    "e0_finite": true,
+    "level_table_complete": true,
+    "level_table_referenced_to_lowest_level": true,
+    "unscreened_path": true,
+    "free_ion_asymptotic_charge": true
+  },
+  "problems": [],
+  "suspicious_log_lines": []
+}

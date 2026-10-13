@@ -1,0 +1,11 @@
+{
+  "ion": "Fe XXVI",
+  "configuration_model": "reference_only",
+  "case": "C",
+  "mu_ne": 0.25,
+  "mu_ee": 0.0,
+  "electron_count": 1,
+  "configurations": [
+    "1s1"
+  ]
+}

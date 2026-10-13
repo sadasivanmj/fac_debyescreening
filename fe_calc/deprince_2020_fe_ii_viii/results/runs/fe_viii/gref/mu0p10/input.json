@@ -1,0 +1,12 @@
+{
+  "ion": "Fe VIII",
+  "orbital_optimization_model": "gref",
+  "mu": 0.1,
+  "electron_count": 19,
+  "configurations": [
+    "1s2 2s2 2p6 3s2 3p6 3d1",
+    "1s2 2s2 2p6 3s2 3p5 3d2",
+    "1s2 2s2 2p5 3s2 3p6 3d2",
+    "1s1 2s2 2p6 3s2 3p6 3d2"
+  ]
+}

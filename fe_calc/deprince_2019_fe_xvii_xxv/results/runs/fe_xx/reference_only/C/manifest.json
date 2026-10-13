@@ -1,0 +1,93 @@
+{
+  "paper": "deprince_2019_fe_xvii_xxv",
+  "ion": "Fe XX",
+  "ion_order": 3,
+  "charge_state": 19,
+  "electron_count": 7,
+  "configuration_model": "reference_only",
+  "orbital_optimization_model": "ground",
+  "case": "C",
+  "case_order": 3,
+  "mu_ne": 0.25,
+  "mu_ee": 0.0,
+  "total_energy": -25946.6614,
+  "energy_unit": "eV",
+  "total_energy_hartree_converted": -953.5222277909695,
+  "ground_level_identifier": "ILEV=0;2J=3;parity=1;VNL=201;1*2.2*5 2p3 2p+1(3)3",
+  "convergence_status": "converged",
+  "status": "ok",
+  "exit_code": 0,
+  "elapsed_time": 1.802,
+  "fac_executable_or_module": "build/lib.macosx-11.0-arm64-cpython-310/pfac/fac.cpython-310-darwin.so",
+  "fac_source_commit": "7f05cb9db6f8c4570c5034bd751a219bdd81b93d",
+  "repo_head_commit": "7f05cb9db6f8c4570c5034bd751a219bdd81b93d",
+  "build_provenance": "cflags=[-O0 -g -fPIC -ftrivial-auto-var-init=zero]; cc=Apple clang version 21.0.0 (clang-2100.3.34.2); ext_sha256=343d48204704ad1e; BUILD_INFO-matches",
+  "run_directory": "runs/fe_xx/reference_only/C",
+  "log_path": "runs/fe_xx/reference_only/C/run.log",
+  "git_branch": "feature/fe-calc-deprince-framework",
+  "git_modified_tracked_files": [],
+  "configurations": [
+    "1s2 2s2 2p3",
+    "1s2 2s1 2p4",
+    "1s2 2p5",
+    "1s1 2s2 2p4",
+    "1s1 2s1 2p5",
+    "1s1 2p6"
+  ],
+  "options": {
+    "debye_mode": 1,
+    "ee_screen": 0,
+    "hxs_iter0": 8,
+    "density_A3": 1e-06,
+    "temperature_eV": 0.0008107443078395134
+  },
+  "mu_ne_used": 0.25,
+  "mu_steps": [
+    0.05,
+    0.1,
+    0.15,
+    0.2,
+    0.25
+  ],
+  "n_levels": 31,
+  "blocks_seen_parity_2J": [
+    [
+      0,
+      1
+    ],
+    [
+      0,
+      3
+    ],
+    [
+      0,
+      5
+    ],
+    [
+      1,
+      1
+    ],
+    [
+      1,
+      3
+    ],
+    [
+      1,
+      5
+    ]
+  ],
+  "asymptotic_charge": 6.0,
+  "checks": {
+    "electron_count_in_level_table": true,
+    "e0_finite": true,
+    "level_table_complete": true,
+    "level_table_referenced_to_lowest_level": true,
+    "plasma_model_is_debye": true,
+    "nuclear_mu_applied": true,
+    "no_ion_sphere_cut": true,
+    "nuclear_screening_term_present": true,
+    "ee_direct_potential_unscreened": true
+  },
+  "problems": [],
+  "suspicious_log_lines": []
+}

@@ -1,0 +1,53 @@
+{
+  "total_energy_ev": -20149.8447,
+  "ground_level": {
+    "ilev": 0,
+    "energy_rel_ev": 0.0,
+    "parity": 0,
+    "vnl": 200,
+    "two_j": 1,
+    "labels": "1*2.2*1 2s1 2s+1(1)1"
+  },
+  "n_levels": 34,
+  "nlev_header": 34,
+  "blocks_seen": [
+    [
+      0,
+      1
+    ],
+    [
+      0,
+      3
+    ],
+    [
+      0,
+      5
+    ],
+    [
+      1,
+      1
+    ],
+    [
+      1,
+      3
+    ],
+    [
+      1,
+      5
+    ]
+  ],
+  "mu_ne_used": 0.0,
+  "mu_steps": [],
+  "mps": -1,
+  "asymptotic_charge": -24.0,
+  "fac_file": "build/lib.macosx-11.0-arm64-cpython-310/pfac/fac.cpython-310-darwin.so",
+  "checks": {
+    "electron_count_in_level_table": true,
+    "e0_finite": true,
+    "level_table_complete": true,
+    "level_table_referenced_to_lowest_level": true,
+    "unscreened_path": true,
+    "free_ion_asymptotic_charge": true
+  },
+  "problems": []
+}

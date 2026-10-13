@@ -1,0 +1,130 @@
+{
+  "paper": "deprince_2020_fe_ii_viii",
+  "ion": "Fe II",
+  "ion_order": 0,
+  "charge_state": 1,
+  "electron_count": 25,
+  "configuration_model": "reference_configurations",
+  "orbital_optimization_model": "ref",
+  "case": "mu0p25",
+  "case_order": 2,
+  "mu_ne": 0.25,
+  "mu_ee": 0.25,
+  "total_energy": -32282.818,
+  "energy_unit": "eV",
+  "total_energy_hartree_converted": -1186.3716901447062,
+  "ground_level_identifier": "ILEV=0;2J=9;parity=0;VNL=400;1*2.2*8.3*14.4*1 3d6.4s1 3d-3(3)3.3d+3(9)8.4s+1(1)9",
+  "convergence_status": "converged",
+  "status": "ok",
+  "exit_code": 0,
+  "elapsed_time": 6.563,
+  "fac_executable_or_module": "build/lib.macosx-11.0-arm64-cpython-310/pfac/fac.cpython-310-darwin.so",
+  "fac_source_commit": "7f05cb9db6f8c4570c5034bd751a219bdd81b93d",
+  "repo_head_commit": "7f05cb9db6f8c4570c5034bd751a219bdd81b93d",
+  "build_provenance": "cflags=[-O0 -g -fPIC -ftrivial-auto-var-init=zero]; cc=Apple clang version 21.0.0 (clang-2100.3.34.2); ext_sha256=343d48204704ad1e; BUILD_INFO-matches",
+  "run_directory": "runs/fe_ii/ref/mu0p25",
+  "log_path": "runs/fe_ii/ref/mu0p25/run.log",
+  "git_branch": "feature/fe-calc-deprince-framework",
+  "git_modified_tracked_files": [],
+  "configurations": [
+    "1s2 2s2 2p6 3s2 3p6 3d6 4s1",
+    "1s2 2s2 2p6 3s2 3p5 3d7 4s1",
+    "1s2 2s2 2p6 3s2 3p5 3d6 4s2",
+    "1s2 2s2 2p5 3s2 3p6 3d7 4s1",
+    "1s2 2s2 2p5 3s2 3p6 3d6 4s2",
+    "1s1 2s2 2p6 3s2 3p6 3d7 4s1",
+    "1s1 2s2 2p6 3s2 3p6 3d6 4s2"
+  ],
+  "configuration_source": "Paper IV Table 1",
+  "options": {
+    "debye_mode": 1,
+    "ee_screen": 1,
+    "hxs_iter0": 8,
+    "density_A3": 1e-06,
+    "temperature_eV": 0.0008107443078395134
+  },
+  "mu_used": 0.25,
+  "mu_steps": [
+    0.05,
+    0.1,
+    0.15,
+    0.2,
+    0.25
+  ],
+  "n_levels": 986,
+  "blocks_seen_parity_2J": [
+    [
+      0,
+      1
+    ],
+    [
+      0,
+      3
+    ],
+    [
+      0,
+      5
+    ],
+    [
+      0,
+      7
+    ],
+    [
+      0,
+      9
+    ],
+    [
+      0,
+      11
+    ],
+    [
+      0,
+      13
+    ],
+    [
+      1,
+      1
+    ],
+    [
+      1,
+      3
+    ],
+    [
+      1,
+      5
+    ],
+    [
+      1,
+      7
+    ],
+    [
+      1,
+      9
+    ],
+    [
+      1,
+      11
+    ],
+    [
+      1,
+      13
+    ],
+    [
+      1,
+      15
+    ]
+  ],
+  "asymptotic_charge": 0.0,
+  "checks": {
+    "electron_count_in_level_table": true,
+    "e0_finite": true,
+    "level_table_complete": true,
+    "level_table_referenced_to_lowest_level": true,
+    "plasma_model_is_debye": true,
+    "nuclear_mu_applied": true,
+    "no_ion_sphere_cut": true,
+    "ee_direct_potential_screened": true
+  },
+  "problems": [],
+  "suspicious_log_lines": []
+}

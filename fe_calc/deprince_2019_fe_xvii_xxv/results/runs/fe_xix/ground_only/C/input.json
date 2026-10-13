@@ -1,0 +1,11 @@
+{
+  "ion": "Fe XIX",
+  "configuration_model": "ground_only",
+  "case": "C",
+  "mu_ne": 0.25,
+  "mu_ee": 0.0,
+  "electron_count": 8,
+  "configurations": [
+    "1s2 2s2 2p4"
+  ]
+}

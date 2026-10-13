@@ -1,0 +1,18 @@
+{
+  "ion": "Fe III",
+  "orbital_optimization_model": "gref",
+  "mu": 0.25,
+  "electron_count": 24,
+  "configurations": [
+    "1s2 2s2 2p6 3s2 3p6 3d6",
+    "1s2 2s2 2p6 3s2 3p5 3d7",
+    "1s2 2s2 2p6 3s2 3p5 3d6 4s1",
+    "1s2 2s2 2p6 3s2 3p5 3d5 4s2",
+    "1s2 2s2 2p5 3s2 3p6 3d7",
+    "1s2 2s2 2p5 3s2 3p6 3d6 4s1",
+    "1s2 2s2 2p5 3s2 3p6 3d5 4s2",
+    "1s1 2s2 2p6 3s2 3p6 3d7",
+    "1s1 2s2 2p6 3s2 3p6 3d6 4s1",
+    "1s1 2s2 2p6 3s2 3p6 3d5 4s2"
+  ]
+}

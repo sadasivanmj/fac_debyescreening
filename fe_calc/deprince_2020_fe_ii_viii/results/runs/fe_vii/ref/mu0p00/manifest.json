@@ -1,0 +1,119 @@
+{
+  "paper": "deprince_2020_fe_ii_viii",
+  "ion": "Fe VII",
+  "ion_order": 5,
+  "charge_state": 6,
+  "electron_count": 20,
+  "configuration_model": "reference_configurations",
+  "orbital_optimization_model": "ref",
+  "case": "mu0p00",
+  "case_order": 0,
+  "mu_ne": 0.0,
+  "mu_ee": 0.0,
+  "total_energy": -34298.5258,
+  "energy_unit": "eV",
+  "total_energy_hartree_converted": -1260.4475861685253,
+  "ground_level_identifier": "ILEV=0;2J=4;parity=0;VNL=302;1*2.2*8.3*10 3d2 3d-2(4)4",
+  "convergence_status": "converged",
+  "status": "ok",
+  "exit_code": 0,
+  "elapsed_time": 1.262,
+  "fac_executable_or_module": "build/lib.macosx-11.0-arm64-cpython-310/pfac/fac.cpython-310-darwin.so",
+  "fac_source_commit": "7f05cb9db6f8c4570c5034bd751a219bdd81b93d",
+  "repo_head_commit": "7f05cb9db6f8c4570c5034bd751a219bdd81b93d",
+  "build_provenance": "cflags=[-O0 -g -fPIC -ftrivial-auto-var-init=zero]; cc=Apple clang version 21.0.0 (clang-2100.3.34.2); ext_sha256=343d48204704ad1e; BUILD_INFO-matches",
+  "run_directory": "runs/fe_vii/ref/mu0p00",
+  "log_path": "runs/fe_vii/ref/mu0p00/run.log",
+  "git_branch": "feature/fe-calc-deprince-framework",
+  "git_modified_tracked_files": [],
+  "configurations": [
+    "1s2 2s2 2p6 3s2 3p6 3d2",
+    "1s2 2s2 2p6 3s2 3p5 3d3",
+    "1s2 2s2 2p5 3s2 3p6 3d3",
+    "1s1 2s2 2p6 3s2 3p6 3d3"
+  ],
+  "configuration_source": "Paper IV Table 1",
+  "options": {
+    "debye_mode": 0,
+    "ee_screen": 0,
+    "hxs_iter0": 0,
+    "density_A3": 1e-06,
+    "temperature_eV": null
+  },
+  "mu_used": 0.0,
+  "mu_steps": [],
+  "n_levels": 267,
+  "blocks_seen_parity_2J": [
+    [
+      0,
+      0
+    ],
+    [
+      0,
+      2
+    ],
+    [
+      0,
+      4
+    ],
+    [
+      0,
+      6
+    ],
+    [
+      0,
+      8
+    ],
+    [
+      0,
+      10
+    ],
+    [
+      0,
+      12
+    ],
+    [
+      1,
+      0
+    ],
+    [
+      1,
+      2
+    ],
+    [
+      1,
+      4
+    ],
+    [
+      1,
+      6
+    ],
+    [
+      1,
+      8
+    ],
+    [
+      1,
+      10
+    ],
+    [
+      1,
+      12
+    ],
+    [
+      1,
+      14
+    ]
+  ],
+  "asymptotic_charge": -7.0,
+  "checks": {
+    "electron_count_in_level_table": true,
+    "e0_finite": true,
+    "level_table_complete": true,
+    "level_table_referenced_to_lowest_level": true,
+    "unscreened_path": true,
+    "free_ion_asymptotic_charge": true
+  },
+  "problems": [],
+  "suspicious_log_lines": []
+}
