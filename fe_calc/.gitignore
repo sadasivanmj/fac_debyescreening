@@ -18,3 +18,7 @@ densitytosz_validation/results/**/final.pot
 densitytosz_validation/results/**/l.b
 densitytosz_validation/results/**/l.txt
 densitytosz_validation/results/**/run.log
+# FAC failure dumps: only error.pot of the six main variant-A failures is kept (the potential at the failure); the rest is local
+densitytosz_validation/results/**/error.bpt
+densitytosz_validation/results/**/error.wav
+densitytosz_validation/results/variant_A_diagnosis*/**/error.pot
