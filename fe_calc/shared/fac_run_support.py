@@ -23,7 +23,11 @@ from datetime import datetime, timezone
 from pathlib import Path
 
 HARTREE_EV = 27.211386          # eV per Hartree, used for every conversion
-REPO_ROOT = Path(__file__).resolve().parents[2]
+# The repository whose FAC build and sources are used.  Normally the repository that contains this file;
+# FE_CALC_REPO selects another checkout (e.g. another worktree with a different FAC source variant), so
+# that provenance, build lookup and the commit recorded in every manifest describe THAT checkout.
+import os as _os
+REPO_ROOT = Path(_os.environ.get("FE_CALC_REPO", Path(__file__).resolve().parents[2])).resolve()
 
 # Tracked files that every build rewrites; they do not make the tree "dirty".
 BUILD_ARTIFACTS = {"faclib/f2c.mod"}
