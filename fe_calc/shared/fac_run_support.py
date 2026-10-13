@@ -137,16 +137,23 @@ def preflight_checks(repo: Path = REPO_ROOT, results_dir: Path | None = None,
     if so is not None and info:
         add(info.get("extension_sha256") == sha256_of(so), "BUILD_INFO matches extension", "sha256 equal")
 
-    # The jmaxk defect: in PotentialHX1, jmaxk is declared without initialiser and is only
-    # assigned when mps != 1, but Max(jmax, jmaxk) is returned.
-    defect = re.search(r"int\s+jmax,\s*jmaxk,\s*m;", radial) is not None
+    # The jmaxk defect: in PotentialHX1, jmaxk was declared without initialiser and only assigned when
+    # mps != 1, but Max(jmax, jmaxk) is returned.  Upstream (M. F. Gu, fb32c16a, FAC PR #851) fixed it
+    # by assigning jmaxk = 0 before that block.
+    fixed = re.search(r"jmaxk\s*=\s*0;\s*if\s*\(!\(potential->mps\s*==\s*1", radial) is not None
+    declared = re.search(r"int\s+jmax,\s*jmaxk,\s*m;", radial) is not None
     flag = "-ftrivial-auto-var-init=zero" in info.get("cflags", "")
-    if defect:
+    if fixed:
+        add(not flag, "jmaxk uninitialised-variable defect",
+            "fixed in source (jmaxk = 0 before the mps block, upstream fb32c16a)"
+            + ("; WARNING: the zero-init workaround flag is still in the build and masks other uninitialised variables" if flag else "; no workaround flag in the build"),
+            warn_only=True)
+    elif declared:
         add(flag or not require_workaround, "jmaxk uninitialised-variable defect",
             "source defect PRESENT (not fixed); workaround flag -ftrivial-auto-var-init=zero "
             + ("is in the build" if flag else "is MISSING from the build: screened runs may crash"))
     else:
-        add(True, "jmaxk uninitialised-variable defect", "no longer present in source")
+        add(True, "jmaxk uninitialised-variable defect", "declaration not found (source changed)")
 
     if results_dir is not None:
         try:
