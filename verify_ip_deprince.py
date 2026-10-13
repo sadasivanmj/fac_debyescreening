@@ -6,7 +6,7 @@ Stage B (counted, not computed): the paper's SD active space (single + double
 excitations from every reference into {1s, 2s, 2p, 3s, 3p, 3d, 4s}).
 
 usage:
-  python3 verify_ip_deprince.py [--out DIR] [--jobs N]     # driver
+  python3 verify_ip_deprince.py [--out DIR] [--jobs N] [--hxs-iter0 X]   # driver
   python3 verify_ip_deprince.py --case ION MU MODEL DIR     # one FAC case (internal)
 
 The extension imported is whatever `pfac` resolves to; the driver prints it and
@@ -20,6 +20,8 @@ Protocol per case (one FAC process): free-ion OptimizeRadial (fixes the grid);
 for mu > 0: orbital:debye_mode 1, radial:ee_screen 1, then
 PlasmaScreen(zps, 1e-6 A^-3, T(mu_k), 1, 0.0, 1) and OptimizeRadial for
 mu_k = 0.05, 0.10, ..., mu (warm-started ladder); Structure; PrintTable.
+--hxs-iter0 X additionally sets radial:hxs_iter0 = X together with the Debye
+options (screened steps only; needs the fix/hxs-iter0 build).  Default: unset.
 E0 = lowest level (FAC prints level energies in eV).
 """
 
@@ -44,6 +46,7 @@ FAC_HARTREE_EV = 27.211386018     # FAC consts.h _HARTREE_EV (used for T in eV)
 NPS_A3 = 1e-6                     # electron density [A^-3]; only sets T for a given mu
 UPS = 0.0
 LADDER_STEP = 0.05
+HXS_ITER0 = None                  # radial:hxs_iter0 for screened steps (None = unset)
 MU_VALUES = [0.0, 0.1, 0.25]
 MODELS = ["ref", "gref"]
 NELE = {"Fe II": 25, "Fe III": 24, "Fe IV": 23}
@@ -200,7 +203,7 @@ def ladder(mu):
     return [round(LADDER_STEP * i, 10) for i in range(1, k)] + [mu]
 
 
-def run_case(ion, mu, model, wd):
+def run_case(ion, mu, model, wd, hxs_iter0=None):
     from pfac import fac
     print("IMPORTED", fac.__file__, flush=True)
     os.chdir(wd)
@@ -218,6 +221,9 @@ def run_case(ion, mu, model, wd):
     if mu > 0:
         fac.SetOption("orbital:debye_mode", 1)
         fac.SetOption("radial:ee_screen", 1)
+        if hxs_iter0 is not None:
+            fac.SetOption("radial:hxs_iter0", hxs_iter0)
+            print(f"OPTION radial:hxs_iter0 = {hxs_iter0}", flush=True)
         zps = 26.0 - NELE[ion]
         for m in ladder(mu):
             t = tps_for_mu(m)
@@ -276,7 +282,8 @@ def one(ion, mu, model, out):
     wd.mkdir(parents=True)
     t0 = time.time()
     with open(wd / "out.log", "w") as log:
-        rc = subprocess.run([sys.executable, "-u", __file__, "--case", ion, repr(mu), model, str(wd)],
+        rc = subprocess.run([sys.executable, "-u", __file__, "--case", ion, repr(mu), model, str(wd)]
+                            + ([repr(HXS_ITER0)] if HXS_ITER0 is not None else []),
                             stdout=log, stderr=subprocess.STDOUT, env=os.environ.copy()).returncode
     rec["runtime_s"] = round(time.time() - t0, 1)
     text = (wd / "out.log").read_text()
@@ -299,6 +306,8 @@ def one(ion, mu, model, out):
         errs.append(f"NELE {rec.get('nele')} != {NELE[ion]}")
     if not math.isfinite(rec.get("E0_eV", float("nan"))):
         errs.append("E0 not finite")
+    if mu > 0 and HXS_ITER0 is not None and f"OPTION radial:hxs_iter0 = {HXS_ITER0}" not in text:
+        errs.append("hxs_iter0 requested but not applied by the worker")
     if mu > 0:
         if rec["mps"] != 1 or abs(rec["dps"] * mu - 1) > 1e-6:
             errs.append(f"screening mismatch mps={rec['mps']} dps={rec['dps']}")
@@ -317,12 +326,17 @@ def one(ion, mu, model, out):
 
 def main():
     if len(sys.argv) > 1 and sys.argv[1] == "--case":
-        _, _, ion, mu, model, wd = sys.argv
-        run_case(ion, float(mu), model, wd)
+        ion, mu, model, wd = sys.argv[2:6]
+        run_case(ion, float(mu), model, wd,
+                 float(sys.argv[6]) if len(sys.argv) > 6 else None)
         return
     args = sys.argv[1:]
     out = Path(args[args.index("--out") + 1] if "--out" in args else ROOT / "verify_ip_deprince_out")
     jobs = int(args[args.index("--jobs") + 1]) if "--jobs" in args else 4
+    global HXS_ITER0
+    if "--hxs-iter0" in args:
+        HXS_ITER0 = float(args[args.index("--hxs-iter0") + 1])
+    print("OPTION radial:hxs_iter0 =", HXS_ITER0, "(None = not set)", flush=True)
     from pfac import fac
     ext = Path(fac.__file__).resolve()
     print("IMPORTED", ext, flush=True)
@@ -402,7 +416,8 @@ def main():
     (out / "provenance.json").write_text(json.dumps({
         "extension": str(ext), "python": sys.version, "git_head": subprocess.run(
             ["git", "-C", str(ROOT), "rev-parse", "HEAD"], capture_output=True, text=True).stdout.strip(),
-        "nps_A3": NPS_A3, "ups": UPS, "ladder_step": LADDER_STEP, "models": MODELS}, indent=1))
+        "nps_A3": NPS_A3, "ups": UPS, "ladder_step": LADDER_STEP, "models": MODELS,
+        "hxs_iter0": HXS_ITER0}, indent=1))
     print("\nIP table:")
     for r in ip_rows:
         print(json.dumps(r))
