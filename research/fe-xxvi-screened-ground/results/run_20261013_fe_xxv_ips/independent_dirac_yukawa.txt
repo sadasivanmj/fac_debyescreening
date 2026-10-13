@@ -1,0 +1,4 @@
+mu=0 analytic point-nucleus 1s: -9281.7449 eV
+mu=0.0   Dirac-Yukawa 1s: -9281.7449 eV
+mu=0.1   Dirac-Yukawa 1s: -9211.1964 eV
+mu=0.25  Dirac-Yukawa 1s: -9106.1231 eV

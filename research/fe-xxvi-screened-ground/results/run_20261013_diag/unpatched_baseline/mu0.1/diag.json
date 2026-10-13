@@ -1,0 +1,37 @@
+{
+  "ion": "Fe XXVI",
+  "config": "1s1",
+  "electrons": 1,
+  "mu_requested": 0.1,
+  "mu_used": 0.1,
+  "mps": 1,
+  "ee_screen_option": 0,
+  "hxs_iter0": 8.0,
+  "asymptotic_charge": -26.0,
+  "ZPS_checks": [
+    {
+      "r": 0.000308108793,
+      "ZPS": 0.0,
+      "expected_Z(1-exp(-mu r))": 0.0008010705208920665
+    },
+    {
+      "r": 6.53501502,
+      "ZPS": 0.0,
+      "expected_Z(1-exp(-mu r))": 12.474253246702714
+    },
+    {
+      "r": 34.6128911,
+      "ZPS": 0.0,
+      "expected_Z(1-exp(-mu r))": 25.183878935755917
+    },
+    {
+      "r": 86.1540295,
+      "ZPS": 0.0,
+      "expected_Z(1-exp(-mu r))": 25.9952864145192
+    }
+  ],
+  "E0_eV": -9277.57414,
+  "n_levels": 1,
+  "commit": "31fa9738d81093367a35bf9399de94808f71a2cd",
+  "fac_extension": "/private/tmp/claude-502/-Users-sadasivanmj-Documents-projects-fac-debyescreening/d1c8baa1-8ae1-4433-ba17-8a136fe9fbff/scratchpad/fac-fe-xxvi-screened/build/lib.macosx-11.0-arm64-cpython-310/pfac/fac.cpython-310-darwin.so"
+}
