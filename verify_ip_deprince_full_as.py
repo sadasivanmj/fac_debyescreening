@@ -85,10 +85,13 @@ TABLE2 = {("Fe II", 0.0): 18.89, ("Fe II", 0.1): 14.20, ("Fe II", 0.25): 7.78,
           ("Fe III", 0.0): 32.93, ("Fe III", 0.1): 25.60, ("Fe III", 0.25): 16.42}
 NIST = {"Fe II": 16.19920, "Fe III": 30.651}
 IPS = [("Fe II", "Fe III"), ("Fe III", "Fe IV")]
-# peak RSS per job, OpenMP build, InitializeMPI(4), even parity all J, SD space:
-# Fe II 1.72 GB and Fe IV 9.01 GB measured (pilots 2026-10-13); Fe III is a
-# conservative estimate until measured.
-MEM_EST_GB = {"Fe II": 2.0, "Fe III": 6.0, "Fe IV": 9.5}
+# Upper-bound peak RSS per job (even parity, all J, SD space).  Measured
+# 2026-10-13: serial build Fe II 1.19 GB; OpenMP build (InitializeMPI 4) Fe II
+# 1.72, Fe III 3.65, Fe IV 9.01 GB.  The serial build needed ~30% less for
+# Fe II, so the OpenMP values are used as upper bounds for Fe III / Fe IV.
+# Production uses the serial build: the OpenMP build segfaults in PotentialHX
+# at the first screened OptimizeRadial (see the report).
+MEM_EST_GB = {"Fe II": 2.0, "Fe III": 4.0, "Fe IV": 9.5}
 
 
 # --------------------------------------------------------- active space --
