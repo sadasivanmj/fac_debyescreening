@@ -8,3 +8,13 @@ __pycache__/
 **/results/runs/**/final.pot
 # Failure diagnostics of failed runs ARE tracked (the repository ignores *.log by default).
 !**/results/runs/**/run.FAILED.log
+
+# DensityToSZ experiment: build products and bulky per-run files stay local
+densitytosz_validation/results/_bin/
+densitytosz_validation/results/_work/
+densitytosz_validation/results/**/levels.b
+densitytosz_validation/results/**/levels.txt
+densitytosz_validation/results/**/final.pot
+densitytosz_validation/results/**/l.b
+densitytosz_validation/results/**/l.txt
+densitytosz_validation/results/**/run.log
