@@ -1,0 +1,22 @@
+FAC extension: /Users/sadasivanmj/Documents/projects/fac_fe_ii_viii_reference_ip/build/lib.macosx-11.0-arm64-cpython-310/pfac/fac.cpython-310-darwin.so
+{
+  "ion": "Fe IV",
+  "electrons": 23,
+  "model": "gref",
+  "n_levels": 460,
+  "mu_requested": 0.0,
+  "mu_used": 0.0,
+  "mu_steps": [],
+  "plasma_model_mps": -1,
+  "debye_mode": 0,
+  "ee_screen": 0,
+  "hxs_iter0": 0,
+  "density_A3": 1e-06,
+  "temperature_eV": null,
+  "asymptotic_charge": -4.0,
+  "E0_eV": -34527.6602,
+  "energy_unit": "eV (total energy of the lowest level)",
+  "commit": "07062f73a4d5bde1bd187380ec6ed7874933e796",
+  "fac_extension": "/Users/sadasivanmj/Documents/projects/fac_fe_ii_viii_reference_ip/build/lib.macosx-11.0-arm64-cpython-310/pfac/fac.cpython-310-darwin.so",
+  "status": "ok"
+}
