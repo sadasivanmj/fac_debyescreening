@@ -1982,7 +1982,9 @@ int PotentialHX(AVERAGE_CONFIG *acfg, double *u, int iter) {
   if (jmax <= 0 || potential->N+potential->nqf < 1+EPS5) {
     for (m = 0; m < potential->maxrp; m++) {
       u[m] = 0.0;
-      potential->ZPS[m] = 0;
+      /* Debye (mps = 1): ZPS is the electron-independent nuclear screening
+      ** term, so it must survive for a one-electron ion. */
+      if (potential->mps != 1) potential->ZPS[m] = 0;
       ut[m] = 0;
       potential->r_core = 0;
     }
