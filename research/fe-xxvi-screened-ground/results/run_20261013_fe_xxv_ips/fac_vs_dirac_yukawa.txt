@@ -1,0 +1,5 @@
+Fe XXVI 1s: FAC (patched, finite nucleus + QED) vs independent point-nucleus Dirac-Yukawa, eV
+mu  E_FAC  E_Dirac  FAC-Dirac  shift_FAC(mu)-E(0)  shift_Dirac
+0  -9277.69186  -9281.7449  4.0530  0.00000  0.0000
+0.1  -9207.14345  -9211.1964  4.0530  70.54841  70.5485
+0.25  -9102.07055  -9106.1231  4.0526  175.62131  175.6218

@@ -1,0 +1,33 @@
+{
+  "ion": "Fe VII",
+  "electrons": 20,
+  "model": "gref",
+  "configurations": [
+    "1s2 2s2 2p6 3s2 3p6 3d2",
+    "1s2 2s2 2p6 3s2 3p5 3d3",
+    "1s2 2s2 2p5 3s2 3p6 3d3",
+    "1s1 2s2 2p6 3s2 3p6 3d3"
+  ],
+  "n_levels": 267,
+  "mu_requested": 0.25,
+  "mu_used": 0.25,
+  "mu_steps": [
+    0.05,
+    0.1,
+    0.15,
+    0.2,
+    0.25
+  ],
+  "plasma_model_mps": 1,
+  "debye_mode": 1,
+  "ee_screen": 1,
+  "hxs_iter0": 8,
+  "density_A3": 1e-06,
+  "temperature_eV": 0.0008107443078395135,
+  "asymptotic_charge": 0.0,
+  "E0_eV": -32148.971,
+  "energy_unit": "eV (total energy of the lowest level)",
+  "commit": "07062f73a4d5bde1bd187380ec6ed7874933e796",
+  "fac_extension": "/Users/sadasivanmj/Documents/projects/fac_fe_ii_viii_reference_ip/build/lib.macosx-11.0-arm64-cpython-310/pfac/fac.cpython-310-darwin.so",
+  "status": "ok"
+}
