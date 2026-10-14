@@ -15,7 +15,7 @@ published MCDF results.
 ## Order of use
 
 ```bash
-fe_calc/shared/build_pfac.sh                           # once: build the local PFAC extension (nothing is installed)
+fe_calc/shared/build_pfac.sh; source fe_calc/shared/use_local_pfac.sh   # build (once per source change) and select the local build
 cd fe_calc/deprince_2020_fe_ii_viii                    # or deprince_2019_fe_xvii_xxv
 python calculate_energies.py --check-only              # configuration validation (no FAC needed)
 python calculate_energies.py --preflight               # build / option / provenance checks
@@ -31,30 +31,42 @@ python tests/run_validation.py                         # tests -> results/valida
   configuration syntax checks, build script). Model definitions, reference data, run conditions, the FAC
   sequences and the comparison logic are separate in each paper directory.
 
-## Build and the `jmaxk` defect (important)
+## Build (one workflow, this checkout only)
 
-Use `shared/build_pfac.sh`. It runs `./configure` and `make pfac` only (never `make install` or `pip install`)
-and writes `build/BUILD_INFO.json` (flags, compiler, commit, sha256 of the extension). Every energy record
-stores the build provenance, and `--preflight` checks that the extension matches `BUILD_INFO.json`.
+```bash
+cd /Users/sadasivanmj/Documents/projects/fac_debyescreening
+conda activate fac_mac                       # the environment you run FAC from
+fe_calc/shared/build_pfac.sh                 # builds build/lib.*/pfac for THIS python; installs nothing
+source fe_calc/shared/use_local_pfac.sh      # every new shell: puts this build first on PYTHONPATH
+python -c "import pfac; print(pfac.__file__)"   # must print .../fac_debyescreening/build/...
+```
 
-**Outstanding source defect (not fixed):** in `PotentialHX1()` (`faclib/radial.c`) the local `jmaxk` is only
-assigned when `mps != 1`, but `Max(jmax, jmaxk)` is returned. In Debye mode (`mps = 1`) the result is
-uninitialised stack garbage; with a garbage value of 0x55555555 `PotentialHX` reads far outside its arrays
-and crashes (SIGBUS) on macOS arm64 (seen for Fe III `gref` at mu = 0.1 and Fe XXVI with `-O2`). On Linux the
-garbage was harmless. The framework **does not change the C source**; it builds with the compiler flag
-`-ftrivial-auto-var-init=zero` (plus `-O0 -g`), which zero-initialises locals so that `Max(jmax, 0) = jmax` as
-intended. This is a workaround, not a fix: the defect is still in the source, the preflight reports it, and
-a build without the flag fails the preflight. A source fix (initialise `jmaxk` at its declaration) should be a
-separate, reviewed commit with its own regression test. Checks that support the workaround: all 18 Fe II-IV
-energies agree with Linux-validated values, and 40 earlier Fe XVII-XXVI energies from builds without the flag
-are reproduced exactly (max |dE| = 0 eV).
+`build_pfac.sh` runs `./configure` and `make pfac` only (never `make install` or `pip install`), with
+ordinary flags (`-O2 -fPIC`; macOS: Apple clang and the arm64 `--build/--host` arguments are chosen
+automatically, because conda's cross-compiler wrapper in `CC` breaks `./configure`). It writes
+`build/BUILD_INFO.json` (commit, branch, dirty flag, flags, compiler, Python and conda env, sha256 of the
+extension, which Debye features are compiled in, and where `import pfac` resolves). Every energy record
+stores the build provenance and `--preflight` checks that the extension matches `BUILD_INFO.json`.
+
+**The `jmaxk` defect is fixed in the source.** `PotentialHX1()` (`faclib/radial.c`) returned
+`Max(jmax, jmaxk)` with `jmaxk` unassigned when `mps == 1` (Debye mode): stack garbage, which crashed
+screened runs (SIGBUS) on macOS arm64. Upstream fixed it (M. F. Gu, FAC #851: `jmaxk = 0;` before the
+`mps` block; this repository has it as `603c0e53`, patch-id identical to upstream `fb32c16a`). The earlier
+workaround flag `-ftrivial-auto-var-init=zero` is **no longer used and the build script refuses it**
+(it would hide other uninitialised variables); the script also refuses to build if the fix is missing.
+Evidence: `fe_calc/densitytosz_validation/` (negative control with the unfixed source and identical flags
+versus the fixed source).
+
+**A plain `import pfac` may still find an older installation in `site-packages`** (the one in `fac_mac`
+predates the Debye SCF fixes). Always `source fe_calc/shared/use_local_pfac.sh` first, and never
+`pip install` / `make install` over it.
 
 ## Validated screening code required
 
 `--preflight` verifies that the build contains: the stable Debye direct potential `DensityToSZ` v2
 (commit `00eb229b`, screening the SCF direct potential, not only the Slater integrals), `radial:hxs_iter0`
 (`0650edb1`), the Debye `RadialBound` bracket (`8c8b1bfb`) and the Fe XXVI one-electron nuclear-screening fix
-(cherry-picked from `fbc69734` onto this branch). At run time every screened run checks that
+(`7f05cb9d`, same patch as `fbc69734`). At run time every screened run checks that
 r(Vc+U)+ZPS tends to 0 when both interactions are screened and to N-1 when only the nucleus is, which proves
 that the electron-electron direct potential, not just the Slater integrals, is screened.
 
