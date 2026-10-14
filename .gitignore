@@ -121,3 +121,6 @@ research/fe-ii-viii-reference-ip/results/*/runs/**/final.pot
 research/fe-ii-viii-reference-ip/results/*/runs/**/levels.b
 research/fe-xvii-xxv-ground-ip/results/*/runs/**/final.pot
 research/fe-xvii-xxv-ground-ip/results/*/runs/**/levels.b
+
+# calculate_ip_fe_ii.py output (regenerable with the script)
+/fe_calc/fe_energy/

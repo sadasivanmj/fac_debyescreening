@@ -79,3 +79,15 @@ old directory aside); failed runs are kept as `*.failed-attempt-*` directories. 
 inputs, `energies.csv`, the IP tables and reports. Not tracked (regenerable, bulky): `run.log` of successful
 runs, `levels.txt`, `final.pot`, `levels.b`, the build. Failure logs are named `run.FAILED.log` and are tracked.
 `fac_source_commit` in every record is the last commit that touched `faclib/`, `python/` or `setup.py`.
+
+## Other scripts and reports in this directory (not part of the two frameworks above)
+
+| file | purpose |
+|---|---|
+| `calculate_ip_fe_ii.py` | Expanded-valence Fe II / Fe III energies and IP at mu = 0, 0.1, 0.25 (3 valence configurations each, screening switched on in steps of `MU_STEP`). Run it after `source shared/use_local_pfac.sh`; it refuses any `pfac` outside this checkout. It does **not** call `ConfigEnergy`: with all configurations in the optimised group, `ConfigEnergy(0)`/`(1)` shift the screened configuration energies back onto the stored free-ion values and the IP stays at the unscreened 17.20 eV for every mu. Without them: IP 17.20 / 11.77 / 3.91 eV (mu = 0 / 0.1 / 0.25). |
+| `fe_deprince.py` | Fe XVII-Fe XXV (+ Fe XXVI) Tables 2 and 4 of Deprince et al. (2019) with RAS-like single/double promotions into 3s, 3p, 3d. Kept exactly as written; it uses `ConfigEnergy(0)`/`(1)`. |
+| `fe_xxv.py` | Fe XXV -> Fe XXVI IP at mu = 0, 0.1, 0.25 (reference + SD configurations). Kept exactly as written; it uses `ConfigEnergy(0)`/`(1)`. |
+| `reports/` | Historical write-ups: `REPORT_debye_scf_v2.md` (stable Debye direct potential, v2), `claude_change_history.txt` (change history of the 2026-10-12 investigation), `ip_discrepancy_analysis.md` (Fe II-VIII IP discrepancies vs Deprince et al. 2020). |
+
+Output folders such as `fe_energy/`, `fe25_fac_output_*/` and `fac_deprince_tables2_4_*/` are run products and are not tracked
+(`fe25_*` and `fac_deprince_*` came from builds that predate the Fe XXVI one-electron fix, so their Fe XXVI energies are unscreened).
