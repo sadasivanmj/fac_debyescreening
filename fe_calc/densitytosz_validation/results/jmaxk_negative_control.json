@@ -1,0 +1,7 @@
+{
+  "test": "20 consecutive runs of the He-like Fe XXV reproducer (free-ion SCF, then PlasmaScreen mu = 0.05 with radial:hxs_iter0 = 8) on builds with identical flags (-O2 -fPIC, no workaround)",
+  "pre_fix_source": {"repository_commit": "bbbed5da (FAC source last changed at 7f05cb9d)", "runs": 20, "ok": 2, "crashed_SIGBUS": 18},
+  "post_fix_source": {"repository": "experiment/densitytosz-validation (upstream fb32c16a cherry-picked as 603c0e53)", "runs": 20, "ok": 20, "crashed_SIGBUS": 0},
+  "other_evidence": "Fe III gref at mu = 0.1 crashed deterministically at -O0 without the fix (PotentialHX1 returned jmaxk = 0x55555555 under lldb) and runs on the fixed build; all 148 framework energies of the earlier sweeps are reproduced exactly (max |dE| = 0 eV) by the fixed -O2 build with no workaround flag.",
+  "note": "The pre-fix behaviour is non-deterministic (uninitialised stack), e.g. Fe III gref mu = 0.1 passed once on the pre-fix -O2 build; a pass on the pre-fix source therefore proves nothing."
+}

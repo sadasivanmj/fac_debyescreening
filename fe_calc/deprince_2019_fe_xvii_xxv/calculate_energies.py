@@ -128,6 +128,9 @@ def worker(run_dir: Path) -> int:
         # r*(Vc+U)+ZPS at large r: 0 only if the e-e DIRECT potential is screened too; N-1 if only the nucleus is.
         expected = 0.0 if mu_ee > 0 else electrons - 1.0
         name = "ee_direct_potential_screened" if mu_ee > 0 else "ee_direct_potential_unscreened"
+        if mu_ee > 0 and spec.get("direct_potential", "screened") == "coulomb":
+            # DensityToSZ A/B experiment, variant A: Coulomb direct potential, so only the nucleus is screened
+            expected, name = electrons - 1.0, "ee_direct_potential_coulomb"
         check(name, abs(pot["asymptotic_charge"] - expected) < 1e-3,
               f"asymptotic charge {pot['asymptotic_charge']:.5f}, expected {expected}")
     else:
@@ -149,7 +152,7 @@ def worker(run_dir: Path) -> int:
 
 # --------------------------------------------------------------------- the orchestrator
 
-def plan_runs(ions: list[str], models: list[str], cases: list[str]) -> list[dict]:
+def plan_runs(ions: list[str], models: list[str], cases: list[str], direct_potential: str = "screened") -> list[dict]:
     runs = []
     for ion in ions:
         for model in models:
@@ -157,7 +160,8 @@ def plan_runs(ions: list[str], models: list[str], cases: list[str]) -> list[dict
                 mu_ne, mu_ee = cfg.CASES[case]
                 runs.append({"ion": ion, "configuration_model": model, "case": case,
                              "mu_ne": mu_ne, "mu_ee": mu_ee, "electron_count": cfg.IONS[ion][0],
-                             "configurations": cfg.configurations(ion, model)})
+                             "configurations": cfg.configurations(ion, model),
+                             "direct_potential": direct_potential})
     return runs
 
 
@@ -196,7 +200,7 @@ def build_manifest(run: dict, rel_dir: str, exit_code: int, elapsed: float, time
         "charge_state": cfg.charge_state(run["ion"]), "electron_count": run["electron_count"],
         "configuration_model": run["configuration_model"], "orbital_optimization_model": cfg.ORBITAL_OPTIMIZATION,
         "case": run["case"], "case_order": list(cfg.CASES).index(run["case"]),
-        "mu_ne": run["mu_ne"], "mu_ee": run["mu_ee"],
+        "mu_ne": run["mu_ne"], "mu_ee": run["mu_ee"], "direct_potential": run["direct_potential"],
         "total_energy": energy, "energy_unit": "eV",
         "total_energy_hartree_converted": energy / sup.HARTREE_EV if energy is not None else None,
         "ground_level_identifier": ground_id,
@@ -233,7 +237,7 @@ def run_one(run: dict, results_dir: Path, timeout_s: float, overwrite: bool) -> 
     if run_dir.exists():
         sup.archive_previous(run_dir, "superseded" if existing and existing.get("status") == "ok" else "failed-attempt")
     run_dir.mkdir(parents=True)
-    spec = {k: run[k] for k in ("ion", "configuration_model", "case", "mu_ne", "mu_ee", "electron_count", "configurations")}
+    spec = {k: run[k] for k in ("ion", "configuration_model", "case", "mu_ne", "mu_ee", "electron_count", "configurations", "direct_potential")}
     (run_dir / "input.json").write_text(json.dumps(spec, indent=2))
     cmd = [sup.python_executable(), str(Path(__file__).resolve()), "--worker", str(run_dir)]
     exit_code, elapsed, timed_out = sup.execute_worker(cmd, run_dir, timeout_s)
@@ -249,6 +253,9 @@ def main() -> int:
     ap.add_argument("--cases", nargs="+", choices=list(cfg.CASES), default=list(cfg.CASES))
     ap.add_argument("--timeout", type=float, default=DEFAULT_TIMEOUT_S, help="per-run timeout in seconds")
     ap.add_argument("--jobs", type=int, default=1, help="concurrent runs (each is a separate single-thread process)")
+    ap.add_argument("--direct-potential", choices=("screened", "coulomb"), default="screened",
+                    help="what the build's DensityToSZ is expected to do (default: screened); 'coulomb' is only for the "
+                         "DensityToSZ A/B experiment, variant A, and only changes the expected asymptotic charge")
     ap.add_argument("--overwrite", action="store_true", help="re-run completed runs (the old directory is moved aside, not deleted)")
     ap.add_argument("--check-only", action="store_true", help="validate the configuration data and stop")
     ap.add_argument("--preflight", action="store_true", help="check build, options, provenance, output directory and stop")
@@ -283,7 +290,7 @@ def main() -> int:
             return 0
 
     ions = [cfg.normalize_ion(i) for i in args.ions]
-    plan = plan_runs(ions, args.models, args.cases)
+    plan = plan_runs(ions, args.models, args.cases, args.direct_potential)
     print(f"{len(plan)} planned run(s)")
     if args.dry_run:
         for r in plan:

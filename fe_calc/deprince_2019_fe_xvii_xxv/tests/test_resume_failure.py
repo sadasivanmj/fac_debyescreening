@@ -68,8 +68,10 @@ class PlanningAndPreflight(unittest.TestCase):
         p = ts.run_script(CALC, "--preflight")
         self.assertEqual(p.returncode, 0, p.stdout)
         for text in ("stable Debye DensityToSZ (v2) compiled in", "Fe XXVI one-electron nuclear-screening fix",
-                     "jmaxk uninitialised-variable defect: source defect PRESENT (not fixed)"):
+                     ):
             self.assertIn(text, p.stdout)
+        import re
+        self.assertRegex(p.stdout, r"jmaxk uninitialised-variable defect: (fixed in source|source defect PRESENT \(not fixed\))")
 
 
 if __name__ == "__main__":

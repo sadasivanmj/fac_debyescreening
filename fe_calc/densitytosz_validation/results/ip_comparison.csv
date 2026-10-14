@@ -1,0 +1,7 @@
+ionization,case,mu,IP_A_eV,IP_B_eV,delta_I_BminusA_eV,delta_I_from_dE_eV,identity_residual_eV,ip_paper_eV,err_vs_paper_A_eV,err_vs_paper_B_eV,rel_err_vs_paper_A_percent,rel_err_vs_paper_B_percent,abs_err_change_A_to_B_eV,ip_nist_eV,err_vs_nist_A_eV,err_vs_nist_B_eV,shift_A_eV,shift_B_eV,shift_paper_eV,shift_err_A_eV,shift_err_B_eV,status
+Fe II -> Fe III,mu0p00,0.0,15.5203,15.5203,0.0,0.0,0.0,18.89,-3.3697,-3.3697,-17.8385,-17.8385,0.0,16.1992,-0.6789,-0.6789,0.0,0.0,0.0,0.0,0.0,A and B available
+Fe II -> Fe III,mu0p10,0.1,,10.2258,,,,14.2,,-3.9742,,-27.9873,,,,,,-5.2945,-4.69,,-0.6045,B only (A did not converge)
+Fe II -> Fe III,mu0p25,0.25,,4.6872,,,,7.78,,-3.0928,,-39.7532,,,,,,-10.8331,-11.11,,0.2769,B only (A did not converge)
+Fe III -> Fe IV,mu0p00,0.0,28.0942,28.0942,0.0,0.0,0.0,32.93,-4.8358,-4.8358,-14.6851,-14.6851,0.0,30.651,-2.5568,-2.5568,0.0,0.0,0.0,0.0,0.0,A and B available
+Fe III -> Fe IV,mu0p10,0.1,,20.1338,,,,25.6,,-5.4662,,-21.3523,,,,,,-7.9604,-7.33,,-0.6304,B only (A did not converge)
+Fe III -> Fe IV,mu0p25,0.25,,9.2698,,,,16.42,,-7.1502,,-43.5457,,,,,,-18.8244,-16.51,,-2.3144,B only (A did not converge)

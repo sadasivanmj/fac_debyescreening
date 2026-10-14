@@ -8,3 +8,17 @@ __pycache__/
 **/results/runs/**/final.pot
 # Failure diagnostics of failed runs ARE tracked (the repository ignores *.log by default).
 !**/results/runs/**/run.FAILED.log
+
+# DensityToSZ experiment: build products and bulky per-run files stay local
+densitytosz_validation/results/_bin/
+densitytosz_validation/results/_work/
+densitytosz_validation/results/**/levels.b
+densitytosz_validation/results/**/levels.txt
+densitytosz_validation/results/**/final.pot
+densitytosz_validation/results/**/l.b
+densitytosz_validation/results/**/l.txt
+densitytosz_validation/results/**/run.log
+# FAC failure dumps: only error.pot of the six main variant-A failures is kept (the potential at the failure); the rest is local
+densitytosz_validation/results/**/error.bpt
+densitytosz_validation/results/**/error.wav
+densitytosz_validation/results/variant_A_diagnosis*/**/error.pot

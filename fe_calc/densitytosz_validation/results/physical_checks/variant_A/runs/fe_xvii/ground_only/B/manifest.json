@@ -1,0 +1,66 @@
+{
+  "paper": "deprince_2019_fe_xvii_xxv",
+  "ion": "Fe XVII",
+  "ion_order": 0,
+  "charge_state": 16,
+  "electron_count": 10,
+  "configuration_model": "ground_only",
+  "orbital_optimization_model": "ground",
+  "case": "B",
+  "case_order": 2,
+  "mu_ne": 0.1,
+  "mu_ee": 0.1,
+  "direct_potential": "coulomb",
+  "total_energy": -30649.5215,
+  "energy_unit": "eV",
+  "total_energy_hartree_converted": -1126.3491503152393,
+  "ground_level_identifier": "ILEV=0;2J=0;parity=0;VNL=201;1*2.2*8 2p6 2p+4(0)0",
+  "convergence_status": "converged",
+  "status": "ok",
+  "exit_code": 0,
+  "elapsed_time": 0.72,
+  "fac_executable_or_module": "build/lib.macosx-11.0-arm64-cpython-310/pfac/fac.cpython-310-darwin.so",
+  "fac_source_commit": "54f043349cc05c92acebf78853a2ab9d7a04bf4e",
+  "repo_head_commit": "54f043349cc05c92acebf78853a2ab9d7a04bf4e",
+  "build_provenance": "cflags=[-O2 -fPIC]; cc=Apple clang version 21.0.0 (clang-2100.3.34.2); ext_sha256=d1da36f2122e4cad; BUILD_INFO-matches",
+  "run_directory": "runs/fe_xvii/ground_only/B",
+  "log_path": "runs/fe_xvii/ground_only/B/run.log",
+  "git_branch": "experiment/densitytosz-variant-a",
+  "git_modified_tracked_files": [],
+  "configurations": [
+    "1s2 2s2 2p6"
+  ],
+  "options": {
+    "debye_mode": 1,
+    "ee_screen": 1,
+    "hxs_iter0": 8,
+    "density_A3": 1e-06,
+    "temperature_eV": 0.005067151923996959
+  },
+  "mu_ne_used": 0.1,
+  "mu_steps": [
+    0.05,
+    0.1
+  ],
+  "n_levels": 1,
+  "blocks_seen_parity_2J": [
+    [
+      0,
+      0
+    ]
+  ],
+  "asymptotic_charge": 8.9999997,
+  "checks": {
+    "electron_count_in_level_table": true,
+    "e0_finite": true,
+    "level_table_complete": true,
+    "level_table_referenced_to_lowest_level": true,
+    "plasma_model_is_debye": true,
+    "nuclear_mu_applied": true,
+    "no_ion_sphere_cut": true,
+    "nuclear_screening_term_present": true,
+    "ee_direct_potential_coulomb": true
+  },
+  "problems": [],
+  "suspicious_log_lines": []
+}

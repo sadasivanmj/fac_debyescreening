@@ -1,0 +1,50 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 760 480" width="760" height="480" font-family="sans-serif" font-size="12">
+<rect width="760" height="480" fill="white"/>
+<text x="78" y="24" font-size="15" font-weight="bold">Relative IP residual against Deprince et al. 2020</text>
+<rect x="78" y="44" width="492" height="370" fill="none" stroke="#444"/>
+<line x1="96.2" y1="44" x2="96.2" y2="414" stroke="#ddd"/>
+<text x="96.2" y="430" text-anchor="middle">0</text>
+<line x1="187.3" y1="44" x2="187.3" y2="414" stroke="#ddd"/>
+<text x="187.3" y="430" text-anchor="middle">0.05</text>
+<line x1="278.4" y1="44" x2="278.4" y2="414" stroke="#ddd"/>
+<text x="278.4" y="430" text-anchor="middle">0.1</text>
+<line x1="369.6" y1="44" x2="369.6" y2="414" stroke="#ddd"/>
+<text x="369.6" y="430" text-anchor="middle">0.15</text>
+<line x1="460.7" y1="44" x2="460.7" y2="414" stroke="#ddd"/>
+<text x="460.7" y="430" text-anchor="middle">0.2</text>
+<line x1="551.8" y1="44" x2="551.8" y2="414" stroke="#ddd"/>
+<text x="551.8" y="430" text-anchor="middle">0.25</text>
+<line x1="78" y1="367.3" x2="570" y2="367.3" stroke="#ddd"/>
+<text x="72" y="371.3" text-anchor="end">-40</text>
+<line x1="78" y1="291.4" x2="570" y2="291.4" stroke="#ddd"/>
+<text x="72" y="295.4" text-anchor="end">-30</text>
+<line x1="78" y1="215.6" x2="570" y2="215.6" stroke="#ddd"/>
+<text x="72" y="219.6" text-anchor="end">-20</text>
+<line x1="78" y1="139.7" x2="570" y2="139.7" stroke="#ddd"/>
+<text x="72" y="143.7" text-anchor="end">-10</text>
+<line x1="78" y1="63.8" x2="570" y2="63.8" stroke="#ddd"/>
+<text x="72" y="67.8" text-anchor="end">0</text>
+<text x="324.0" y="452" text-anchor="middle">mu (a.u.)</text>
+<text transform="translate(16 229.0) rotate(-90)" text-anchor="middle">(calc - paper)/paper (%)</text>
+<line x1="78" y1="63.8" x2="570" y2="63.8" stroke="#777" stroke-dasharray="2 4"/>
+<text x="566" y="59.8" text-anchor="end" fill="#555">0</text>
+<polyline fill="none" stroke="#0072B2" stroke-width="1.8" points="96.2,199.2 278.4,276.1 551.8,365.4"/>
+<circle cx="96.2" cy="199.2" r="3.6" fill="#0072B2" stroke="#0072B2" stroke-width="1.5"/>
+<circle cx="278.4" cy="276.1" r="3.6" fill="#0072B2" stroke="#0072B2" stroke-width="1.5"/>
+<circle cx="551.8" cy="365.4" r="3.6" fill="#0072B2" stroke="#0072B2" stroke-width="1.5"/>
+<line x1="584" y1="54" x2="606" y2="54" stroke="#0072B2" stroke-width="2"/>
+<text x="612" y="58" font-size="11">Fe II B</text>
+<rect x="92.7" y="195.7" width="7" height="7" fill="white" stroke="#D55E00" stroke-width="1.5"/>
+<line x1="584" y1="71" x2="606" y2="71" stroke="#D55E00" stroke-width="2"/>
+<text x="612" y="75" font-size="11">Fe II A</text>
+<polyline fill="none" stroke="#009E73" stroke-width="1.8" points="96.2,175.2 278.4,225.8 551.8,394.2"/>
+<circle cx="96.2" cy="175.2" r="3.6" fill="#009E73" stroke="#009E73" stroke-width="1.5"/>
+<circle cx="278.4" cy="225.8" r="3.6" fill="#009E73" stroke="#009E73" stroke-width="1.5"/>
+<circle cx="551.8" cy="394.2" r="3.6" fill="#009E73" stroke="#009E73" stroke-width="1.5"/>
+<line x1="584" y1="88" x2="606" y2="88" stroke="#009E73" stroke-width="2"/>
+<text x="612" y="92" font-size="11">Fe III B</text>
+<rect x="92.7" y="171.7" width="7" height="7" fill="white" stroke="#CC79A7" stroke-width="1.5"/>
+<line x1="584" y1="105" x2="606" y2="105" stroke="#CC79A7" stroke-width="2"/>
+<text x="612" y="109" font-size="11">Fe III A</text>
+<text x="78" y="472" font-size="11" fill="#555">Variant A has a value only at mu = 0 (identical to B there).</text>
+</svg>

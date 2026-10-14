@@ -1,0 +1,12 @@
+{
+  "ion": "Fe XXV",
+  "configuration_model": "ground_only",
+  "case": "A",
+  "mu_ne": 0.1,
+  "mu_ee": 0.0,
+  "electron_count": 2,
+  "configurations": [
+    "1s2"
+  ],
+  "direct_potential": "screened"
+}
